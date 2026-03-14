@@ -226,11 +226,11 @@ pre.resp-code{padding:13px 15px;font-family:var(--mono);font-size:11px;color:var
     <div class="cc cc-gm">
       <div style="display:flex;align-items:center;gap:11px">
         <div class="cc-ico">📧</div>
-        <div><div class="cc-plat">Gmail</div><div class="cc-handle">manzxy@gmail.com</div></div>
+        <div><div class="cc-plat">Gmail</div><div class="cc-handle"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="d0bdb1beaaa8a990b7bdb1b9bcfeb3bfbd">[email&#160;protected]</a></div></div>
       </div>
       <div class="cc-note">Untuk keperluan formal, security report, atau partnership inquiry.</div>
       <div class="cc-status"><div class="sd"></div>Dibalas dalam 24 jam</div>
-      <a href="mailto:manzxy@gmail.com" class="cc-btn">
+      <a href="/cdn-cgi/l/email-protection#6508040b1f1d1c250208040c094b060a08" class="cc-btn">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.144C21.69 2.28 24 3.434 24 5.457z"/></svg>
         Kirim Email
       </a>
@@ -244,7 +244,7 @@ pre.resp-code{padding:13px 15px;font-family:var(--mono);font-size:11px;color:var
 <section class="section" id="docs">
   <div class="sec-label">api reference</div>
   <h2 class="sec-title">Dokumentasi API</h2>
-  <p class="sec-sub">Base URL: <code style="font-family:var(--mono);color:var(--accent);background:rgba(0,212,255,.08);padding:2px 8px;border-radius:5px">https://your-domain.vercel.app/api</code></p>
+  <p class="sec-sub">Base URL: <code style="font-family:var(--mono);color:var(--accent);background:rgba(0,212,255,.08);padding:2px 8px;border-radius:5px">https://manzxy.biz.id/api</code></p>
 
   <div class="tabs">
     <button class="tab on" onclick="showTab('snippets',this)">Snippets</button>
@@ -264,8 +264,8 @@ pre.resp-code{padding:13px 15px;font-family:var(--mono);font-size:11px;color:var
       <div class="doc-body"><div class="doc-body-in">
         <div class="ibox ib-tip"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/></svg>Endpoint publik — tidak butuh auth. Returns array snippet tanpa <code>snippet_key_hash</code>.</div>
         <div class="dt">Contoh Request</div>
-        <div class="ce"><div class="ce-bar"><span class="ce-lang">curl</span><button class="copy-tiny" onclick="cpEx(this,'curl https://your-domain.vercel.app/api/snippets')">copy</button></div>
-        <pre class="ce-code"><span class="cp">curl</span> <span class="cs">https://your-domain.vercel.app/api/snippets</span></pre></div>
+        <div class="ce"><div class="ce-bar"><span class="ce-lang">curl</span><button class="copy-tiny" onclick="cpEx(this,'curl https://manzxy.biz.id/api/snippets')">copy</button></div>
+        <pre class="ce-code"><span class="cp">curl</span> <span class="cs">https://manzxy.biz.id/api/snippets</span></pre></div>
         <div class="resp"><div class="resp-bar"><div class="resp-dot"></div>200 OK · application/json</div>
         <pre class="resp-code">[{ <span class="rj-key">"id"</span>:<span class="rj-num">1</span>, <span class="rj-key">"author"</span>:<span class="rj-str">"manzxy"</span>, <span class="rj-key">"title"</span>:<span class="rj-str">"Fetch Retry"</span>, <span class="rj-key">"language"</span>:<span class="rj-str">"JavaScript"</span>, <span class="rj-key">"likes"</span>:<span class="rj-num">12</span>, <span class="rj-key">"views"</span>:<span class="rj-num">87</span> }]</pre></div>
       </div></div>
@@ -348,8 +348,8 @@ pre.resp-code{padding:13px 15px;font-family:var(--mono);font-size:11px;color:var
           <div class="pr"><span class="pn">id<span class="rb">req</span></span><span class="pt">number</span><span class="pd">ID snippet yang dihapus</span></div>
           <div class="pr"><span class="pn">snippetKey<span class="rb">req*</span></span><span class="pt">string</span><span class="pd">Key asli (*tidak diperlukan jika admin)</span></div>
         </div>
-        <div class="ce"><div class="ce-bar"><span class="ce-lang">curl</span><button class="copy-tiny" onclick="cpEx(this,`curl -X DELETE https://your-domain.vercel.app/api/snippet-action -H 'Content-Type: application/json' -d '{\"id\":1,\"snippetKey\":\"abc12\"}'`)">copy</button></div>
-        <pre class="ce-code"><span class="cp">curl</span> <span class="cm">-X</span> DELETE <span class="cs">https://your-domain.vercel.app/api/snippet-action</span> \
+        <div class="ce"><div class="ce-bar"><span class="ce-lang">curl</span><button class="copy-tiny" onclick="cpEx(this,`curl -X DELETE https://manzxy.biz.id/api/snippet-action -H 'Content-Type: application/json' -d '{\"id\":1,\"snippetKey\":\"abc12\"}'`)">copy</button></div>
+        <pre class="ce-code"><span class="cp">curl</span> <span class="cm">-X</span> DELETE <span class="cs">https://manzxy.biz.id/api/snippet-action</span> \
   <span class="cm">-H</span> <span class="cs">'Content-Type: application/json'</span> \
   <span class="cm">-d</span> <span class="cs">'{"id":1,"snippetKey":"abc12"}'</span></pre></div>
         <div class="resp"><div class="resp-bar"><div class="resp-dot"></div>200 OK</div>
@@ -416,7 +416,7 @@ pre.resp-code{padding:13px 15px;font-family:var(--mono);font-size:11px;color:var
         <div class="ce"><div class="ce-bar"><span class="ce-lang">python</span><button class="copy-tiny" id="cppy" onclick="cpEl(this,'code-py')">copy</button></div>
         <pre class="ce-code" id="code-py"><span class="ck">import</span> <span class="cn">requests</span>, <span class="cn">json</span>
 
-<span class="cn">BASE</span> <span class="cm">=</span> <span class="cs">"https://your-domain.vercel.app"</span>
+<span class="cn">BASE</span> <span class="cm">=</span> <span class="cs">"https://manzxy.biz.id"</span>
 
 <span class="ck">def</span> <span class="cm">get_all</span>():
     <span class="cn">r</span> <span class="cm">=</span> <span class="cn">requests</span>.<span class="cm">get</span>(<span class="cs">f"{BASE}/api/snippets"</span>)
@@ -450,7 +450,7 @@ pre.resp-code{padding:13px 15px;font-family:var(--mono);font-size:11px;color:var
       <div class="doc-body"><div class="doc-body-in">
         <div class="ce"><div class="ce-bar"><span class="ce-lang">javascript (node 18+)</span><button class="copy-tiny" id="cpjs" onclick="cpEl(this,'code-js')">copy</button></div>
         <pre class="ce-code" id="code-js"><span class="cc">// node scraper.js</span>
-<span class="ck">const</span> <span class="cn">BASE</span> <span class="cm">=</span> <span class="cs">'https://your-domain.vercel.app'</span>;
+<span class="ck">const</span> <span class="cn">BASE</span> <span class="cm">=</span> <span class="cs">'https://manzxy.biz.id'</span>;
 
 <span class="ck">async function</span> <span class="cm">fetchAll</span>() {
   <span class="ck">const</span> <span class="cn">r</span> <span class="cm">=</span> <span class="ck">await</span> <span class="cm">fetch</span>(<span class="cs">`${BASE}/api/snippets`</span>);
@@ -486,7 +486,7 @@ pre.resp-code{padding:13px 15px;font-family:var(--mono);font-size:11px;color:var
       <div class="doc-body"><div class="doc-body-in">
         <div class="ce"><div class="ce-bar"><span class="ce-lang">php</span><button class="copy-tiny" id="cpphp" onclick="cpEl(this,'code-php')">copy</button></div>
         <pre class="ce-code" id="code-php"><span class="cm">&lt;?php</span>
-<span class="cn">$BASE</span> <span class="cm">=</span> <span class="cs">"https://your-domain.vercel.app"</span>;
+<span class="cn">$BASE</span> <span class="cm">=</span> <span class="cs">"https://manzxy.biz.id"</span>;
 
 <span class="ck">function</span> <span class="cm">getSnippets</span>(<span class="cn">$base</span>) {
     <span class="cn">$ch</span> <span class="cm">=</span> <span class="cm">curl_init</span>(<span class="cs">"$base/api/snippets"</span>);
@@ -531,7 +531,7 @@ pre.resp-code{padding:13px 15px;font-family:var(--mono);font-size:11px;color:var
   </div>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 'use strict';
 
 // ── TABS — show/hide tab panes
@@ -586,13 +586,4 @@ const navLinks = document.querySelectorAll('.tnav a');
 const obs = new IntersectionObserver(entries => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
-      navLinks.forEach(a => a.classList.remove('on'));
-      const match = document.querySelector(`.tnav a[href="#${entry.target.id}"]`);
-      if (match) match.classList.add('on');
-    }
-  });
-}, { threshold: 0.35 });
-sections.forEach(s => obs.observe(s));
-</script>
-</body>
-</html>
+      navLinks.for
