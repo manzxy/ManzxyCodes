@@ -1,0 +1,9 @@
+{
+  "name": "ManzxyCodes",
+  "version": "3.0.0",
+  "private": true,
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.0",
+    "jose": "^5.2.0"
+  }
+}
