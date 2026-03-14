@@ -1,24 +1,23 @@
 // api/admin-verify.js
-// Frontend panggil ini untuk cek apakah session admin masih valid
+// GET /api/admin-verify → { admin: true|false }
 
 import { jwtVerify } from 'jose';
 
 export default async function handler(req, res) {
-  if (req.method !== 'GET') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  if (req.method === 'OPTIONS') return res.status(200).end();
+
+  const JWT_SEC = process.env.JWT_SECRET;
+  if (!JWT_SEC) return res.status(200).json({ admin: false });
 
   try {
-    const cookie = req.headers.cookie || '';
-    const match  = cookie.match(/admin_token=([^;]+)/);
-    if (!match) return res.status(401).json({ admin: false });
-
-    const JWT_SECRET = process.env.JWT_SECRET;
-    if (!JWT_SECRET) return res.status(500).json({ error: 'Config error' });
-
-    await jwtVerify(match[1], new TextEncoder().encode(JWT_SECRET));
+    const match = (req.headers.cookie || '').match(/mzx_token=([^;]+)/);
+    if (!match) return res.status(200).json({ admin: false });
+    await jwtVerify(match[1], new TextEncoder().encode(JWT_SEC));
     return res.status(200).json({ admin: true });
   } catch {
-    return res.status(401).json({ admin: false });
+    return res.status(200).json({ admin: false });
   }
 }

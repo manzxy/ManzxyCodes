@@ -1,70 +1,57 @@
 // api/admin-login.js
-// Dipanggil dari frontend: POST /api/admin-login
-// Credentials HANYA ada di Vercel Environment Variables — tidak pernah expose ke browser
+// POST /api/admin-login → set HttpOnly JWT cookie
 
 import { SignJWT } from 'jose';
 
+function parseBody(req) {
+  if (!req.body) return {};
+  if (typeof req.body === 'string') { try { return JSON.parse(req.body); } catch { return {}; } }
+  return req.body || {};
+}
+
 export default async function handler(req, res) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST,OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  if (req.method === 'OPTIONS') return res.status(200).end();
+  if (req.method !== 'POST')   return res.status(405).json({ error: 'Method not allowed' });
+
+  const { username, password } = parseBody(req);
+  if (!username || !password) return res.status(400).json({ error: 'Username & password wajib diisi' });
+
+  const ADM_USER = process.env.ADMIN_USERNAME;
+  const ADM_HASH = process.env.ADMIN_PASSWORD_HASH;
+  const JWT_SEC  = process.env.JWT_SECRET;
+  const SALT     = process.env.PASSWORD_SALT || '';
+
+  if (!ADM_USER || !ADM_HASH || !JWT_SEC) {
+    console.error('[admin-login] env vars missing');
+    return res.status(500).json({ error: 'Server belum dikonfigurasi. Cek env vars.' });
   }
 
-  // Rate limit sederhana via header (Vercel edge tidak simpan state,
-  // tapi ini cukup untuk cegah brute force basic)
-  const ip = req.headers['x-forwarded-for'] || req.socket?.remoteAddress || 'unknown';
-
   try {
-    const { username, password } = req.body;
+    const buf    = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(password + SALT));
+    const hexPwd = Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
 
-    if (!username || !password) {
-      return res.status(400).json({ error: 'Username dan password wajib diisi' });
-    }
-
-    // Ambil dari Vercel Environment Variables (tidak pernah ke client)
-    const ADMIN_USER     = process.env.ADMIN_USERNAME;
-    const ADMIN_PASS     = process.env.ADMIN_PASSWORD_HASH; // SHA-256 hex dari password
-    const JWT_SECRET     = process.env.JWT_SECRET;
-
-    if (!ADMIN_USER || !ADMIN_PASS || !JWT_SECRET) {
-      console.error('Environment variables not set');
-      return res.status(500).json({ error: 'Server configuration error' });
-    }
-
-    // Hash password yang dikirim, bandingkan dengan hash di env
-    const encoder = new TextEncoder();
-    const data = encoder.encode(password + process.env.PASSWORD_SALT);
-    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-    const hashHex = Array.from(new Uint8Array(hashBuffer))
-      .map(b => b.toString(16).padStart(2, '0'))
-      .join('');
-
-    const userMatch = username === ADMIN_USER;
-    const passMatch = hashHex === ADMIN_PASS;
-
-    // Constant-time compare (hindari timing attack)
-    if (!userMatch || !passMatch) {
-      // Delay acak 100-300ms untuk anti-brute-force
-      await new Promise(r => setTimeout(r, 100 + Math.random() * 200));
+    if (username !== ADM_USER || hexPwd !== ADM_HASH) {
+      await new Promise(r => setTimeout(r, 150 + Math.random() * 200)); // anti brute-force
       return res.status(401).json({ error: 'Username atau password salah' });
     }
 
-    // Buat JWT — expire 8 jam
-    const secret = new TextEncoder().encode(JWT_SECRET);
-    const token = await new SignJWT({ role: 'admin', ip })
+    const token = await new SignJWT({ role: 'admin' })
       .setProtectedHeader({ alg: 'HS256' })
       .setIssuedAt()
       .setExpirationTime('8h')
-      .sign(secret);
+      .sign(new TextEncoder().encode(JWT_SEC));
 
-    // Set sebagai HttpOnly cookie — TIDAK bisa diakses JS di browser
-    res.setHeader('Set-Cookie', [
-      `admin_token=${token}; HttpOnly; Secure; SameSite=Strict; Max-Age=28800; Path=/`
-    ]);
-
+    const isProd = process.env.NODE_ENV === 'production';
+    res.setHeader('Set-Cookie',
+      `mzx_token=${token}; HttpOnly; ${isProd ? 'Secure; ' : ''}SameSite=Lax; Max-Age=28800; Path=/`
+    );
     return res.status(200).json({ ok: true });
 
   } catch (err) {
-    console.error('Admin login error:', err);
+    console.error('[admin-login]', err);
     return res.status(500).json({ error: 'Internal server error' });
   }
 }
