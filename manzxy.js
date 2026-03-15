@@ -23,7 +23,7 @@
  *   PASSWORD_SALT=<string acak min 16 char>
  *   JWT_SECRET=<string acak min 32 char>
  *   KEY_SALT=<string acak lain untuk snippet key>
- *   DOMAIN=https://manzxycodes.com   (optional, untuk CORS)
+ *   DOMAIN=https://manzxy.biz.id    (domain kamu)
  *   NODE_ENV=production
  */
 
@@ -35,7 +35,6 @@ import { createClient } from '@supabase/supabase-js';
 import { SignJWT, jwtVerify } from 'jose';
 import { fileURLToPath } from 'url';
 import { dirname, join }    from 'path';
-import { readFileSync }     from 'fs';
 
 // ═══════════════════════════════════════════ PATHS
 const __filename = fileURLToPath(import.meta.url);
@@ -120,32 +119,75 @@ const err = (res, status, msg) => res.status(status).json({ error: msg });
 // ═══════════════════════════════════════════ EXPRESS SETUP
 const app = express();
 
+// ── Trust proxy — wajib untuk dapat IP asli di balik Nginx
+// '1' artinya percaya 1 level proxy (Nginx)
+app.set('trust proxy', 1);
+
+// ── Sembunyikan Express fingerprint
+app.disable('x-powered-by');
+
 // ── Body parser — JSON
-app.use(express.json({ limit: '2mb' }));
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '100kb' }));  // snippet tidak perlu lebih dari 100kb
+app.use(express.urlencoded({ extended: false, limit: '50kb' }));
 
 // ── Cookie parser
 app.use(cookieParser());
 
-// ── CORS — izinkan dari domain sendiri atau semua (dev mode)
+// ── CORS — credentials:true tidak kompatibel dengan Allow-Origin: *
+// Harus pakai origin spesifik saat ada cookies
 app.use((req, res, next) => {
-  const origin = req.headers.origin;
-  const allowed = DOMAIN === '*' ? '*' : DOMAIN;
-  res.setHeader('Access-Control-Allow-Origin', allowed);
+  const origin  = req.headers.origin;
+  // Daftar origin yang diizinkan
+  const allowed = [
+    'https://manzxy.biz.id',
+    'https://www.manzxy.biz.id',
+    'http://localhost:3000',
+    'http://localhost:5500',
+  ];
+  if (DOMAIN !== '*') {
+    // Tambahkan domain dari env jika belum ada
+    DOMAIN.split(',').map(d => d.trim()).forEach(d => {
+      if (d && !allowed.includes(d)) allowed.push(d);
+    });
+  }
+  if (!origin || allowed.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin || allowed[0]);
+  }
   res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Vary', 'Origin');
   if (req.method === 'OPTIONS') return res.status(200).end();
   next();
 });
 
-// ── Security headers
+// ── Security headers (hardened)
 app.use((req, res, next) => {
+  // Anti clickjacking
+  res.setHeader('X-Frame-Options', 'DENY');
+  // Anti MIME sniffing
   res.setHeader('X-Content-Type-Options', 'nosniff');
-  res.setHeader('X-Frame-Options', 'SAMEORIGIN');
+  // XSS protection (legacy browsers)
+  res.setHeader('X-XSS-Protection', '1; mode=block');
+  // Referrer
   res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  // Permissions — matikan semua API browser yang tidak dipakai
+  res.setHeader('Permissions-Policy', 'geolocation=(), microphone=(), camera=(), payment=()');
+  // Content Security Policy
+  res.setHeader('Content-Security-Policy', [
+    "default-src 'self'",
+    "script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net",
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+    "font-src 'self' https://fonts.gstatic.com",
+    "img-src 'self' data: https:",
+    "connect-src 'self'",
+    "frame-ancestors 'none'",
+    "base-uri 'self'",
+    "form-action 'self'",
+  ].join('; '));
   if (isProd) {
-    res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+    // HSTS — force HTTPS for 1 year
+    res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
   }
   next();
 });
@@ -238,30 +280,48 @@ api.post('/snippets', rateLimit(60, 60_000), async (req, res) => {
 });
 
 // ─────────────────────────────────────────── POST /api/snippet-create
+/** Strip HTML tags dari string — anti XSS stored */
+function strip(str) {
+  return String(str || '').replace(/<[^>]*>/g, '').trim();
+}
+
+/** Validasi panjang field */
+function maxLen(str, max) {
+  return typeof str === 'string' && str.length <= max;
+}
+
 api.post('/snippet-create', rateLimit(10, 60_000), async (req, res) => {
   const { author, title, description, language, tags, code, snippetKey } = req.body;
 
-  // Validasi
+  // Validasi + sanitasi
   const errors = {};
-  if (!author?.trim())      errors.author      = 'Wajib diisi';
-  if (!title?.trim())       errors.title       = 'Wajib diisi';
-  if (!description?.trim()) errors.description = 'Wajib diisi';
-  if (!code?.trim())        errors.code        = 'Wajib diisi';
+  if (!author?.trim())                        errors.author      = 'Wajib diisi';
+  else if (!maxLen(author, 50))               errors.author      = 'Maksimal 50 karakter';
+  if (!title?.trim())                         errors.title       = 'Wajib diisi';
+  else if (!maxLen(title, 120))               errors.title       = 'Maksimal 120 karakter';
+  if (!description?.trim())                   errors.description = 'Wajib diisi';
+  else if (!maxLen(description, 500))         errors.description = 'Maksimal 500 karakter';
+  if (!code?.trim())                          errors.code        = 'Wajib diisi';
+  else if (!maxLen(code, 50000))              errors.code        = 'Kode terlalu panjang (max 50000 char)';
   const k = snippetKey?.trim() || '';
-  if (!k || k.length < 3 || k.length > 7) errors.snippetKey = 'Key harus 3–7 karakter';
+  if (!k || k.length < 3 || k.length > 7)    errors.snippetKey  = 'Key harus 3–7 karakter';
   if (Object.keys(errors).length) return res.status(400).json({ errors });
 
   const tagsArr = Array.isArray(tags)
     ? tags.map(t => String(t).trim()).filter(Boolean)
     : String(tags || '').split(',').map(t => t.trim()).filter(Boolean);
 
+  // Sanitasi — strip HTML dari semua field teks (cegah XSS stored)
+  const VALID_LANGS = ['JavaScript','TypeScript','Python','PHP','Go'];
+  const safeLang = VALID_LANGS.includes(language) ? language : 'JavaScript';
+
   const { error } = await sbSvc.from('snippets').insert([{
-    author:           author.trim(),
-    title:            title.trim(),
-    description:      description.trim(),
-    language:         language || 'JavaScript',
-    tags:             tagsArr,
-    code,
+    author:           strip(author).substring(0, 50),
+    title:            strip(title).substring(0, 120),
+    description:      strip(description).substring(0, 500),
+    language:         safeLang,
+    tags:             tagsArr.slice(0, 10).map(t => strip(t).substring(0, 30)),
+    code:             code.substring(0, 50000),  // code boleh ada HTML (snippet)
     snippet_key_hash: await hashKey(k),
     likes: 0,
     views: 0,
@@ -329,7 +389,7 @@ api.delete('/snippet-action', rateLimit(10, 60_000), async (req, res) => {
 });
 
 // ─────────────────────────────────────────── POST /api/admin-login
-api.post('/admin-login', rateLimit(5, 60_000), async (req, res) => {
+api.post('/admin-login', rateLimit(3, 5 * 60_000), async (req, res) => {  // max 3 percobaan per 5 menit
   const { username, password } = req.body;
   if (!username || !password) return err(res, 400, 'Username & password wajib diisi');
 
@@ -441,3 +501,12 @@ app.listen(PORT, '0.0.0.0', () => {
 // Graceful shutdown
 process.on('SIGTERM', () => { console.log('\n[SIGTERM] Shutting down…'); process.exit(0); });
 process.on('SIGINT',  () => { console.log('\n[SIGINT]  Shutting down…'); process.exit(0); });
+
+// Cegah crash dari unhandled promise rejection
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('[unhandledRejection]', reason);
+});
+process.on('uncaughtException', (err) => {
+  console.error('[uncaughtException]', err);
+  // Jangan exit — biarkan PM2 yang restart jika perlu
+});
