@@ -21,19 +21,24 @@ create table if not exists snippets (
 -- Row Level Security
 alter table snippets enable row level security;
 
--- Publik boleh SELECT
-create policy "public_read" on snippets
-  for select using (true);
+-- ⚠️  Semua operasi lewat service_role key dari server Node.js
+-- service_role key BYPASS RLS secara otomatis — tidak perlu policy write
+-- Cukup izinkan anon untuk SELECT (baca publik)
 
--- INSERT / UPDATE / DELETE hanya lewat service_role (dari API server)
--- Anon tidak bisa langsung write — semua lewat /api
-create policy "service_write" on snippets
-  for all using (auth.role() = 'service_role');
+-- Hapus policy lama kalau ada
+drop policy if exists "public_read"   on snippets;
+drop policy if exists "service_write" on snippets;
+drop policy if exists "anon_read"     on snippets;
+
+-- Policy: siapapun boleh baca (publik)
+create policy "public_read" on snippets
+  for select
+  using (true);
 
 -- Index performa
 create index if not exists idx_lang on snippets(language);
 create index if not exists idx_date on snippets(created_at desc);
 
 -- ════════════════════════════════════════════════
--- Setelah setup tabel, isi SETUP.md untuk langkah selanjutnya
+-- SELESAI. Lanjut ke SETUP-VPS.md atau SETUP.md
 -- ════════════════════════════════════════════════

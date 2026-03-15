@@ -3,7 +3,10 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>ManzxyCodes — Owner & Docs</title>
+<title>ManzxyCodes — by Manzxy</title>
+<meta name="description" content="ManzxyCodes — Platform snippet code untuk developer Indonesia. By Manzxy."/>
+<meta http-equiv="X-Content-Type-Options" content="nosniff"/>
+<meta name="referrer" content="strict-origin-when-cross-origin"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
 <style>
@@ -12,141 +15,161 @@
   --bg:#020408;--bg1:#070c12;--bg2:#0d1520;--bg3:#131f2e;--bg4:#1a2840;
   --border:#1e2d42;--border2:#2a3f5a;
   --text:#dce8f5;--text2:#7a9ab8;--text3:#3d5a75;
-  --accent:#00d4ff;--green:#00e676;--red:#ff4444;--yellow:#ffd700;
-  --purple:#b388ff;--pink:#ff6b9d;--orange:#ff9d4d;--blue:#5cadff;
+  --accent:#00d4ff;--green:#00e676;--red:#ff4444;
+  --yellow:#ffd700;--purple:#b388ff;--pink:#ff6b9d;--orange:#ff9d4d;--blue:#5cadff;
   --mono:'JetBrains Mono',monospace;--sans:'Space Grotesk','Segoe UI',sans-serif;
   --th:54px;
 }
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;font-size:14px;line-height:1.6;overflow-x:hidden}
-body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,212,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,.025) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,212,255,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,.022) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
 ::-webkit-scrollbar{width:5px;height:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:99px}
 
-/* TOPBAR */
-.topbar{position:sticky;top:0;z-index:90;height:var(--th);background:rgba(2,4,8,.94);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(0,212,255,.08);display:flex;align-items:center;justify-content:space-between;padding:0 20px}
-.logo{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:700;letter-spacing:.3px;color:var(--text);text-decoration:none}
+/* ═══ TOPBAR */
+.topbar{position:sticky;top:0;z-index:90;height:var(--th);background:rgba(2,4,8,.94);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(0,212,255,.08);display:flex;align-items:center;justify-content:space-between;padding:0 20px;gap:12px}
+.logo{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:700;letter-spacing:.3px;color:var(--text);text-decoration:none;flex-shrink:0}
 .logo-mark{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--pink));display:flex;align-items:center;justify-content:center;font-size:14px;box-shadow:0 0 12px rgba(0,212,255,.3)}
-.tnav{display:flex;align-items:center;gap:3px}
+.tnav{display:flex;align-items:center;gap:2px}
 .tnav a{font-size:12px;font-weight:600;color:var(--text2);text-decoration:none;padding:5px 10px;border-radius:6px;border:1px solid transparent;transition:all .15s;white-space:nowrap}
 .tnav a:hover{color:var(--text);border-color:var(--border);background:var(--bg2)}
 .tnav a.on{color:var(--accent);border-color:rgba(0,212,255,.2);background:rgba(0,212,255,.05)}
 
-/* HERO */
-.hero{min-height:calc(100vh - var(--th));display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 24px 60px;text-align:center;position:relative;z-index:1}
-.hero-badge{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:11px;color:var(--accent);background:rgba(0,212,255,.07);border:1px solid rgba(0,212,255,.2);padding:5px 14px;border-radius:99px;margin-bottom:24px;animation:fd .6s ease both}
-.hbdot{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 2s infinite}
-@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(0,212,255,.5)}70%{box-shadow:0 0 0 8px rgba(0,212,255,0)}100%{box-shadow:0 0 0 0 rgba(0,212,255,0)}}
-.hero-name{font-size:clamp(48px,10vw,90px);font-weight:700;letter-spacing:-3px;line-height:.95;margin-bottom:10px;animation:fd .6s .1s ease both}
-.hero-name .nm{background:linear-gradient(135deg,#fff 0%,var(--accent) 50%,var(--purple) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hero-handle{font-family:var(--mono);font-size:clamp(13px,3vw,20px);color:var(--text3);letter-spacing:.1em;margin-bottom:16px;animation:fd .6s .15s ease both}
-.hero-handle span{color:var(--accent)}
-.hero-desc{font-size:14px;color:var(--text2);max-width:420px;margin:0 auto 36px;line-height:1.7;animation:fd .6s .2s ease both}
-.scroll-hint{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:5px;font-size:10px;font-family:var(--mono);color:var(--text3);letter-spacing:.1em;animation:fd 1s .8s ease both}
-.scroll-arrow{width:1px;height:32px;background:linear-gradient(to bottom,transparent,var(--accent));animation:sarrow 1.5s ease-in-out infinite}
-@keyframes sarrow{0%,100%{opacity:.3;transform:scaleY(.5)}50%{opacity:1;transform:scaleY(1)}}
-@keyframes fd{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+/* ═══ BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:7px;padding:12px 24px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;border:1px solid transparent;transition:all .2s;font-family:var(--sans);text-decoration:none;white-space:nowrap;background:transparent;line-height:1}
+.btn-cyan{background:linear-gradient(135deg,var(--accent),#0080cc);color:#000;box-shadow:0 4px 20px rgba(0,212,255,.3)}.btn-cyan:hover{transform:translateY(-2px);box-shadow:0 6px 28px rgba(0,212,255,.45)}
+.btn-outline{border-color:var(--border2);color:var(--text2)}.btn-outline:hover{border-color:var(--accent);color:var(--accent);background:rgba(0,212,255,.05)}
+.btn svg{width:16px;height:16px;flex-shrink:0}
 
-/* DIVIDER */
-.divider{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);position:relative;z-index:1}
+/* ═══ HERO */
+.hero{min-height:calc(100vh - var(--th));display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px 80px;text-align:center;position:relative;z-index:1}
+.hero-badge{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:11px;color:var(--accent);background:rgba(0,212,255,.07);border:1px solid rgba(0,212,255,.2);padding:5px 14px;border-radius:99px;margin-bottom:28px;animation:fd .5s ease both}
+.hbdot{width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 0 rgba(0,212,255,.5);animation:hbpulse 2s infinite}
+@keyframes hbpulse{0%{box-shadow:0 0 0 0 rgba(0,212,255,.5)}70%{box-shadow:0 0 0 8px rgba(0,212,255,0)}100%{box-shadow:0 0 0 0 rgba(0,212,255,0)}}
+.hero-name{font-size:clamp(52px,11vw,96px);font-weight:700;letter-spacing:-4px;line-height:.92;margin-bottom:16px;animation:fd .5s .08s ease both}
+.hero-name .grad{background:linear-gradient(135deg,#ffffff 0%,var(--accent) 45%,var(--purple) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-family:var(--mono);font-size:clamp(13px,2.5vw,18px);color:var(--text3);letter-spacing:.12em;margin-bottom:18px;animation:fd .5s .12s ease both}
+.hero-sub span{color:var(--accent)}
+.hero-desc{font-size:15px;color:var(--text2);max-width:460px;margin:0 auto 40px;line-height:1.75;animation:fd .5s .18s ease both}
 
-/* SECTION */
-.section{padding:72px 24px;max-width:960px;margin:0 auto;position:relative;z-index:1}
+/* CTA buttons group */
+.cta-group{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:64px;animation:fd .5s .24s ease both}
+
+/* stats strip */
+.stats-strip{display:flex;gap:32px;justify-content:center;flex-wrap:wrap;animation:fd .5s .32s ease both}
+.stat-item{display:flex;flex-direction:column;align-items:center;gap:2px}
+.stat-num{font-size:22px;font-weight:700;font-family:var(--mono);color:var(--text)}
+.stat-lbl{font-size:11px;color:var(--text3);font-family:var(--mono);letter-spacing:.08em;text-transform:uppercase}
+
+/* scroll hint */
+.scroll-hint{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:5px;font-size:10px;font-family:var(--mono);color:var(--text3);letter-spacing:.1em;animation:fd .8s .6s ease both}
+.scroll-line{width:1px;height:32px;background:linear-gradient(to bottom,transparent,var(--accent));animation:sline 1.5s ease-in-out infinite}
+@keyframes sline{0%,100%{opacity:.3;transform:scaleY(.5)}50%{opacity:1;transform:scaleY(1)}}
+@keyframes fd{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+/* ═══ DIVIDER */
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);position:relative;z-index:1;margin:0}
+
+/* ═══ SECTION */
+.sec{padding:72px 20px;max-width:960px;margin:0 auto;position:relative;z-index:1}
 .sec-label{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;display:flex;align-items:center;gap:7px}
 .sec-label::before{content:'//';color:var(--text3)}
-.sec-title{font-size:clamp(24px,5vw,36px);font-weight:700;letter-spacing:-1px;margin-bottom:10px;line-height:1.1}
-.sec-sub{font-size:14px;color:var(--text2);margin-bottom:40px;max-width:480px}
+.sec-title{font-size:clamp(22px,5vw,34px);font-weight:700;letter-spacing:-1px;margin-bottom:10px;line-height:1.1}
+.sec-sub{font-size:14px;color:var(--text2);margin-bottom:40px;max-width:480px;line-height:1.7}
 
-/* CONTACT CARDS */
-.cg{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}
+/* ═══ CONTACT CARDS */
+.cg{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
 .cc{background:var(--bg1);border:1px solid var(--border);border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:12px;transition:border-color .2s,transform .2s,box-shadow .2s;position:relative;overflow:hidden}
-.cc::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--cc-col,var(--accent)) 0%,transparent 60%);opacity:0;transition:opacity .3s}
+.cc::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--cc-col,var(--accent)) 0%,transparent 60%);opacity:0;transition:opacity .3s;pointer-events:none}
 .cc:hover{border-color:var(--cc-col,var(--accent));transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.5)}
 .cc:hover::before{opacity:.05}
-.cc-wa  {--cc-col:#25D366}
-.cc-tg  {--cc-col:#229ED9}
-.cc-gm  {--cc-col:#EA4335}
+.cc-wa{--cc-col:#25D366}.cc-tg{--cc-col:#229ED9}.cc-gm{--cc-col:#EA4335}
 .cc-ico{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:20px;background:rgba(255,255,255,.05);border:1px solid var(--border)}
-.cc-plat{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--cc-col,var(--accent));opacity:.75}
+.cc-plat{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--cc-col,var(--accent));opacity:.8}
 .cc-handle{font-size:16px;font-weight:700;letter-spacing:-.2px;color:var(--text)}
 .cc-note{font-size:12px;color:var(--text2);line-height:1.6}
 .cc-status{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-family:var(--mono);color:var(--text3)}
-.cc-status .sd{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 0 0 rgba(0,230,118,.4);animation:pulse 2s infinite}
+.cc-status .sd{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 0 0 rgba(0,230,118,.4);animation:hbpulse 2s infinite}
 .cc-btn{display:inline-flex;align-items:center;gap:6px;margin-top:auto;padding:8px 14px;border-radius:8px;font-size:12px;font-weight:700;border:1px solid var(--cc-col,var(--accent));color:var(--cc-col,var(--accent));background:transparent;text-decoration:none;transition:all .15s;font-family:var(--sans);cursor:pointer;width:fit-content}
 .cc-btn:hover{background:var(--cc-col,var(--accent));color:#000}
 .cc-btn svg{width:13px;height:13px}
 
-/* DOCS */
-.tabs{display:flex;gap:4px;margin-bottom:18px;flex-wrap:wrap}
-.tab{font-family:var(--mono);font-size:11px;font-weight:700;padding:6px 14px;border-radius:7px;border:1px solid var(--border);color:var(--text3);background:transparent;cursor:pointer;transition:all .15s}
+/* ═══ TABS */
+.tabs{display:flex;gap:4px;margin-bottom:16px;flex-wrap:wrap}
+.tab{font-family:var(--mono);font-size:11px;font-weight:700;padding:7px 14px;border-radius:7px;border:1px solid var(--border);color:var(--text3);background:transparent;cursor:pointer;transition:all .15s}
 .tab:hover{color:var(--text);border-color:var(--border2);background:var(--bg2)}
 .tab.on{color:var(--accent);border-color:rgba(0,212,255,.3);background:rgba(0,212,255,.07)}
+.tabpane{display:none;flex-direction:column;gap:8px}
+.tabpane.on{display:flex}
 
-.doc-wrap{display:flex;flex-direction:column;gap:10px}
-.doc-card{background:var(--bg1);border:1px solid var(--border);border-radius:12px;overflow:hidden}
-
-/* accordion toggle */
-.doc-head{
+/* ═══ ACCORDION — native <details>/<summary> so it ALWAYS works */
+.doc-card{background:var(--bg1);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:border-color .2s}
+.doc-card[open]{border-color:var(--border2)}
+.doc-card summary{
   display:flex;align-items:center;justify-content:space-between;
   padding:14px 18px;background:var(--bg2);
-  cursor:pointer;user-select:none;transition:background .15s;
-  border-bottom:1px solid transparent;
+  cursor:pointer;user-select:none;list-style:none;
+  gap:10px;transition:background .15s;
 }
-.doc-head:hover{background:var(--bg3)}
-.doc-card.open .doc-head{border-bottom-color:var(--border)}
-.doc-head-l{display:flex;align-items:center;gap:10px}
-.dm{font-family:var(--mono);font-size:10px;font-weight:700;padding:3px 9px;border-radius:6px;letter-spacing:.06em}
+.doc-card summary::-webkit-details-marker{display:none}
+.doc-card summary::marker{display:none}
+.doc-card summary:hover{background:var(--bg3)}
+.doc-card[open] summary{border-bottom:1px solid var(--border)}
+.sum-l{display:flex;align-items:center;gap:10px;min-width:0}
+.sum-short{font-size:12px;color:var(--text3);margin-left:auto;flex-shrink:0}
+.sum-arr{font-size:11px;color:var(--text3);transition:transform .22s;flex-shrink:0;margin-left:8px}
+.doc-card[open] .sum-arr{transform:rotate(180deg)}
+
+/* method badges */
+.dm{font-family:var(--mono);font-size:9px;font-weight:700;padding:3px 8px;border-radius:6px;letter-spacing:.06em;flex-shrink:0}
 .dm-get {background:rgba(0,230,118,.1);color:var(--green);border:1px solid rgba(0,230,118,.2)}
 .dm-post{background:rgba(0,212,255,.1);color:var(--accent);border:1px solid rgba(0,212,255,.2)}
 .dm-put {background:rgba(255,157,77,.1);color:var(--orange);border:1px solid rgba(255,157,77,.2)}
 .dm-del {background:rgba(255,68,68,.1);color:var(--red);border:1px solid rgba(255,68,68,.2)}
 .dm-tag {background:rgba(0,230,118,.1);color:var(--green);border:1px solid rgba(0,230,118,.2)}
-.doc-ep{font-family:var(--mono);font-size:13px;color:var(--text);font-weight:500}
-.doc-short{font-size:12px;color:var(--text3);margin-left:auto;margin-right:10px}
-.doc-arr{font-size:11px;color:var(--text3);transition:transform .2s;flex-shrink:0}
-.doc-card.open .doc-arr{transform:rotate(180deg)}
+.doc-ep{font-family:var(--mono);font-size:13px;color:var(--text);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.doc-body-in{padding:16px 18px 18px}
 
-.doc-body{max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.4,0,.2,1)}
-.doc-card.open .doc-body{max-height:9999px}
-.doc-body-in{padding:18px 18px 20px}
-
+/* params table */
 .dt{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--text3);margin-bottom:8px;font-family:var(--mono)}
-.params{display:flex;flex-direction:column;gap:7px;margin-bottom:16px}
-.pr{display:grid;grid-template-columns:120px 75px 1fr;gap:10px;align-items:start;font-size:12px;padding:7px 10px;background:var(--bg);border-radius:7px;border:1px solid var(--border)}
-.pn{font-family:var(--mono);color:var(--accent);font-weight:600}
+.params{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.pr{display:grid;grid-template-columns:115px 70px 1fr;gap:10px;align-items:start;font-size:12px;padding:7px 10px;background:var(--bg);border-radius:7px;border:1px solid var(--border)}
+.pn{font-family:var(--mono);color:var(--accent);font-weight:600;word-break:break-all}
 .pt{font-family:var(--mono);color:var(--purple);font-size:11px}
 .pd{color:var(--text2)}
 .rb{font-size:9px;font-family:var(--mono);font-weight:700;background:rgba(255,68,68,.1);color:var(--red);border:1px solid rgba(255,68,68,.2);padding:1px 5px;border-radius:4px;margin-left:4px}
 .ob{font-size:9px;font-family:var(--mono);font-weight:700;background:rgba(0,230,118,.08);color:var(--green);border:1px solid rgba(0,230,118,.15);padding:1px 5px;border-radius:4px;margin-left:4px}
 
-.ce{background:var(--bg);border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:14px}
+/* code examples */
+.ce{background:var(--bg);border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:12px}
 .ce-bar{display:flex;align-items:center;justify-content:space-between;padding:6px 12px;background:var(--bg2);border-bottom:1px solid var(--border)}
 .ce-lang{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.08em;color:var(--text3);text-transform:uppercase}
-.copy-tiny{font-family:var(--mono);font-size:10px;color:var(--text3);cursor:pointer;padding:2px 8px;border-radius:4px;background:transparent;border:1px solid var(--border);transition:all .15s}
+.copy-tiny{font-family:var(--mono);font-size:10px;color:var(--text3);cursor:pointer;padding:2px 8px;border-radius:4px;background:transparent;border:1px solid var(--border);transition:all .15s;line-height:1.4}
 .copy-tiny:hover{background:var(--bg3);color:var(--text)}
 .copy-tiny.ok{color:var(--green);border-color:rgba(0,230,118,.3)}
-pre.ce-code{padding:13px 15px;font-family:var(--mono);font-size:12px;color:var(--text2);overflow-x:auto;line-height:1.7;margin:0}
-.ck{color:#ff6b9d}.cs{color:#b5f0a4}.cn{color:#79d4f1}.cc{color:var(--text3);font-style:italic}
+pre.ce-code{padding:12px 14px;font-family:var(--mono);font-size:12px;color:var(--text2);overflow-x:auto;line-height:1.7;margin:0;tab-size:2}
+.ck{color:#ff6b9d}.cs{color:#b5f0a4}.cn{color:#79d4f1}.cc2{color:var(--text3);font-style:italic}
 .cm{color:var(--orange)}.cb{color:#b388ff}.cp{color:var(--accent)}
 
+/* response box */
 .resp{background:var(--bg);border:1px solid var(--border);border-radius:8px;overflow:hidden}
 .resp-bar{display:flex;align-items:center;gap:7px;padding:6px 12px;background:var(--bg2);border-bottom:1px solid var(--border);font-family:var(--mono);font-size:10px;color:var(--text3)}
 .resp-dot{width:7px;height:7px;border-radius:50%;background:var(--green)}
-pre.resp-code{padding:13px 15px;font-family:var(--mono);font-size:11px;color:var(--green);overflow-x:auto;line-height:1.7;margin:0}
-.rj-key{color:var(--accent)}.rj-str{color:var(--green)}.rj-num{color:var(--orange)}.rj-bool{color:var(--purple)}
+pre.resp-code{padding:12px 14px;font-family:var(--mono);font-size:11px;color:var(--green);overflow-x:auto;line-height:1.7;margin:0}
+.rk{color:var(--accent)}.rs{color:var(--green)}.rn{color:var(--orange)}.rb2{color:var(--purple)}
 
-.ibox{display:flex;gap:9px;align-items:flex-start;padding:11px 14px;border-radius:8px;font-size:12px;line-height:1.6;margin-bottom:13px}
+/* info box */
+.ibox{display:flex;gap:9px;align-items:flex-start;padding:10px 13px;border-radius:8px;font-size:12px;line-height:1.6;margin-bottom:12px}
 .ib-warn{background:rgba(255,215,0,.06);border:1px solid rgba(255,215,0,.2);color:var(--yellow)}
 .ib-info{background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.2);color:var(--accent)}
 .ib-tip {background:rgba(0,230,118,.06);border:1px solid rgba(0,230,118,.2);color:var(--green)}
 .ibox svg{flex-shrink:0;margin-top:1px;width:13px;height:13px}
 
-/* FOOTER */
-.footer{border-top:1px solid var(--border);padding:28px 20px 22px;position:relative;z-index:1;overflow:hidden;margin-top:40px}
+/* ═══ FOOTER */
+.footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:28px 20px 22px;margin-top:40px;overflow:hidden}
 .footer::before{content:'';position:absolute;bottom:-40px;left:50%;transform:translateX(-50%);width:400px;height:80px;background:radial-gradient(ellipse,rgba(0,212,255,.06) 0%,transparent 70%);pointer-events:none}
 .fin{max-width:960px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px}
 .fbrand{font-size:16px;font-weight:700;letter-spacing:-.2px;margin-bottom:3px;background:linear-gradient(135deg,var(--text) 0%,var(--accent) 55%,var(--pink) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.fcopy{font-family:var(--mono);font-size:11px;color:var(--text3)}
-.fcopy span{color:var(--accent)}
+.fcopy{font-family:var(--mono);font-size:11px;color:var(--text3)}.fcopy span{color:var(--accent)}
 .fsub{font-size:11px;color:var(--text3);margin-top:2px}
 .flinks{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:6px}
 .flink{font-size:11px;font-family:var(--mono);color:var(--text3);text-decoration:none;padding:3px 8px;border-radius:6px;border:1px solid var(--border);transition:all .14s}
@@ -154,13 +177,19 @@ pre.resp-code{padding:13px 15px;font-family:var(--mono);font-size:11px;color:var
 .fpow{font-family:var(--mono);font-size:10px;color:var(--text3);display:flex;align-items:center;gap:5px}
 .fdot{width:5px;height:5px;border-radius:50%;background:var(--green)}
 
-/* RESPONSIVE */
-@media(max-width:600px){
-  .section{padding:52px 16px}
-  .pr{grid-template-columns:1fr;gap:3px}
-  .doc-short{display:none}
-  .fin{flex-direction:column;align-items:flex-start}
+/* ═══ RESPONSIVE */
+@media(max-width:768px){
   .topbar{padding:0 14px}
+  .sum-short{display:none}
+  .pr{grid-template-columns:1fr;gap:2px}
+  .pn,.pt,.pd{font-size:11px}
+}
+@media(max-width:520px){
+  .cta-group{flex-direction:column;align-items:stretch;max-width:280px;margin-left:auto;margin-right:auto}
+  .btn{justify-content:center;padding:13px 20px}
+  .stats-strip{gap:20px}
+  .fin{flex-direction:column;align-items:flex-start}
+  .tnav a{padding:5px 7px;font-size:11px}
 }
 </style>
 </head>
@@ -179,37 +208,64 @@ pre.resp-code{padding:13px 15px;font-family:var(--mono);font-size:11px;color:var
   </div>
 </nav>
 
-<!-- HERO -->
+<!-- ══════ HERO — landing page pembuka ══════ -->
 <section class="hero">
-  <div class="hero-badge"><div class="hbdot"></div>Developer & Maintainer</div>
-  <h1 class="hero-name"><span class="nm">Manzxy</span></h1>
-  <p class="hero-handle"><span>@</span>manzxy</p>
-  <p class="hero-desc">Developer & maintainer of ManzxyCodes — platform snippet code untuk developer Indonesia.</p>
-  <div class="scroll-hint">SCROLL<div class="scroll-arrow"></div></div>
+  <div class="hero-badge"><div class="hbdot"></div>Platform Snippet Code Indonesia</div>
+
+  <h1 class="hero-name"><span class="grad">ManzxyCodes</span></h1>
+  <p class="hero-sub"><span>by</span> @manzxy</p>
+  <p class="hero-desc">
+    Platform snippet code open untuk developer Indonesia.<br>
+    Simpan, share, dan temukan kode siap pakai — gratis selamanya.
+  </p>
+
+  <!-- CTA BUTTONS — tengah halaman -->
+  <div class="cta-group">
+    <a href="index.html" class="btn btn-cyan">
+      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M1 2.5A2.5 2.5 0 0 1 3.5 0h8.75a.75.75 0 0 1 .75.75v3.5a.75.75 0 0 1-1.5 0V1.5h-8a1 1 0 0 0-1 1v6.708A2.492 2.492 0 0 1 3.5 9h3.25a.75.75 0 0 1 0 1.5H3.5a1 1 0 1 0 0 2h5.75a.75.75 0 0 1 0 1.5H3.5A2.5 2.5 0 0 1 1 11.5v-9zm13.23 7.79a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L12.44 11H9.75a.75.75 0 0 1 0-1.5h2.69l-3.52-3.52a.75.75 0 1 1 1.06-1.06l4.25 4.25z"/></svg>
+      Buka App
+    </a>
+    <a href="#docs" class="btn btn-outline">
+      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5L14 4.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5h-2z"/></svg>
+      Lihat Docs API
+    </a>
+    <a href="#owner" class="btn btn-outline">
+      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/></svg>
+      Kontak Owner
+    </a>
+  </div>
+
+  <!-- stats -->
+  <div class="stats-strip">
+    <div class="stat-item"><span class="stat-num" id="sTotal">—</span><span class="stat-lbl">Snippets</span></div>
+    <div class="stat-item"><span class="stat-num" id="sLikes">—</span><span class="stat-lbl">Total Likes</span></div>
+    <div class="stat-item"><span class="stat-num" id="sViews">—</span><span class="stat-lbl">Total Views</span></div>
+    <div class="stat-item"><span class="stat-num">5</span><span class="stat-lbl">Languages</span></div>
+  </div>
+
+  <div class="scroll-hint">SCROLL DOWN<div class="scroll-line"></div></div>
 </section>
 
 <div class="divider"></div>
 
-<!-- OWNER -->
-<section class="section" id="owner">
+<!-- ══════ OWNER ══════ -->
+<section class="sec" id="owner">
   <div class="sec-label">contact</div>
   <h2 class="sec-title">Hubungi Owner</h2>
   <p class="sec-sub">Ada pertanyaan, bug report, atau mau kolaborasi? Hit up Manzxy lewat salah satu kanal di bawah.</p>
   <div class="cg">
-    <!-- WhatsApp -->
     <div class="cc cc-wa">
       <div style="display:flex;align-items:center;gap:11px">
         <div class="cc-ico">📱</div>
-        <div><div class="cc-plat">WhatsApp</div><div class="cc-handle">+62 8xx-xxxx-xxxx</div></div>
+        <div><div class="cc-plat">WhatsApp</div><div class="cc-handle">+62 85x-xxxx-xxxx</div></div>
       </div>
       <div class="cc-note">Fastest response. Untuk pertanyaan teknis, bug report, atau request fitur baru.</div>
       <div class="cc-status"><div class="sd"></div>Balas dalam 1–3 jam</div>
-      <a href="https://wa.me/628xxxxxxxxxx" target="_blank" rel="noopener" class="cc-btn">
+      <a href="https://wa.me/6285xxxxxxxx" target="_blank" rel="noopener noreferrer" class="cc-btn">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
         Chat WA
       </a>
     </div>
-    <!-- Telegram -->
     <div class="cc cc-tg">
       <div style="display:flex;align-items:center;gap:11px">
         <div class="cc-ico">✈️</div>
@@ -217,20 +273,19 @@ pre.resp-code{padding:13px 15px;font-family:var(--mono);font-size:11px;color:var
       </div>
       <div class="cc-note">Untuk diskusi panjang, kolaborasi project, atau gabung channel update ManzxyCodes.</div>
       <div class="cc-status"><div class="sd"></div>Online hampir setiap hari</div>
-      <a href="https://t.me/manzxy" target="_blank" rel="noopener" class="cc-btn">
+      <a href="https://t.me/manzxy" target="_blank" rel="noopener noreferrer" class="cc-btn">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
         Buka Telegram
       </a>
     </div>
-    <!-- Gmail -->
     <div class="cc cc-gm">
       <div style="display:flex;align-items:center;gap:11px">
         <div class="cc-ico">📧</div>
-        <div><div class="cc-plat">Gmail</div><div class="cc-handle"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="d0bdb1beaaa8a990b7bdb1b9bcfeb3bfbd">[email&#160;protected]</a></div></div>
+        <div><div class="cc-plat">Gmail</div><div class="cc-handle">manzxy&#64;gmail.com</div></div>
       </div>
       <div class="cc-note">Untuk keperluan formal, security report, atau partnership inquiry.</div>
       <div class="cc-status"><div class="sd"></div>Dibalas dalam 24 jam</div>
-      <a href="/cdn-cgi/l/email-protection#6508040b1f1d1c250208040c094b060a08" class="cc-btn">
+      <a href="mailto:manzxy@gmail.com" class="cc-btn">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.144C21.69 2.28 24 3.434 24 5.457z"/></svg>
         Kirim Email
       </a>
@@ -240,271 +295,307 @@ pre.resp-code{padding:13px 15px;font-family:var(--mono);font-size:11px;color:var
 
 <div class="divider"></div>
 
-<!-- DOCS -->
-<section class="section" id="docs">
+<!-- ══════ DOCS ══════ -->
+<section class="sec" id="docs">
   <div class="sec-label">api reference</div>
   <h2 class="sec-title">Dokumentasi API</h2>
-  <p class="sec-sub">Base URL: <code style="font-family:var(--mono);color:var(--accent);background:rgba(0,212,255,.08);padding:2px 8px;border-radius:5px">https://manzxy.biz.id/api</code></p>
+  <p class="sec-sub">Base URL: <code style="font-family:var(--mono);color:var(--accent);background:rgba(0,212,255,.08);padding:2px 8px;border-radius:5px;font-size:13px">https://manzxy.biz.id/api</code></p>
 
+  <!-- TABS -->
   <div class="tabs">
     <button class="tab on" onclick="showTab('snippets',this)">Snippets</button>
     <button class="tab" onclick="showTab('auth',this)">Admin Auth</button>
-    <button class="tab" onclick="showTab('examples',this)">Contoh Scraper</button>
+    <button class="tab" onclick="showTab('examples',this)">Scraper</button>
   </div>
 
-  <!-- TAB: SNIPPETS -->
-  <div id="tab-snippets" class="doc-wrap">
+  <!-- ─── TAB SNIPPETS ─── -->
+  <div id="tab-snippets" class="tabpane on">
 
-    <div class="doc-card" id="dc1">
-      <div class="doc-head" onclick="toggleDoc('dc1')">
-        <div class="doc-head-l"><span class="dm dm-get">GET</span><span class="doc-ep">/api/snippets</span></div>
-        <span class="doc-short">Ambil semua snippet</span>
-        <span class="doc-arr">▼</span>
-      </div>
-      <div class="doc-body"><div class="doc-body-in">
-        <div class="ibox ib-tip"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/></svg>Endpoint publik — tidak butuh auth. Returns array snippet tanpa <code>snippet_key_hash</code>.</div>
+    <details class="doc-card" id="dc1">
+      <summary>
+        <div class="sum-l"><span class="dm dm-get">GET</span><span class="doc-ep">/api/snippets</span></div>
+        <span class="sum-short">Ambil semua snippet</span>
+        <span class="sum-arr">▼</span>
+      </summary>
+      <div class="doc-body-in">
+        <div class="ibox ib-tip"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/></svg>Public endpoint — tidak perlu auth. Mengembalikan array snippet (tanpa <code>snippet_key_hash</code>).</div>
         <div class="dt">Contoh Request</div>
         <div class="ce"><div class="ce-bar"><span class="ce-lang">curl</span><button class="copy-tiny" onclick="cpEx(this,'curl https://manzxy.biz.id/api/snippets')">copy</button></div>
         <pre class="ce-code"><span class="cp">curl</span> <span class="cs">https://manzxy.biz.id/api/snippets</span></pre></div>
+        <div class="dt">Response</div>
         <div class="resp"><div class="resp-bar"><div class="resp-dot"></div>200 OK · application/json</div>
-        <pre class="resp-code">[{ <span class="rj-key">"id"</span>:<span class="rj-num">1</span>, <span class="rj-key">"author"</span>:<span class="rj-str">"manzxy"</span>, <span class="rj-key">"title"</span>:<span class="rj-str">"Fetch Retry"</span>, <span class="rj-key">"language"</span>:<span class="rj-str">"JavaScript"</span>, <span class="rj-key">"likes"</span>:<span class="rj-num">12</span>, <span class="rj-key">"views"</span>:<span class="rj-num">87</span> }]</pre></div>
-      </div></div>
-    </div>
-
-    <div class="doc-card" id="dc2">
-      <div class="doc-head" onclick="toggleDoc('dc2')">
-        <div class="doc-head-l"><span class="dm dm-post">POST</span><span class="doc-ep">/api/snippets</span></div>
-        <span class="doc-short">Like / View counter</span>
-        <span class="doc-arr">▼</span>
+        <pre class="resp-code">[{
+  <span class="rk">"id"</span>: <span class="rn">1</span>,
+  <span class="rk">"author"</span>: <span class="rs">"manzxy"</span>,
+  <span class="rk">"title"</span>: <span class="rs">"Fetch Retry"</span>,
+  <span class="rk">"language"</span>: <span class="rs">"JavaScript"</span>,
+  <span class="rk">"tags"</span>: [<span class="rs">"fetch"</span>, <span class="rs">"async"</span>],
+  <span class="rk">"code"</span>: <span class="rs">"async function..."</span>,
+  <span class="rk">"likes"</span>: <span class="rn">12</span>,
+  <span class="rk">"views"</span>: <span class="rn">87</span>
+}]</pre></div>
       </div>
-      <div class="doc-body"><div class="doc-body-in">
+    </details>
+
+    <details class="doc-card">
+      <summary>
+        <div class="sum-l"><span class="dm dm-post">POST</span><span class="doc-ep">/api/snippets</span></div>
+        <span class="sum-short">Like / View</span>
+        <span class="sum-arr">▼</span>
+      </summary>
+      <div class="doc-body-in">
         <div class="dt">Body Parameters</div>
         <div class="params">
           <div class="pr"><span class="pn">action<span class="rb">req</span></span><span class="pt">string</span><span class="pd">"like" | "unlike" | "view"</span></div>
           <div class="pr"><span class="pn">id<span class="rb">req</span></span><span class="pt">number</span><span class="pd">ID snippet yang ditarget</span></div>
         </div>
-        <div class="ce"><div class="ce-bar"><span class="ce-lang">javascript</span><button class="copy-tiny" onclick="cpEx(this,`await fetch('/api/snippets',{\n  method:'POST',\n  headers:{'Content-Type':'application/json'},\n  body:JSON.stringify({action:'like',id:1})\n});`)">copy</button></div>
-        <pre class="ce-code"><span class="ck">await</span> <span class="cm">fetch</span>(<span class="cs">'/api/snippets'</span>,{
+        <div class="ce"><div class="ce-bar"><span class="ce-lang">javascript</span><button class="copy-tiny" onclick="cpEx(this,`fetch('https://manzxy.biz.id/api/snippets',{\n  method:'POST',\n  headers:{'Content-Type':'application/json'},\n  body:JSON.stringify({action:'like',id:1})\n})`)">copy</button></div>
+        <pre class="ce-code"><span class="cm">fetch</span>(<span class="cs">'https://manzxy.biz.id/api/snippets'</span>,{
   <span class="cn">method</span>:<span class="cs">'POST'</span>,
   <span class="cn">headers</span>:{<span class="cs">'Content-Type'</span>:<span class="cs">'application/json'</span>},
-  <span class="cn">body</span>:<span class="cn">JSON</span>.<span class="cm">stringify</span>({<span class="cn">action</span>:<span class="cs">'like'</span>,<span class="cn">id</span>:<span class="rj-num">1</span>})
-});</pre></div>
+  <span class="cn">body</span>:<span class="cn">JSON</span>.<span class="cm">stringify</span>({<span class="cn">action</span>:<span class="cs">'like'</span>,<span class="cn">id</span>:<span class="rn">1</span>})
+})</pre></div>
         <div class="resp"><div class="resp-bar"><div class="resp-dot"></div>200 OK</div>
-        <pre class="resp-code">{ <span class="rj-key">"likes"</span>: <span class="rj-num">13</span> }  <span style="color:var(--text3)">// atau "views" jika action='view'</span></pre></div>
-      </div></div>
-    </div>
-
-    <div class="doc-card" id="dc3">
-      <div class="doc-head" onclick="toggleDoc('dc3')">
-        <div class="doc-head-l"><span class="dm dm-post">POST</span><span class="doc-ep">/api/snippet-create</span></div>
-        <span class="doc-short">Upload snippet baru</span>
-        <span class="doc-arr">▼</span>
+        <pre class="resp-code">{ <span class="rk">"likes"</span>: <span class="rn">13</span> }  <span style="color:var(--text3)">// atau { "views": 88 }</span></pre></div>
       </div>
-      <div class="doc-body"><div class="doc-body-in">
-        <div class="ibox ib-warn"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566z"/><path d="M8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/></svg>snippetKey di-<strong>hash SHA-256</strong> sebelum disimpan. Simpan key asli kamu — tidak bisa dipulihkan dari DB.</div>
+    </details>
+
+    <details class="doc-card">
+      <summary>
+        <div class="sum-l"><span class="dm dm-post">POST</span><span class="doc-ep">/api/snippet-create</span></div>
+        <span class="sum-short">Upload snippet baru</span>
+        <span class="sum-arr">▼</span>
+      </summary>
+      <div class="doc-body-in">
+        <div class="ibox ib-warn"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566z"/><path d="M8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/></svg><span>snippetKey di-<strong>hash SHA-256</strong> di server. Simpan key asli — tidak bisa dipulihkan dari DB!</span></div>
         <div class="dt">Body Parameters</div>
         <div class="params">
-          <div class="pr"><span class="pn">author<span class="rb">req</span></span><span class="pt">string</span><span class="pd">Nama/username penulis</span></div>
-          <div class="pr"><span class="pn">title<span class="rb">req</span></span><span class="pt">string</span><span class="pd">Judul snippet</span></div>
-          <div class="pr"><span class="pn">description<span class="rb">req</span></span><span class="pt">string</span><span class="pd">Deskripsi singkat</span></div>
+          <div class="pr"><span class="pn">author<span class="rb">req</span></span><span class="pt">string</span><span class="pd">Nama/username (max 50 char)</span></div>
+          <div class="pr"><span class="pn">title<span class="rb">req</span></span><span class="pt">string</span><span class="pd">Judul snippet (max 120 char)</span></div>
+          <div class="pr"><span class="pn">description<span class="rb">req</span></span><span class="pt">string</span><span class="pd">Deskripsi singkat (max 500 char)</span></div>
           <div class="pr"><span class="pn">language<span class="ob">opt</span></span><span class="pt">string</span><span class="pd">JavaScript | TypeScript | Python | PHP | Go</span></div>
           <div class="pr"><span class="pn">tags<span class="ob">opt</span></span><span class="pt">string</span><span class="pd">Pisah koma: "fetch, async, api"</span></div>
-          <div class="pr"><span class="pn">code<span class="rb">req</span></span><span class="pt">string</span><span class="pd">Isi kode snippet</span></div>
-          <div class="pr"><span class="pn">snippetKey<span class="rb">req</span></span><span class="pt">string</span><span class="pd">Key pribadi 3–7 karakter untuk edit/hapus</span></div>
+          <div class="pr"><span class="pn">code<span class="rb">req</span></span><span class="pt">string</span><span class="pd">Isi kode (max 50.000 char)</span></div>
+          <div class="pr"><span class="pn">snippetKey<span class="rb">req</span></span><span class="pt">string</span><span class="pd">Key pribadi 3–7 karakter untuk edit/hapus nanti</span></div>
         </div>
         <div class="resp"><div class="resp-bar"><div class="resp-dot"></div>201 Created</div>
-        <pre class="resp-code">{ <span class="rj-key">"ok"</span>: <span class="rj-bool">true</span> }</pre></div>
-      </div></div>
-    </div>
-
-    <div class="doc-card" id="dc4">
-      <div class="doc-head" onclick="toggleDoc('dc4')">
-        <div class="doc-head-l"><span class="dm dm-put">PUT</span><span class="doc-ep">/api/snippet-action</span></div>
-        <span class="doc-short">Edit snippet</span>
-        <span class="doc-arr">▼</span>
+        <pre class="resp-code">{ <span class="rk">"ok"</span>: <span class="rb2">true</span> }</pre></div>
       </div>
-      <div class="doc-body"><div class="doc-body-in">
+    </details>
+
+    <details class="doc-card">
+      <summary>
+        <div class="sum-l"><span class="dm dm-put">PUT</span><span class="doc-ep">/api/snippet-action</span></div>
+        <span class="sum-short">Edit snippet</span>
+        <span class="sum-arr">▼</span>
+      </summary>
+      <div class="doc-body-in">
         <div class="dt">Body Parameters</div>
         <div class="params">
-          <div class="pr"><span class="pn">id<span class="rb">req</span></span><span class="pt">number</span><span class="pd">ID snippet</span></div>
-          <div class="pr"><span class="pn">snippetKey<span class="rb">req*</span></span><span class="pt">string</span><span class="pd">Key asli waktu upload (*tidak diperlukan jika admin)</span></div>
+          <div class="pr"><span class="pn">id<span class="rb">req</span></span><span class="pt">number</span><span class="pd">ID snippet yang diedit</span></div>
+          <div class="pr"><span class="pn">snippetKey<span class="rb">req*</span></span><span class="pt">string</span><span class="pd">Key asli waktu upload (*skip jika admin)</span></div>
           <div class="pr"><span class="pn">title<span class="ob">opt</span></span><span class="pt">string</span><span class="pd">Judul baru</span></div>
+          <div class="pr"><span class="pn">description<span class="ob">opt</span></span><span class="pt">string</span><span class="pd">Deskripsi baru</span></div>
+          <div class="pr"><span class="pn">language<span class="ob">opt</span></span><span class="pt">string</span><span class="pd">Language baru</span></div>
+          <div class="pr"><span class="pn">tags<span class="ob">opt</span></span><span class="pt">string</span><span class="pd">Tags baru</span></div>
           <div class="pr"><span class="pn">code<span class="ob">opt</span></span><span class="pt">string</span><span class="pd">Kode baru</span></div>
         </div>
         <div class="resp"><div class="resp-bar"><div class="resp-dot"></div>200 OK</div>
-        <pre class="resp-code">{ <span class="rj-key">"ok"</span>: <span class="rj-bool">true</span> }</pre></div>
-      </div></div>
-    </div>
-
-    <div class="doc-card" id="dc5">
-      <div class="doc-head" onclick="toggleDoc('dc5')">
-        <div class="doc-head-l"><span class="dm dm-del">DELETE</span><span class="doc-ep">/api/snippet-action</span></div>
-        <span class="doc-short">Hapus snippet</span>
-        <span class="doc-arr">▼</span>
+        <pre class="resp-code">{ <span class="rk">"ok"</span>: <span class="rb2">true</span> }</pre></div>
       </div>
-      <div class="doc-body"><div class="doc-body-in">
+    </details>
+
+    <details class="doc-card">
+      <summary>
+        <div class="sum-l"><span class="dm dm-del">DELETE</span><span class="doc-ep">/api/snippet-action</span></div>
+        <span class="sum-short">Hapus snippet</span>
+        <span class="sum-arr">▼</span>
+      </summary>
+      <div class="doc-body-in">
         <div class="dt">Body Parameters</div>
         <div class="params">
           <div class="pr"><span class="pn">id<span class="rb">req</span></span><span class="pt">number</span><span class="pd">ID snippet yang dihapus</span></div>
-          <div class="pr"><span class="pn">snippetKey<span class="rb">req*</span></span><span class="pt">string</span><span class="pd">Key asli (*tidak diperlukan jika admin)</span></div>
+          <div class="pr"><span class="pn">snippetKey<span class="rb">req*</span></span><span class="pt">string</span><span class="pd">Key asli (*skip jika admin)</span></div>
         </div>
         <div class="ce"><div class="ce-bar"><span class="ce-lang">curl</span><button class="copy-tiny" onclick="cpEx(this,`curl -X DELETE https://manzxy.biz.id/api/snippet-action -H 'Content-Type: application/json' -d '{\"id\":1,\"snippetKey\":\"abc12\"}'`)">copy</button></div>
         <pre class="ce-code"><span class="cp">curl</span> <span class="cm">-X</span> DELETE <span class="cs">https://manzxy.biz.id/api/snippet-action</span> \
   <span class="cm">-H</span> <span class="cs">'Content-Type: application/json'</span> \
   <span class="cm">-d</span> <span class="cs">'{"id":1,"snippetKey":"abc12"}'</span></pre></div>
         <div class="resp"><div class="resp-bar"><div class="resp-dot"></div>200 OK</div>
-        <pre class="resp-code">{ <span class="rj-key">"ok"</span>: <span class="rj-bool">true</span> }</pre></div>
-      </div></div>
-    </div>
-
+        <pre class="resp-code">{ <span class="rk">"ok"</span>: <span class="rb2">true</span> }</pre></div>
+      </div>
+    </details>
   </div>
 
-  <!-- TAB: AUTH -->
-  <div id="tab-auth" class="doc-wrap" style="display:none">
-    <div class="ibox ib-warn"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566z"/><path d="M8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/></svg>Endpoint admin hanya untuk owner. Jangan share credentials.</div>
+  <!-- ─── TAB AUTH ─── -->
+  <div id="tab-auth" class="tabpane">
+    <div class="ibox ib-warn"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566z"/><path d="M8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/></svg>Endpoint admin hanya untuk owner. Jangan share credentials ke siapapun.</div>
 
-    <div class="doc-card" id="dc-al">
-      <div class="doc-head" onclick="toggleDoc('dc-al')">
-        <div class="doc-head-l"><span class="dm dm-post">POST</span><span class="doc-ep">/api/admin-login</span></div>
-        <span class="doc-short">Login → JWT cookie</span><span class="doc-arr">▼</span>
-      </div>
-      <div class="doc-body"><div class="doc-body-in">
-        <div class="dt">Body</div>
+    <details class="doc-card">
+      <summary>
+        <div class="sum-l"><span class="dm dm-post">POST</span><span class="doc-ep">/api/admin-login</span></div>
+        <span class="sum-short">Login → JWT cookie</span>
+        <span class="sum-arr">▼</span>
+      </summary>
+      <div class="doc-body-in">
+        <div class="dt">Body Parameters</div>
         <div class="params">
           <div class="pr"><span class="pn">username<span class="rb">req</span></span><span class="pt">string</span><span class="pd">Dari env var ADMIN_USERNAME</span></div>
-          <div class="pr"><span class="pn">password<span class="rb">req</span></span><span class="pt">string</span><span class="pd">Plain password — di-hash SHA-256+salt di server</span></div>
+          <div class="pr"><span class="pn">password<span class="rb">req</span></span><span class="pd">string</span><span class="pd">Di-hash SHA-256+salt di server sebelum dicompare</span></div>
         </div>
-        <div class="ibox ib-info"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/></svg>Response: set <code>mzx_token</code> sebagai <strong>HttpOnly SameSite=Lax cookie</strong> (tidak bisa diakses JS).</div>
+        <div class="ibox ib-info"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/></svg>Response: set <code>mzx_token</code> sebagai HttpOnly SameSite=Lax cookie. Tidak bisa diakses JS di browser.</div>
         <div class="resp"><div class="resp-bar"><div class="resp-dot"></div>200 OK</div>
-        <pre class="resp-code">{ <span class="rj-key">"ok"</span>: <span class="rj-bool">true</span> }  <span style="color:var(--text3)">// + Set-Cookie: mzx_token=eyJ...; HttpOnly</span></pre></div>
-      </div></div>
-    </div>
-
-    <div class="doc-card" id="dc-av">
-      <div class="doc-head" onclick="toggleDoc('dc-av')">
-        <div class="doc-head-l"><span class="dm dm-get">GET</span><span class="doc-ep">/api/admin-verify</span></div>
-        <span class="doc-short">Cek session admin</span><span class="doc-arr">▼</span>
+        <pre class="resp-code">{ <span class="rk">"ok"</span>: <span class="rb2">true</span> }  <span style="color:var(--text3)">// + Set-Cookie: mzx_token=eyJ...; HttpOnly</span></pre></div>
       </div>
-      <div class="doc-body"><div class="doc-body-in">
-        <div class="resp"><div class="resp-bar"><div class="resp-dot"></div>200 OK</div>
-        <pre class="resp-code">{ <span class="rj-key">"admin"</span>: <span class="rj-bool">true</span> }  <span style="color:var(--text3)">// false jika tidak ada / expired</span></pre></div>
-      </div></div>
-    </div>
+    </details>
 
-    <div class="doc-card" id="dc-alo">
-      <div class="doc-head" onclick="toggleDoc('dc-alo')">
-        <div class="doc-head-l"><span class="dm dm-post">POST</span><span class="doc-ep">/api/admin-logout</span></div>
-        <span class="doc-short">Logout — hapus cookie</span><span class="doc-arr">▼</span>
-      </div>
-      <div class="doc-body"><div class="doc-body-in">
+    <details class="doc-card">
+      <summary>
+        <div class="sum-l"><span class="dm dm-get">GET</span><span class="doc-ep">/api/admin-verify</span></div>
+        <span class="sum-short">Cek session admin</span>
+        <span class="sum-arr">▼</span>
+      </summary>
+      <div class="doc-body-in">
         <div class="resp"><div class="resp-bar"><div class="resp-dot"></div>200 OK</div>
-        <pre class="resp-code">{ <span class="rj-key">"ok"</span>: <span class="rj-bool">true</span> }  <span style="color:var(--text3)">// clears mzx_token cookie</span></pre></div>
-      </div></div>
-    </div>
+        <pre class="resp-code">{ <span class="rk">"admin"</span>: <span class="rb2">true</span> }  <span style="color:var(--text3)">// false jika tidak ada / expired</span></pre></div>
+      </div>
+    </details>
+
+    <details class="doc-card">
+      <summary>
+        <div class="sum-l"><span class="dm dm-post">POST</span><span class="doc-ep">/api/admin-logout</span></div>
+        <span class="sum-short">Logout</span>
+        <span class="sum-arr">▼</span>
+      </summary>
+      <div class="doc-body-in">
+        <div class="resp"><div class="resp-bar"><div class="resp-dot"></div>200 OK</div>
+        <pre class="resp-code">{ <span class="rk">"ok"</span>: <span class="rb2">true</span> }  <span style="color:var(--text3)">// cookie mzx_token di-clear</span></pre></div>
+      </div>
+    </details>
+
+    <details class="doc-card">
+      <summary>
+        <div class="sum-l"><span class="dm dm-get">GET</span><span class="doc-ep">/api/health</span></div>
+        <span class="sum-short">Status server</span>
+        <span class="sum-arr">▼</span>
+      </summary>
+      <div class="doc-body-in">
+        <div class="resp"><div class="resp-bar"><div class="resp-dot"></div>200 OK</div>
+        <pre class="resp-code">{
+  <span class="rk">"status"</span>: <span class="rs">"ok"</span>,
+  <span class="rk">"app"</span>: <span class="rs">"ManzxyCodes"</span>,
+  <span class="rk">"env"</span>: <span class="rs">"production"</span>,
+  <span class="rk">"uptime"</span>: <span class="rs">"3600s"</span>
+}</pre></div>
+      </div>
+    </details>
   </div>
 
-  <!-- TAB: EXAMPLES -->
-  <div id="tab-examples" class="doc-wrap" style="display:none">
-    <div class="ibox ib-tip"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/></svg>Ganti <code>BASE</code> dengan domain Vercel kamu setelah deploy.</div>
+  <!-- ─── TAB SCRAPER ─── -->
+  <div id="tab-examples" class="tabpane">
+    <div class="ibox ib-tip"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/></svg>Contoh scraper siap pakai. BASE sudah mengarah ke <strong>manzxy.biz.id</strong>.</div>
 
-    <div class="doc-card" id="dc-py">
-      <div class="doc-head" onclick="toggleDoc('dc-py')">
-        <div class="doc-head-l"><span class="dm dm-tag">PY</span><span class="doc-ep">Python Scraper</span></div>
-        <span class="doc-short">Fetch + filter + export</span><span class="doc-arr">▼</span>
-      </div>
-      <div class="doc-body"><div class="doc-body-in">
-        <div class="ce"><div class="ce-bar"><span class="ce-lang">python</span><button class="copy-tiny" id="cppy" onclick="cpEl(this,'code-py')">copy</button></div>
-        <pre class="ce-code" id="code-py"><span class="ck">import</span> <span class="cn">requests</span>, <span class="cn">json</span>
+    <details class="doc-card">
+      <summary>
+        <div class="sum-l"><span class="dm dm-tag" style="background:rgba(0,230,118,.1);color:var(--green);border-color:rgba(0,230,118,.2)">PY</span><span class="doc-ep">Python Scraper</span></div>
+        <span class="sum-short">Fetch + filter + export JSON</span>
+        <span class="sum-arr">▼</span>
+      </summary>
+      <div class="doc-body-in">
+        <div class="ce"><div class="ce-bar"><span class="ce-lang">python</span><button class="copy-tiny" onclick="cpEl(this,'py-code')">copy</button></div>
+        <pre class="ce-code" id="py-code"><span class="ck">import</span> <span class="cn">requests</span>, <span class="cn">json</span>
 
-<span class="cn">BASE</span> <span class="cm">=</span> <span class="cs">"https://manzxy.biz.id"</span>
+BASE <span class="cm">=</span> <span class="cs">"https://manzxy.biz.id"</span>
 
 <span class="ck">def</span> <span class="cm">get_all</span>():
-    <span class="cn">r</span> <span class="cm">=</span> <span class="cn">requests</span>.<span class="cm">get</span>(<span class="cs">f"{BASE}/api/snippets"</span>)
-    <span class="cn">r</span>.<span class="cm">raise_for_status</span>()
-    <span class="ck">return</span> <span class="cn">r</span>.<span class="cm">json</span>()
+    r <span class="cm">=</span> requests.<span class="cm">get</span>(<span class="cs">f"{BASE}/api/snippets"</span>)
+    r.<span class="cm">raise_for_status</span>()
+    <span class="ck">return</span> r.<span class="cm">json</span>()
 
-<span class="ck">def</span> <span class="cm">by_lang</span>(<span class="cn">snippets</span>, <span class="cn">lang</span>):
-    <span class="ck">return</span> [<span class="cn">s</span> <span class="ck">for</span> <span class="cn">s</span> <span class="ck">in</span> <span class="cn">snippets</span> <span class="ck">if</span> <span class="cn">s</span>[<span class="cs">"language"</span>] <span class="cm">==</span> <span class="cn">lang</span>]
+<span class="ck">def</span> <span class="cm">by_lang</span>(snippets, lang):
+    <span class="ck">return</span> [s <span class="ck">for</span> s <span class="ck">in</span> snippets <span class="ck">if</span> s[<span class="cs">"language"</span>] <span class="cm">==</span> lang]
 
-<span class="ck">def</span> <span class="cm">upload</span>(<span class="cn">payload</span>):
-    <span class="cn">r</span> <span class="cm">=</span> <span class="cn">requests</span>.<span class="cm">post</span>(<span class="cs">f"{BASE}/api/snippet-create"</span>, <span class="cn">json</span><span class="cm">=</span><span class="cn">payload</span>)
-    <span class="ck">return</span> <span class="cn">r</span>.<span class="cm">json</span>()
+<span class="ck">def</span> <span class="cm">upload</span>(author, title, desc, lang, tags, code, key):
+    r <span class="cm">=</span> requests.<span class="cm">post</span>(<span class="cs">f"{BASE}/api/snippet-create"</span>, json<span class="cm">=</span>{
+        <span class="cs">"author"</span>: author, <span class="cs">"title"</span>: title, <span class="cs">"description"</span>: desc,
+        <span class="cs">"language"</span>: lang, <span class="cs">"tags"</span>: tags, <span class="cs">"code"</span>: code, <span class="cs">"snippetKey"</span>: key
+    })
+    <span class="ck">return</span> r.<span class="cm">json</span>()
 
-<span class="ck">if</span> <span class="cn">__name__</span> <span class="cm">==</span> <span class="cs">"__main__"</span>:
-    <span class="cn">data</span> <span class="cm">=</span> <span class="cm">get_all</span>()
-    <span class="cm">print</span>(<span class="cs">f"Total: {len(data)}"</span>)
-    <span class="cn">js</span> <span class="cm">=</span> <span class="cm">by_lang</span>(<span class="cn">data</span>, <span class="cs">"JavaScript"</span>)
-    <span class="cm">print</span>(<span class="cs">f"JS snippets: {len(js)}"</span>)
-    <span class="cc"># export ke file</span>
-    <span class="ck">with</span> <span class="cm">open</span>(<span class="cs">"snippets.json"</span>, <span class="cs">"w"</span>) <span class="ck">as</span> <span class="cn">f</span>:
-        <span class="cn">json</span>.<span class="cm">dump</span>(<span class="cn">data</span>, <span class="cn">f</span>, <span class="cn">indent</span><span class="cm">=</span><span class="rj-num">2</span>, <span class="cn">ensure_ascii</span><span class="cm">=</span><span class="rj-bool">False</span>)</pre>
+<span class="ck">if</span> __name__ <span class="cm">==</span> <span class="cs">"__main__"</span>:
+    data <span class="cm">=</span> <span class="cm">get_all</span>()
+    <span class="cm">print</span>(<span class="cs">f"Total: {len(data)} snippets"</span>)
+    <span class="cc2"># Export semua ke JSON</span>
+    <span class="ck">with</span> <span class="cm">open</span>(<span class="cs">"snippets.json"</span>, <span class="cs">"w"</span>) <span class="ck">as</span> f:
+        json.<span class="cm">dump</span>(data, f, indent<span class="cm">=</span>2, ensure_ascii<span class="cm">=</span>False)</pre>
         </div>
-      </div></div>
-    </div>
-
-    <div class="doc-card" id="dc-js">
-      <div class="doc-head" onclick="toggleDoc('dc-js')">
-        <div class="doc-head-l"><span class="dm dm-tag" style="background:rgba(255,215,0,.1);color:#ffd700;border-color:rgba(255,215,0,.2)">JS</span><span class="doc-ep">Node.js Scraper</span></div>
-        <span class="doc-short">Fetch + bulk upload</span><span class="doc-arr">▼</span>
       </div>
-      <div class="doc-body"><div class="doc-body-in">
-        <div class="ce"><div class="ce-bar"><span class="ce-lang">javascript (node 18+)</span><button class="copy-tiny" id="cpjs" onclick="cpEl(this,'code-js')">copy</button></div>
-        <pre class="ce-code" id="code-js"><span class="cc">// node scraper.js</span>
-<span class="ck">const</span> <span class="cn">BASE</span> <span class="cm">=</span> <span class="cs">'https://manzxy.biz.id'</span>;
+    </details>
+
+    <details class="doc-card">
+      <summary>
+        <div class="sum-l"><span class="dm dm-tag" style="background:rgba(255,215,0,.1);color:#ffd700;border-color:rgba(255,215,0,.2)">JS</span><span class="doc-ep">Node.js Scraper</span></div>
+        <span class="sum-short">Fetch + bulk upload</span>
+        <span class="sum-arr">▼</span>
+      </summary>
+      <div class="doc-body-in">
+        <div class="ce"><div class="ce-bar"><span class="ce-lang">javascript (node 18+)</span><button class="copy-tiny" onclick="cpEl(this,'js-code')">copy</button></div>
+        <pre class="ce-code" id="js-code"><span class="cc2">// node scraper.js</span>
+<span class="ck">const</span> BASE <span class="cm">=</span> <span class="cs">'https://manzxy.biz.id'</span>;
 
 <span class="ck">async function</span> <span class="cm">fetchAll</span>() {
-  <span class="ck">const</span> <span class="cn">r</span> <span class="cm">=</span> <span class="ck">await</span> <span class="cm">fetch</span>(<span class="cs">`${BASE}/api/snippets`</span>);
-  <span class="ck">if</span> (<span class="cm">!</span><span class="cn">r</span>.<span class="cn">ok</span>) <span class="ck">throw new</span> <span class="cm">Error</span>(<span class="cs">`HTTP ${r.status}`</span>);
-  <span class="ck">return</span> <span class="cn">r</span>.<span class="cm">json</span>();
+  <span class="ck">const</span> r <span class="cm">=</span> <span class="ck">await</span> <span class="cm">fetch</span>(<span class="cs">`${BASE}/api/snippets`</span>);
+  <span class="ck">if</span> (<span class="cm">!</span>r.ok) <span class="ck">throw new</span> <span class="cm">Error</span>(<span class="cs">`HTTP ${r.status}`</span>);
+  <span class="ck">return</span> r.<span class="cm">json</span>();
 }
 
-<span class="ck">async function</span> <span class="cm">upload</span>(<span class="cn">payload</span>) {
-  <span class="ck">const</span> <span class="cn">r</span> <span class="cm">=</span> <span class="ck">await</span> <span class="cm">fetch</span>(<span class="cs">`${BASE}/api/snippet-create`</span>, {
-    <span class="cn">method</span>: <span class="cs">'POST'</span>,
-    <span class="cn">headers</span>: {<span class="cs">'Content-Type'</span>: <span class="cs">'application/json'</span>},
-    <span class="cn">body</span>: <span class="cn">JSON</span>.<span class="cm">stringify</span>(<span class="cn">payload</span>)
+<span class="ck">async function</span> <span class="cm">upload</span>(payload) {
+  <span class="ck">const</span> r <span class="cm">=</span> <span class="ck">await</span> <span class="cm">fetch</span>(<span class="cs">`${BASE}/api/snippet-create`</span>, {
+    method: <span class="cs">'POST'</span>,
+    headers: { <span class="cs">'Content-Type'</span>: <span class="cs">'application/json'</span> },
+    body: <span class="cn">JSON</span>.<span class="cm">stringify</span>(payload)
   });
-  <span class="ck">return</span> <span class="cn">r</span>.<span class="cm">json</span>();
+  <span class="ck">return</span> r.<span class="cm">json</span>();
 }
 
-(<span class="ck">async</span> () <span class="cm">=></span> {
-  <span class="ck">const</span> <span class="cn">snippets</span> <span class="cm">=</span> <span class="ck">await</span> <span class="cm">fetchAll</span>();
-  <span class="cn">console</span>.<span class="cm">log</span>(<span class="cs">`Loaded: ${snippets.length}`</span>);
-  <span class="cc">// top liked</span>
-  <span class="ck">const</span> <span class="cn">top</span> <span class="cm">=</span> [...<span class="cn">snippets</span>].<span class="cm">sort</span>((<span class="cn">a</span>,<span class="cn">b</span>) <span class="cm">=></span> <span class="cn">b</span>.<span class="cn">likes</span> <span class="cm">-</span> <span class="cn">a</span>.<span class="cn">likes</span>)[<span class="rj-num">0</span>];
-  <span class="cn">console</span>.<span class="cm">log</span>(<span class="cs">'Top liked:'</span>, <span class="cn">top</span>?.<span class="cn">title</span>);
+(async () <span class="cm">=></span> {
+  <span class="ck">const</span> all <span class="cm">=</span> <span class="ck">await</span> <span class="cm">fetchAll</span>();
+  <span class="cn">console</span>.<span class="cm">log</span>(<span class="cs">`Total: ${all.length}`</span>);
+  <span class="ck">const</span> top <span class="cm">=</span> [...all].<span class="cm">sort</span>((a,b) <span class="cm">=></span> b.likes <span class="cm">-</span> a.likes)[0];
+  <span class="cn">console</span>.<span class="cm">log</span>(<span class="cs">'Top liked:'</span>, top?.title);
 })();</pre>
         </div>
-      </div></div>
-    </div>
-
-    <div class="doc-card" id="dc-php">
-      <div class="doc-head" onclick="toggleDoc('dc-php')">
-        <div class="doc-head-l"><span class="dm dm-tag" style="background:rgba(150,120,200,.1);color:#b39ddb;border-color:rgba(150,120,200,.2)">PHP</span><span class="doc-ep">PHP Scraper</span></div>
-        <span class="doc-short">cURL wrapper</span><span class="doc-arr">▼</span>
       </div>
-      <div class="doc-body"><div class="doc-body-in">
-        <div class="ce"><div class="ce-bar"><span class="ce-lang">php</span><button class="copy-tiny" id="cpphp" onclick="cpEl(this,'code-php')">copy</button></div>
-        <pre class="ce-code" id="code-php"><span class="cm">&lt;?php</span>
-<span class="cn">$BASE</span> <span class="cm">=</span> <span class="cs">"https://manzxy.biz.id"</span>;
+    </details>
 
-<span class="ck">function</span> <span class="cm">getSnippets</span>(<span class="cn">$base</span>) {
-    <span class="cn">$ch</span> <span class="cm">=</span> <span class="cm">curl_init</span>(<span class="cs">"$base/api/snippets"</span>);
-    <span class="cm">curl_setopt_array</span>(<span class="cn">$ch</span>, [
-        <span class="cn">CURLOPT_RETURNTRANSFER</span> <span class="cm">=></span> <span class="rj-bool">true</span>,
-        <span class="cn">CURLOPT_HTTPHEADER</span>     <span class="cm">=></span> [<span class="cs">'Accept: application/json'</span>]
+    <details class="doc-card">
+      <summary>
+        <div class="sum-l"><span class="dm dm-tag" style="background:rgba(150,120,200,.1);color:#b39ddb;border-color:rgba(150,120,200,.2)">PHP</span><span class="doc-ep">PHP Scraper</span></div>
+        <span class="sum-short">cURL wrapper</span>
+        <span class="sum-arr">▼</span>
+      </summary>
+      <div class="doc-body-in">
+        <div class="ce"><div class="ce-bar"><span class="ce-lang">php</span><button class="copy-tiny" onclick="cpEl(this,'php-code')">copy</button></div>
+        <pre class="ce-code" id="php-code"><span class="cm">&lt;?php</span>
+$BASE <span class="cm">=</span> <span class="cs">"https://manzxy.biz.id"</span>;
+
+<span class="ck">function</span> <span class="cm">getSnippets</span>($base) {
+    $ch <span class="cm">=</span> <span class="cm">curl_init</span>(<span class="cs">"$base/api/snippets"</span>);
+    <span class="cm">curl_setopt_array</span>($ch, [
+        CURLOPT_RETURNTRANSFER <span class="cm">=></span> true,
+        CURLOPT_HTTPHEADER     <span class="cm">=></span> [<span class="cs">'Accept: application/json'</span>]
     ]);
-    <span class="cn">$body</span> <span class="cm">=</span> <span class="cm">curl_exec</span>(<span class="cn">$ch</span>);
-    <span class="cm">curl_close</span>(<span class="cn">$ch</span>);
-    <span class="ck">return</span> <span class="cm">json_decode</span>(<span class="cn">$body</span>, <span class="rj-bool">true</span>);
+    $body <span class="cm">=</span> <span class="cm">curl_exec</span>($ch);
+    <span class="cm">curl_close</span>($ch);
+    <span class="ck">return</span> <span class="cm">json_decode</span>($body, true);
 }
 
-<span class="cn">$snippets</span> <span class="cm">=</span> <span class="cm">getSnippets</span>(<span class="cn">$BASE</span>);
-<span class="cm">echo</span> <span class="cs">"Total: "</span> <span class="cm">.</span> <span class="cm">count</span>(<span class="cn">$snippets</span>) <span class="cm">.</span> <span class="cs">" snippets\n"</span>;
-<span class="cm">echo</span> <span class="cm">json_encode</span>(<span class="cn">$snippets</span>[<span class="rj-num">0</span>], <span class="cn">JSON_PRETTY_PRINT</span>);</pre>
+$snippets <span class="cm">=</span> <span class="cm">getSnippets</span>($BASE);
+<span class="cm">echo</span> <span class="cs">"Total: "</span> . <span class="cm">count</span>($snippets) . <span class="cs">" snippets\n"</span>;
+<span class="cm">echo</span> <span class="cm">json_encode</span>($snippets[0], JSON_PRETTY_PRINT);</pre>
         </div>
-      </div></div>
-    </div>
+      </div>
+    </details>
   </div>
 
 </section>
@@ -526,64 +617,76 @@ pre.resp-code{padding:13px 15px;font-family:var(--mono);font-size:11px;color:var
         <a href="#owner" class="flink">📧 Gmail</a>
         <a href="index.html" class="flink">App ↗</a>
       </div>
-      <div class="fpow"><div class="fdot"></div>Powered by Supabase + Vercel</div>
+      <div class="fpow"><div class="fdot"></div>Powered by Supabase + Node.js</div>
     </div>
   </div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 'use strict';
 
-// ── TABS — show/hide tab panes
+// ── TABS
 function showTab(name, btn) {
-  ['snippets','auth','examples'].forEach(id => {
-    const el = document.getElementById('tab-' + id);
-    if (el) el.style.display = (id === name) ? 'flex' : 'none';
-    if (el && id === name) el.style.flexDirection = 'column';
-  });
+  document.querySelectorAll('.tabpane').forEach(el => el.classList.remove('on'));
+  const target = document.getElementById('tab-' + name);
+  if (target) target.classList.add('on');
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('on'));
   if (btn) btn.classList.add('on');
 }
 
-// ── ACCORDION — toggle individual doc card
-function toggleDoc(id) {
-  const card = document.getElementById(id);
-  if (!card) return;
-  card.classList.toggle('open');
-}
-
-// ── COPY code from inline text
+// ── COPY inline text
 function cpEx(btn, text) {
   navigator.clipboard.writeText(text.trim()).then(() => {
+    const orig = btn.textContent;
     btn.textContent = '✓ ok'; btn.classList.add('ok');
-    setTimeout(() => { btn.textContent = 'copy'; btn.classList.remove('ok'); }, 2000);
-  });
+    setTimeout(() => { btn.textContent = orig; btn.classList.remove('ok'); }, 2000);
+  }).catch(() => { btn.textContent = 'err'; });
 }
 
-// ── COPY code from element inner text (strips HTML)
-function cpEl(btn, preId) {
-  const el = document.getElementById(preId);
+// ── COPY from pre element
+function cpEl(btn, id) {
+  const el = document.getElementById(id);
   if (!el) return;
-  const text = el.innerText || el.textContent;
-  navigator.clipboard.writeText(text.trim()).then(() => {
+  navigator.clipboard.writeText((el.innerText || el.textContent).trim()).then(() => {
+    const orig = btn.textContent;
     btn.textContent = '✓ ok'; btn.classList.add('ok');
-    setTimeout(() => { btn.textContent = 'copy'; btn.classList.remove('ok'); }, 2000);
-  });
+    setTimeout(() => { btn.textContent = orig; btn.classList.remove('ok'); }, 2000);
+  }).catch(() => { btn.textContent = 'err'; });
 }
 
-// ── SMOOTH NAV for #anchor links in topbar
-document.querySelectorAll('.tnav a[href^="#"]').forEach(a => {
+// ── Smooth scroll for topbar anchor links
+document.querySelectorAll('a[href^="#"]').forEach(a => {
   a.addEventListener('click', e => {
-    e.preventDefault();
     const target = document.querySelector(a.getAttribute('href'));
-    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (!target) return;
+    e.preventDefault();
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
 });
 
-// ── ACTIVE NAV on scroll
-const sections = ['owner','docs'].map(id => document.getElementById(id)).filter(Boolean);
-const navLinks = document.querySelectorAll('.tnav a');
+// ── Active nav highlight on scroll
+const secIds   = ['owner', 'docs'];
+const navLinks = document.querySelectorAll('.tnav a[href^="#"]');
 const obs = new IntersectionObserver(entries => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
-      navLinks.for
+      navLinks.forEach(a => a.classList.remove('on'));
+      const link = document.querySelector(`.tnav a[href="#${entry.target.id}"]`);
+      if (link) link.classList.add('on');
+    }
+  });
+}, { threshold: 0.3 });
+secIds.forEach(id => { const el = document.getElementById(id); if (el) obs.observe(el); });
+
+// ── Load live stats from API
+(async () => {
+  try {
+    const r = await fetch('/api/snippets');
+    if (!r.ok) return;
+    const data = await r.json();
+    if (!Array.isArray(data)) return;
+    const total = data.length;
+    const likes = data.reduce((a, s) => a + (s.likes || 0), 0);
+    const views = data.reduce((a, s) => a + (s.views || 0), 0);
+    const fmt   = n => n >= 1000 ? (n/1000).toFixed(1)+'k' : String(n);
+    const el = 
