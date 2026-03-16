@@ -451,22 +451,34 @@ app.use('/api', api);
 // Serve index.html, info.html, dll dari folder yang sama dengan manzxy.js
 const STATIC_DIR = __dirname;
 
+// Static assets (css, js, fonts, images) — EXCLUDE html files
 app.use(express.static(STATIC_DIR, {
-  index:    false,        // jangan auto-serve index.html, biar kita yang handle
+  index:    false,
   maxAge:   isProd ? '1d' : 0,
   etag:     true,
   dotfiles: 'ignore',
+  // Block direct .html access via static middleware
+  setHeaders: (res, filePath) => {
+    if (filePath.endsWith('.html')) {
+      res.setHeader('X-Robots-Tag', 'noindex');
+    }
+  }
 }));
 
-// ── /info → info.html
-app.get('/info', (req, res) => {
-  res.sendFile(join(STATIC_DIR, 'info.html'));
-});
+// ── Redirect direct .html access → clean URL
+app.get('/info.html',  (req, res) => res.redirect(301, '/info'));
+app.get('/index.html', (req, res) => res.redirect(301, '/app'));
 
-// ── Semua route lain → index.html (SPA fallback)
-app.get('*', (req, res) => {
-  res.sendFile(join(STATIC_DIR, 'index.html'));
-});
+// ── / dan /info → info.html (landing page utama)
+app.get('/',      (req, res) => res.sendFile(join(STATIC_DIR, 'info.html')));
+app.get('/info',  (req, res) => res.sendFile(join(STATIC_DIR, 'info.html')));
+
+// ── /app → index.html (snippet app)
+app.get('/app',   (req, res) => res.sendFile(join(STATIC_DIR, 'index.html')));
+app.get('/app/*', (req, res) => res.sendFile(join(STATIC_DIR, 'index.html')));
+
+// ── Fallback → info.html
+app.get('*', (req, res) => res.sendFile(join(STATIC_DIR, 'info.html')));
 
 // ═══════════════════════════════════════════ ERROR HANDLER
 app.use((err, req, res, next) => {
