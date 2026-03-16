@@ -695,7 +695,7 @@ textarea.inp{font-family:var(--mono);font-size:12px;resize:vertical;min-height:1
   <main class="main-content">
     <div class="page-header">
       <h1 class="page-title"><span id="pageTitle">Explore.</span></h1>
-      <p class="page-sub" id="pageSub">Browse koleksi snippet code siap pakai.</p>
+      <p class="page-sub" id="pageSub">Browse koleksi snippet code siap pakai. <span id="resultCount" style="font-family:var(--mono);font-size:11px;color:var(--text3)"></span></p>
     </div>
 
     <div class="list" id="list">
@@ -883,6 +883,8 @@ const liked = new Set(JSON.parse(localStorage.getItem('mzx_liked')||'[]'));
 
 // ─── UTILS
 const $   = id => document.getElementById(id);
+// Safe textContent setter — never throws on null
+const setText = (id, v) => { const e=$(id); if(e) e.textContent=v; };
 const gv  = id => ($(id)?.value?.trim()??'');
 const sv  = (id,v) => { const e=$(id); if(e) e.value=v; };
 const esc = s => String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
