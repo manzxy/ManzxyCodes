@@ -1,5 +1,5 @@
 /**
- * ManzxyCodes — manzxy.js  v2.0 HARDENED
+ * ManzxyCodes — manzxy.js  v3.0 HARDENED
  * Express server (VPS)
  * © 2026 By Manzxy
  */
@@ -324,19 +324,7 @@ if (!isProd) {
 
 // ══════════════════════════════════════════════════════ STATIC FILES
 
-// Block direct .html access — redirect to clean URL
-app.get('/info.html',  (req, res) => res.redirect(301, '/info'));
-app.get('/index.html', (req, res) => res.redirect(301, '/app'));
-
-app.use(express.static(__dirname, { index: false, maxAge: isProd ? '1d' : 0, dotfiles: 'ignore' }));
-
-app.get('/',       (req, res) => res.sendFile(join(__dirname, 'info.html')));
-app.get('/info',   (req, res) => res.sendFile(join(__dirname, 'info.html')));
-app.get('/app',    (req, res) => res.sendFile(join(__dirname, 'index.html')));
-app.get('/app/*',  (req, res) => res.sendFile(join(__dirname, 'index.html')));
-app.get('*',       (req, res) => res.sendFile(join(__dirname, 'info.html')));
-
-// Wait — static must come AFTER API routes. Restructure below.
+// Static routes are mounted AFTER /api — see below
 
 // ══════════════════════════════════════════════════════ API ROUTER
 const api = express.Router();
@@ -651,7 +639,7 @@ api.post('/admin-unblock', async (req, res) => {
 // ── GET /api/health
 api.get('/health', (req, res) => {
   return res.json({
-    status: 'ok', app: 'ManzxyCodes', env: NODE_ENV,
+    status: 'ok', app: 'ManzxyCodes v3.0', env: NODE_ENV,
     uptime: Math.floor(process.uptime()) + 's',
     ts: new Date().toISOString(),
   });
@@ -679,7 +667,7 @@ app.use((e, req, res, next) => {
 // ══════════════════════════════════════════════════════ START
 app.listen(PORT, '0.0.0.0', () => {
   console.log('\n╔══════════════════════════════════╗');
-  console.log('║    ManzxyCodes v2.0 HARDENED     ║');
+  console.log('║    ManzxyCodes v3.0 HARDENED     ║');
   console.log('╚══════════════════════════════════╝');
   console.log('🚀 Port:', PORT, '| Mode:', NODE_ENV);
   console.log('🔒 Security: 7-layer middleware active');
