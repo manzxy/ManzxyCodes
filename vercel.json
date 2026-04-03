@@ -3,59 +3,30 @@
   "functions": {
     "api/**/*.js": {
       "memory": 128,
-      "maxDuration": 15
+      "maxDuration": 10
     }
   },
-  "routes": [
+  "rewrites": [
+    { "source": "/info.html", "destination": "/info.html" },
+    { "source": "/index.html", "destination": "/index.html" },
+    { "source": "/app",        "destination": "/index.html" },
+    { "source": "/app/(.*)",   "destination": "/index.html" },
+    { "source": "/info",       "destination": "/info.html" },
+    { "source": "/",           "destination": "/info.html" },
+    { "source": "/(.*)",       "destination": "/info.html" }
+  ],
+  "redirects": [
+    { "source": "/index.html", "destination": "/app",  "permanent": true },
+    { "source": "/info.html",  "destination": "/info", "permanent": true }
+  ],
+  "headers": [
     {
-      "src": "/api/(.*)",
-      "dest": "/api/$1"
-    },
-    {
-      "src": "/info.html",
-      "status": 301,
-      "headers": {
-        "Location": "/info"
-      }
-    },
-    {
-      "src": "/index.html",
-      "status": 301,
-      "headers": {
-        "Location": "/app"
-      }
-    },
-    {
-      "src": "/",
-      "dest": "/info.html"
-    },
-    {
-      "src": "/info",
-      "dest": "/info.html"
-    },
-    {
-      "src": "/app",
-      "dest": "/index.html"
-    },
-    {
-      "src": "/app/(.*)",
-      "dest": "/index.html"
-    },
-    {
-      "src": "/(.*)\\.js",
-      "dest": "/$1.js"
-    },
-    {
-      "src": "/(.*)\\.css",
-      "dest": "/$1.css"
-    },
-    {
-      "src": "/(.*)\\.woff2",
-      "dest": "/$1.woff2"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/info.html"
+      "source": "/api/(.*)",
+      "headers": [
+        { "key": "Access-Control-Allow-Origin",  "value": "*" },
+        { "key": "Access-Control-Allow-Methods", "value": "GET,POST,PUT,DELETE,OPTIONS" },
+        { "key": "Access-Control-Allow-Headers", "value": "Content-Type" }
+      ]
     }
   ]
 }
