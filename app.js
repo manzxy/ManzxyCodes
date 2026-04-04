@@ -374,11 +374,9 @@ function copyShareLink(){
   if(su) navigator.clipboard.writeText(su.textContent).then(function(){toast('Link copied','info');});
 }
 function openRaw(){
-  if(!curSnip||!curSnip.code) return;
-  var blob=new Blob([curSnip.code],{type:'text/plain;charset=utf-8'});
-  var url=URL.createObjectURL(blob);
-  window.open(url,'_blank');
-  setTimeout(function(){URL.revokeObjectURL(url);},5000);
+  if(!curSnip) return;
+  var hid=encodeId(curSnip.id);
+  window.open('/api/snippet/'+hid+'/raw','_blank');
 }
 
 
