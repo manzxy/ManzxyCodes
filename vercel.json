@@ -22,10 +22,6 @@
     {
       "source": "/",
       "destination": "/info.html"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/info.html"
     }
   ],
   "redirects": [
@@ -59,41 +55,54 @@
       ]
     },
     {
-      "source": "/(app|info)\\.(css|js)",
+      "source": "/app.css",
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
+          "value": "public, max-age=604800"
         },
         {
           "key": "Content-Type",
-          "value": "text/javascript"
+          "value": "text/css; charset=utf-8"
         }
       ]
     },
     {
-      "source": "/app\\.css",
+      "source": "/app.js",
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
+          "value": "public, max-age=604800"
         },
         {
           "key": "Content-Type",
-          "value": "text/css"
+          "value": "application/javascript; charset=utf-8"
         }
       ]
     },
     {
-      "source": "/info\\.css",
+      "source": "/info.css",
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
+          "value": "public, max-age=604800"
         },
         {
           "key": "Content-Type",
-          "value": "text/css"
+          "value": "text/css; charset=utf-8"
+        }
+      ]
+    },
+    {
+      "source": "/info.js",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=604800"
+        },
+        {
+          "key": "Content-Type",
+          "value": "application/javascript; charset=utf-8"
         }
       ]
     }

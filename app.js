@@ -290,7 +290,7 @@ async function openDetail(id){
     } else {
       ce.textContent='Loading…';
       ce.className='hljs';
-      apiFetch('/api/snippet/'+s.id,'GET',null,8000).then(function(r){
+      apiFetch('/api/snippet-get?id='+s.id,'GET',null,8000).then(function(r){
         return r.ok?r.json():null;
       }).then(function(full){
         if(!full||!full.code) return;
@@ -303,10 +303,9 @@ async function openDetail(id){
   }
 
   set('shareUrl',window.location.origin+'/app?id='+s.id);
-  var date=s.created_at?fmtDate(s.created_at):'';
-  var ago=s.created_at?' ('+timeAgo(s.created_at)+')':'';
+  var date=s.created_at?timeAgo(s.created_at):'';
   html('dinfo','<b>'+esc(s.author||'anon')+'</b><br>'
-    +'<span style="color:var(--text3);font-size:10px">'+esc(date)+esc(ago)+'</span><br>'
+    +'<span style="color:var(--text3);font-size:10px">'+esc(date)+'</span><br>'
     +'<span style="color:var(--pink)">♥ '+(s.likes||0)+'</span>'
     +' &nbsp;<span style="color:var(--blue)">👁 '+(s.views||0)+'</span>');
   var isLiked=liked.has(String(id));
