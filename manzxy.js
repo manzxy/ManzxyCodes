@@ -265,14 +265,34 @@ app.use((req, res, next) => {
   next();
 });
 
-// ── 7. CORS — strict origin whitelist
+// ── 7. CORS — public endpoints open, admin endpoints strict
 app.use((req, res, next) => {
-  const origin  = req.headers.origin;
-  const allowed = ['https://manzxy.biz.id','https://www.manzxy.biz.id','http://localhost:3000'];
-  if (DOMAIN !== '*') DOMAIN.split(',').forEach(d => { const t=d.trim(); if(t&&!allowed.includes(t)) allowed.push(t); });
-  if (!origin || allowed.includes(origin)) {
-    res.setHeader('Access-Control-Allow-Origin', origin || allowed[0]);
-    res.setHeader('Access-Control-Allow-Credentials', 'true');
+  const origin   = req.headers.origin;
+  const path     = req.path;
+  const isPublic = (req.method === 'GET' && (path === '/api/snippets' || path.startsWith('/api/snippet/'))) || path === '/api/health';
+
+  if (isPublic) {
+    // Public read endpoints — allow any origin, no credentials
+    res.setHeader('Access-Control-Allow-Origin', '*');
+  } else {
+    // Admin/mutation endpoints — strict origin whitelist
+    // Build allowed list from DOMAIN env + defaults
+    const allowed = ['http://localhost:3000','http://localhost:5500'];
+    if (DOMAIN && DOMAIN !== '*') {
+      DOMAIN.split(',').forEach(d => {
+        const t = d.trim();
+        if (t) { allowed.push(t); allowed.push(t.replace('https://','https://www.')); }
+      });
+    }
+    // Also allow the request's own host (covers any domain pointing to this server)
+    const reqHost = req.headers.host;
+    if (reqHost) {
+      ['https://','http://'].forEach(s => { const full=s+reqHost; if(!allowed.includes(full)) allowed.push(full); });
+    }
+    if (!origin || allowed.includes(origin)) {
+      res.setHeader('Access-Control-Allow-Origin', origin || (DOMAIN&&DOMAIN!=='*'?DOMAIN.split(',')[0].trim():'*'));
+      res.setHeader('Access-Control-Allow-Credentials', 'true');
+    }
   }
   res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -330,16 +350,45 @@ if (!isProd) {
 const api = express.Router();
 api.use(requireJSON);
 
-// ── GET /api/snippets — public
-api.get('/snippets', rateLimit(60, 60_000), async (req, res) => {
+// ── Server-side cache for snippets (reduces Supabase calls drastically)
+let snippetsCache = { data: null, at: 0, ttl: 10_000 }; // 10 second TTL
+
+function invalidateCache() { snippetsCache.at = 0; }
+
+// ── GET /api/snippets — public, fast with server cache
+api.get('/snippets', rateLimit(120, 60_000), async (req, res) => {
+  const now = Date.now();
+  // Serve from cache if fresh
+  if (snippetsCache.data && (now - snippetsCache.at) < snippetsCache.ttl) {
+    res.setHeader('X-Cache', 'HIT');
+    res.setHeader('Cache-Control', 'public, max-age=5, stale-while-revalidate=30');
+    return res.json(snippetsCache.data);
+  }
+  // Fetch WITHOUT code field for list view — code is large and not needed in list
+  const { data, error } = await sbPub
+    .from('snippets')
+    .select('id,created_at,author,title,description,language,tags,likes,views')
+    .order('created_at', { ascending: false })
+    .limit(500);
+  if (error) return err(res, 500, 'Database error');
+  snippetsCache = { data: data ?? [], at: now, ttl: 10_000 };
+  res.setHeader('X-Cache', 'MISS');
+  res.setHeader('Cache-Control', 'public, max-age=5, stale-while-revalidate=30');
+  return res.json(snippetsCache.data);
+});
+
+// ── GET /api/snippet/:id — fetch single snippet WITH code (for detail view)
+api.get('/snippet/:id', rateLimit(60, 60_000), async (req, res) => {
+  const id = sanitizeId(req.params.id);
+  if (!id) return err(res, 400, 'ID tidak valid');
   const { data, error } = await sbPub
     .from('snippets')
     .select('id,created_at,author,title,description,language,tags,code,likes,views')
-    .order('created_at', { ascending: false })
-    .limit(500); // max 500 snippets returned
-  if (error) return err(res, 500, 'Database error');
-  res.setHeader('Cache-Control', 'public, max-age=5, stale-while-revalidate=30');
-  return res.json(data ?? []);
+    .eq('id', id)
+    .single();
+  if (error || !data) return err(res, 404, 'Snippet tidak ditemukan');
+  res.setHeader('Cache-Control', 'public, max-age=10');
+  return res.json(data);
 });
 
 // ── POST /api/snippets — like/view with IP dedup
@@ -356,31 +405,37 @@ api.post('/snippets', rateLimit(30, 60_000), async (req, res) => {
   if (action === 'view') {
     const vKey = 'v:' + ip + ':' + id;
     const last  = viewedStore.get(vKey) || 0;
-    if (now - last < 10 * 60_000) {
-      const { data } = await sbSvc.from('snippets').select('views').eq('id', id).single();
-      return res.json({ views: data?.views || 0, skipped: true });
-    }
+    if (now - last < 10 * 60_000) return res.json({ skipped: true });
     viewedStore.set(vKey, now);
-    const { data, error } = await sbSvc.from('snippets').select('views').eq('id', id).single();
-    if (error || !data) return err(res, 404, 'Snippet tidak ditemukan');
-    const v = (data.views || 0) + 1;
-    await sbSvc.from('snippets').update({ views: v }).eq('id', id);
-    return res.json({ views: v });
+    // Atomic increment via RPC — 1 query instead of 2
+    const { error } = await sbSvc.rpc('increment_views', { row_id: id });
+    if (error) {
+      // Fallback: SELECT + UPDATE if RPC not available
+      const { data } = await sbSvc.from('snippets').select('views').eq('id', id).single();
+      if (!data) return err(res, 404, 'Snippet tidak ditemukan');
+      await sbSvc.from('snippets').update({ views: (data.views||0)+1 }).eq('id', id);
+    }
+    return res.json({ ok: true });
   }
 
   if (action === 'like' || action === 'unlike') {
     const lKey = 'l:' + ip + ':' + id;
     const last  = likeStore.get(lKey) || 0;
-    if (now - last < 5 * 60_000) {
-      const { data } = await sbSvc.from('snippets').select('likes').eq('id', id).single();
-      return res.status(429).json({ error: 'Tunggu sebentar', likes: data?.likes || 0 });
-    }
+    if (now - last < 5 * 60_000) return res.status(429).json({ error: 'Tunggu sebentar' });
     likeStore.set(lKey, now);
-    const { data, error } = await sbSvc.from('snippets').select('likes').eq('id', id).single();
-    if (error || !data) return err(res, 404, 'Snippet tidak ditemukan');
-    const l = Math.max(0, (data.likes || 0) + (action === 'like' ? 1 : -1));
-    await sbSvc.from('snippets').update({ likes: l }).eq('id', id);
-    return res.json({ likes: l });
+    const rpcName = action === 'like' ? 'increment_likes' : 'decrement_likes';
+    const { data: rpcData, error: rpcErr } = await sbSvc.rpc(rpcName, { row_id: id });
+    if (rpcErr) {
+      // Fallback SELECT+UPDATE
+      const { data } = await sbSvc.from('snippets').select('likes').eq('id', id).single();
+      if (!data) return err(res, 404, 'Snippet tidak ditemukan');
+      const l = Math.max(0, (data.likes||0) + (action==='like'?1:-1));
+      await sbSvc.from('snippets').update({ likes: l }).eq('id', id);
+      invalidateCache();
+      return res.json({ likes: l });
+    }
+    invalidateCache();
+    return res.json({ likes: rpcData ?? 0 });
   }
 });
 
@@ -460,6 +515,7 @@ api.post('/snippet-create', async (req, res) => {
   }]);
 
   if (error) return err(res, 500, 'Database error');
+  invalidateCache(); // clear cache after new snippet
   rec.titles.push(titleLow);
   if (rec.titles.length > 20) rec.titles.shift();
   createStore.set(ip, rec);
@@ -498,6 +554,7 @@ api.put('/snippet-action', rateLimit(10, 60_000), async (req, res) => {
 
   const { error } = await sbSvc.from('snippets').update(upd).eq('id', id);
   if (error) return err(res, 500, 'Database error');
+  invalidateCache();
   return res.json({ ok: true });
 });
 
@@ -519,6 +576,7 @@ api.delete('/snippet-action', rateLimit(10, 60_000), async (req, res) => {
 
   const { error } = await sbSvc.from('snippets').delete().eq('id', id);
   if (error) return err(res, 500, 'Database error');
+  invalidateCache();
   return res.json({ ok: true });
 });
 

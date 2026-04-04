@@ -42,3 +42,29 @@ create index if not exists idx_date on snippets(created_at desc);
 -- ════════════════════════════════════════════════
 -- SELESAI. Lanjut ke SETUP-VPS.md atau SETUP.md
 -- ════════════════════════════════════════════════
+
+-- ═══════════════════════════════════════════════════════
+-- RPC functions for atomic increments (fast, 1 query)
+-- Run these in Supabase SQL Editor
+-- ═══════════════════════════════════════════════════════
+
+create or replace function increment_views(row_id bigint)
+returns void language sql as $$
+  update snippets set views = views + 1 where id = row_id;
+$$;
+
+create or replace function increment_likes(row_id bigint)
+returns integer language sql as $$
+  update snippets set likes = likes + 1 where id = row_id
+  returning likes;
+$$;
+
+create or replace function decrement_likes(row_id bigint)
+returns integer language sql as $$
+  update snippets set likes = greatest(0, likes - 1) where id = row_id
+  returning likes;
+$$;
+
+-- Index untuk performa query order by created_at
+create index if not exists idx_snippets_created_at on snippets(created_at desc);
+create index if not exists idx_snippets_language on snippets(language);

@@ -7,25 +7,94 @@
     }
   },
   "rewrites": [
-    { "source": "/info.html", "destination": "/info.html" },
-    { "source": "/index.html", "destination": "/index.html" },
-    { "source": "/app",        "destination": "/index.html" },
-    { "source": "/app/(.*)",   "destination": "/index.html" },
-    { "source": "/info",       "destination": "/info.html" },
-    { "source": "/",           "destination": "/info.html" },
-    { "source": "/(.*)",       "destination": "/info.html" }
+    {
+      "source": "/app",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/app/(.*)",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/info",
+      "destination": "/info.html"
+    },
+    {
+      "source": "/",
+      "destination": "/info.html"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/info.html"
+    }
   ],
   "redirects": [
-    { "source": "/index.html", "destination": "/app",  "permanent": true },
-    { "source": "/info.html",  "destination": "/info", "permanent": true }
+    {
+      "source": "/index.html",
+      "destination": "/app",
+      "permanent": true
+    },
+    {
+      "source": "/info.html",
+      "destination": "/info",
+      "permanent": true
+    }
   ],
   "headers": [
     {
       "source": "/api/(.*)",
       "headers": [
-        { "key": "Access-Control-Allow-Origin",  "value": "*" },
-        { "key": "Access-Control-Allow-Methods", "value": "GET,POST,PUT,DELETE,OPTIONS" },
-        { "key": "Access-Control-Allow-Headers", "value": "Content-Type" }
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
+          "key": "Access-Control-Allow-Methods",
+          "value": "GET,POST,PUT,DELETE,OPTIONS"
+        },
+        {
+          "key": "Access-Control-Allow-Headers",
+          "value": "Content-Type"
+        }
+      ]
+    },
+    {
+      "source": "/(app|info)\\.(css|js)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        },
+        {
+          "key": "Content-Type",
+          "value": "text/javascript"
+        }
+      ]
+    },
+    {
+      "source": "/app\\.css",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        },
+        {
+          "key": "Content-Type",
+          "value": "text/css"
+        }
+      ]
+    },
+    {
+      "source": "/info\\.css",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        },
+        {
+          "key": "Content-Type",
+          "value": "text/css"
+        }
       ]
     }
   ]
