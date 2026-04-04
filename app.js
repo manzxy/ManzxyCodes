@@ -7,6 +7,20 @@ const LANG_HL={'JavaScript':'javascript','TypeScript':'typescript','Python':'pyt
 const LANG_EXT={JavaScript:'js',TypeScript:'ts',Python:'py',PHP:'php',Go:'go'};
 // language colors for icon bg
 const LANGS=["JavaScript", "TypeScript", "HTML", "CSS", "Sass", "PHP", "Vue", "React", "Svelte", "Python", "Go", "Java", "Kotlin", "Ruby", "Rust", "C#", "Scala", "Elixir", "Clojure", "Erlang", "OCaml", "Perl", "Groovy", "C", "C++", "Swift", "Dart", "Zig", "Nim", "Assembly", "Crystal", "V", "Shell", "Bash", "PowerShell", "Lua", "SQL", "R", "GraphQL", "Julia", "MATLAB", "JSON", "YAML", "TOML", "XML", "Markdown", "Dockerfile", "Terraform", "Nginx", "Kubernetes", "Solidity", "Vyper", "Haskell", "F#", "Elm", "Prolog", "Prisma", "Proto"];
+// ── HASH ID — encode numeric DB id to 8-char hex for URLs
+var ID_M1=0x9B4EA3C1,ID_M2=0x5A3F9C2E;
+function encodeId(n){
+  var x=(n>>>0);
+  x=((x^ID_M1)>>>0);
+  x=Math.imul(x,0x9e3779b9)>>>0;
+  x=((x>>>16)^x)>>>0;
+  x=((x^ID_M2)>>>0);
+  return('00000000'+x.toString(16)).slice(-8);
+}
+function decodeId(hash){
+  return rows.find(function(r){return encodeId(r.id)===hash;});
+}
+
 const ICONS={
   ok:'<path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 1.06-1.06L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0z"/>',
   fail:'<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.553.553 0 0 1-1.1 0L7.1 4.995z"/>',
@@ -59,8 +73,12 @@ function setBtn(id,on){const b=$(id);if(b){b.disabled=on;b.style.opacity=on?'.5'
     if(r.ok){ const d=await r.json(); if(d.admin) setAdminUI(true); }
   }catch(_){}
   await load();
-  const sid=new URLSearchParams(location.search).get('id');
-  if(sid){ const s=rows.find(r=>String(r.id)===sid); if(s) openDetail(s.id); }
+  var sid=new URLSearchParams(location.search).get('id');
+  if(sid){
+    // Try hash decode first, fallback to numeric
+    var srow=decodeId(sid)||rows.find(function(r){return String(r.id)===sid;});
+    if(srow) openDetail(srow.id);
+  }
   if(window.innerWidth>700){ const b=$(  'newBtnDesk'); if(b) b.style.display='inline-flex'; }
 })();
 
@@ -302,7 +320,7 @@ async function openDetail(id){
     }
   }
 
-  set('shareUrl',window.location.origin+'/app?id='+s.id);
+  set('shareUrl',window.location.origin+'/app?id='+encodeId(s.id));
   var date=s.created_at?timeAgo(s.created_at):'';
   html('dinfo','<b>'+esc(s.author||'anon')+'</b><br>'
     +'<span style="color:var(--text3);font-size:10px">'+esc(date)+'</span><br>'
@@ -315,7 +333,7 @@ async function openDetail(id){
     +'<button class="btn btn-ghost btn-sm" onclick="closeOv(\'ov-detail\');openEditM('+id+')"> Edit</button>'
     +'<button class="btn btn-danger btn-sm" onclick="closeOv(\'ov-detail\');openDelM('+id+')"> Del</button>');
   openOv('ov-detail');
-  history.replaceState(null,'','?id='+id);
+  history.replaceState(null,'','?id='+encodeId(id));
 }
 
 // ── LIKE
@@ -442,7 +460,7 @@ async function submitDel(){
     var d=await r.json();
     if(!r.ok){var ee2=$(  'er-dkey');if(ee2)ee2.textContent=d.error||'Gagal';return;}
     clearCache(); toast('Dihapus','info'); closeOv('ov-del');
-    history.replaceState(null,'',location.pathname);
+    history.replaceState(null,'','/app');
     await load();
   }catch(e){toast(e.message,'fail');}
 }
@@ -563,7 +581,7 @@ function toggleMobSearch(){
 // ── MODAL
 function openOv(id){var e=$(id);if(e){e.classList.add('open');document.body.style.overflow='hidden';}}
 function closeOv(id){
-  var e=$(id);if(e){e.classList.remove('open');document.body.style.overflow='';if(id==='ov-detail')history.replaceState(null,'',location.pathname);}
+  var e=$(id);if(e){e.classList.remove('open');document.body.style.overflow='';if(id==='ov-detail')history.replaceState(null,'','/app');}
   // Reset password field visibility
   if(id==='ov-admin'){
     var p=$(  'a-pass'); if(p) p.type='password';
@@ -577,7 +595,7 @@ document.addEventListener('keydown',function(e){
     document.querySelectorAll('.ov.open').forEach(function(el){el.classList.remove('open');});
     closeDrawer();
     document.body.style.overflow='';
-    history.replaceState(null,'',location.pathname);
+    history.replaceState(null,'','/app');
   }
 });
 

@@ -9,19 +9,23 @@
   "rewrites": [
     {
       "source": "/app",
-      "destination": "/index.html"
+      "destination": "/_app.html"
     },
     {
       "source": "/app/(.*)",
-      "destination": "/index.html"
+      "destination": "/_app.html"
     },
     {
       "source": "/info",
-      "destination": "/info.html"
+      "destination": "/_info.html"
+    },
+    {
+      "source": "/info/(.*)",
+      "destination": "/_info.html"
     },
     {
       "source": "/",
-      "destination": "/info.html"
+      "destination": "/_info.html"
     }
   ],
   "redirects": [
@@ -59,7 +63,7 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, max-age=604800"
+          "value": "public, max-age=3600"
         },
         {
           "key": "Content-Type",
@@ -72,7 +76,7 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, max-age=604800"
+          "value": "public, max-age=3600"
         },
         {
           "key": "Content-Type",
@@ -85,7 +89,7 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, max-age=604800"
+          "value": "public, max-age=3600"
         },
         {
           "key": "Content-Type",
@@ -98,7 +102,7 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, max-age=604800"
+          "value": "public, max-age=3600"
         },
         {
           "key": "Content-Type",

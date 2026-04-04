@@ -391,6 +391,20 @@ api.get('/snippet/:id', rateLimit(60, 60_000), async (req, res) => {
   return res.json(data);
 });
 
+// ── GET /api/snippet-get?id=X — single snippet with code
+api.get('/snippet-get', rateLimit(60, 60_000), async (req, res) => {
+  const id = sanitizeId(req.query.id);
+  if (!id) return err(res, 400, 'ID tidak valid');
+  const { data, error } = await sbPub
+    .from('snippets')
+    .select('id,created_at,author,title,description,language,tags,code,likes,views')
+    .eq('id', id)
+    .single();
+  if (error || !data) return err(res, 404, 'Snippet tidak ditemukan');
+  res.setHeader('Cache-Control', 'public, max-age=60');
+  return res.json(data);
+});
+
 // ── POST /api/snippets — like/view with IP dedup
 api.post('/snippets', rateLimit(30, 60_000), async (req, res) => {
   const { action, id: rawId } = req.body;
