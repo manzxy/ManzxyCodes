@@ -121,6 +121,7 @@ async function load(retries){
     rows.sort(function(a,b){return new Date(b.created_at)-new Date(a.created_at);});
     updateCounts();
     render();
+    if(window._splashDone) window._splashDone();
   } else {
     showSkeleton();
   }
@@ -131,11 +132,11 @@ async function load(retries){
       if(!r.ok) throw new Error('HTTP '+r.status);
       var d=await r.json();
       rows=Array.isArray(d)?d:[];
-      // Sort terbaru di atas
       rows.sort(function(a,b){return new Date(b.created_at)-new Date(a.created_at);});
       setCache(rows);
       updateCounts();
       render();
+      if(window._splashDone) window._splashDone();
       return;
     }catch(e){
       if(i<retries){ await new Promise(function(rr){setTimeout(rr,600*(i+1));}); continue; }
@@ -147,6 +148,7 @@ async function load(retries){
         +'<p style="color:var(--red);font-family:var(--mono);font-size:10px">'+esc(e.message)+'</p>'
         +'<button onclick="load()" style="margin-top:12px;padding:7px 16px;border-radius:8px;background:rgba(124,109,250,.1);border:1px solid rgba(124,109,250,.3);color:var(--al);cursor:pointer;font-size:12px;font-family:var(--mono);touch-action:manipulation">↻ Coba lagi</button>'
         +'</div>';
+      if(window._splashDone) window._splashDone();
     }
   }
 }
