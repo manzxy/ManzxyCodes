@@ -75,11 +75,9 @@ function setBtn(id,on){const b=$(id);if(b){b.disabled=on;b.style.opacity=on?'.5'
   await load();
   var sid=new URLSearchParams(location.search).get('id');
   if(sid){
-    // Try hash decode first, fallback to numeric
     var srow=decodeId(sid)||rows.find(function(r){return String(r.id)===sid;});
     if(srow) openDetail(srow.id);
   }
-  if(window.innerWidth>700){ const b=$(  'newBtnDesk'); if(b) b.style.display='inline-flex'; }
 })();
 
 // ── LOAD
@@ -147,7 +145,7 @@ async function load(retries){
         +'<h3>Gagal memuat data</h3>'
         +'<p style="color:var(--text2);font-size:12px;margin-bottom:6px">Periksa koneksi atau coba lagi.</p>'
         +'<p style="color:var(--red);font-family:var(--mono);font-size:10px">'+esc(e.message)+'</p>'
-        +'<button onclick="load()" style="margin-top:12px;padding:7px 16px;border-radius:8px;background:rgba(124,109,250,.1);border:1px solid rgba(124,109,250,.3);color:var(--accentl);cursor:pointer;font-size:12px;font-family:var(--mono);touch-action:manipulation">↻ Coba lagi</button>'
+        +'<button onclick="load()" style="margin-top:12px;padding:7px 16px;border-radius:8px;background:rgba(124,109,250,.1);border:1px solid rgba(124,109,250,.3);color:var(--al);cursor:pointer;font-size:12px;font-family:var(--mono);touch-action:manipulation">↻ Coba lagi</button>'
         +'</div>';
     }
   }
@@ -469,7 +467,7 @@ function togglePassVis(){
   if(!inp) return;
   var showing = inp.type === 'text';
   inp.type = showing ? 'password' : 'text';
-  if(btn) btn.style.color = showing ? 'var(--text3)' : 'var(--accentl)';
+  if(btn) btn.style.color = showing ? 'var(--text3)' : 'var(--al)';
   if(ico) ico.innerHTML = showing
     ? '<path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/><path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>'
     : '<path d="M13.359 11.238C15.06 9.72 16 8 16 8s-3-5.5-8-5.5a7.028 7.028 0 0 0-2.79.588l.77.771A5.944 5.944 0 0 1 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.134 13.134 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755-.165.165-.337.328-.517.486l.708.709z"/><path d="M11.297 9.176a3.5 3.5 0 0 0-4.474-4.474l.823.823a2.5 2.5 0 0 1 2.829 2.829l.822.822zm-2.943 1.299.822.822a3.5 3.5 0 0 1-4.474-4.474l.823.823a2.5 2.5 0 0 0 2.829 2.829z"/><path d="M3.35 5.47c-.18.16-.353.322-.518.487A13.134 13.134 0 0 0 1.172 8l.195.288c.335.48.83 1.12 1.465 1.755C4.121 11.332 5.881 12.5 8 12.5c.716 0 1.39-.133 2.02-.36l.77.772A7.029 7.029 0 0 1 8 13.5C3 13.5 0 8 0 8s.939-1.721 2.641-3.238l.708.709z"/><path d="M13.646 14.354l-12-12 .708-.708 12 12-.708.708z"/>';
@@ -537,6 +535,8 @@ function doSearch(q){
 }
 
 // ── COUNTS
+var LANG_ID_MAP={'C++':'Cplusplus','C#':'Csharp','F#':'Fsharp'};
+function langToId(l){ return LANG_ID_MAP[l]||(l.replace(/[^a-zA-Z0-9]/g,'')); }
 function updateCounts(){
   if(window._countTimer) clearTimeout(window._countTimer);
   window._countTimer=setTimeout(function(){
@@ -549,7 +549,11 @@ function updateCounts(){
     }
     set('dSTotal',fmt(total));set('dSLikes',fmt(likes));set('dSViews',fmt(views));
     set('dc-all',total);set('sc-all',total);
-    LANGS.forEach(function(l){var n=lmap[l]||0;set('dc-'+l,n);set('sc-'+l,n);});
+    LANGS.forEach(function(l){
+      var n=lmap[l]||0;
+      var lid=langToId(l);
+      set('dc-'+lid,n);set('sc-'+lid,n);
+    });
     set('sl-total',fmt(total));set('sl-likes',fmt(likes));set('sl-views',fmt(views));
   },50);
 }

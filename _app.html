@@ -19,7 +19,7 @@
 <div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
 <nav class="drawer" id="drawer">
   <div class="drawer-top">
-    <div class="drawer-logo"><div class="logo-mark" style="width:26px;height:26px;font-size:11px;font-weight:900;font-family:var(--mono)">Mz</div>ManzxyCodes</div>
+    <div class="drawer-logo"><div class="logo-mark">Mz</div>ManzxyCodes</div>
     <button class="drawer-close" onclick="closeDrawer()">✕</button>
   </div>
   <div class="drawer-body">
@@ -65,7 +65,7 @@
 
 <header class="topbar">
   <button class="menu-btn" onclick="openDrawer()"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M1 2.5A.5.5 0 0 1 1.5 2h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 2.5zm0 5A.5.5 0 0 1 1.5 7h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 7zm0 5a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13a.5.5 0 0 1-.5-.5z"/></svg></button>
-  <a href="/app" class="logo"><div class="logo-mark" style="font-size:10px;font-weight:900;font-family:var(--mono)">Mz</div>ManzxyCodes<span class="logo-ver">v2.0</span></a>
+  <a href="/app" class="logo"><div class="logo-mark">Mz</div>ManzxyCodes<span class="logo-ver">v2</span></a>
   <div class="tsearch">
     <svg class="si" viewBox="0 0 16 16" fill="currentColor"><path d="M10.68 11.74a6 6 0 0 1-7.922-8.982 6 6 0 0 1 8.982 7.922l3.04 3.04a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215ZM11.5 7a4.499 4.499 0 1 0-8.997 0A4.499 4.499 0 0 0 11.5 7Z"/></svg>
     <input id="searchInp" type="text" placeholder="Cari snippet, author, tag…" oninput="doSearch(this.value)" autocomplete="off"/>
@@ -126,8 +126,15 @@
   </aside>
   <main class="main-content">
     <div class="page-header">
-      <h1 class="page-title"><span id="pageTitle">Explore.</span></h1>
-      <p class="page-sub" id="pageSub">Browse koleksi snippet code siap pakai. <span id="resultCount" style="font-family:var(--mono);font-size:11px;color:var(--text3)"></span></p>
+      <div class="page-hd-l">
+        <h1 class="page-title"><span id="pageTitle">Explore.</span></h1>
+        <p class="page-sub" id="pageSub">Browse koleksi snippet code siap pakai.</p>
+      </div>
+      <div class="page-new-btn">
+        <button class="btn btn-primary btn-sm" id="newBtnDesk" onclick="openOv('ov-new')">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zm1 7V3.5a.5.5 0 0 0-1 0V7H4.5a.5.5 0 0 0 0 1H8v3.5a.5.5 0 0 0 1 0V8h3.5a.5.5 0 0 0 0-1H9z"/></svg>Upload
+        </button>
+      </div>
     </div>
     <div class="list" id="list">
       <div class="empty-state"><div class="spin"></div><h3>Loading…</h3><p>Mengambil data dari API</p></div>
@@ -140,25 +147,26 @@
 <!-- DETAIL -->
 <div class="ov" id="ov-detail" onclick="bgClose(event,'ov-detail')">
   <div class="modal modal-xl">
-    <div class="mh"><div class="d-meta"><span class="tag" id="d-lp"></span><span id="d-auth" style="font-family:var(--mono);font-size:11px;color:var(--text3)"></span></div><button class="mcl" onclick="closeOv('ov-detail')">✕</button></div>
+    <div class="mh"><div class="d-meta"><span class="tag" id="d-lp"></span><span id="d-auth" style="font-family:var(--mono);font-size:11px;color:var(--text2)"></span></div><button class="mcl" onclick="closeOv('ov-detail')">✕</button></div>
     <h2 class="d-title" id="d-title"></h2>
     <p class="d-desc" id="d-desc"></p>
     <div class="d-tags" id="d-tags"></div>
     <div class="cblock">
       <div class="cbar">
-        <div class="cdots"><div class="cdot" style="background:#ff5e6c"></div><div class="cdot" style="background:#ffcc5c"></div><div class="cdot" style="background:#2dd4a0"></div><span class="cfname" id="d-fname"></span></div>
+        <span class="cfname" id="d-fname"></span>
         <div class="cacts">
-          <button class="btn btn-ghost btn-xs" onclick="copyCode()"><svg width="11" height="11" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>Copy</button>
-          <button class="btn btn-ghost btn-xs" onclick="openRaw()" title="Raw"><svg width="11" height="11" viewBox="0 0 16 16" fill="currentColor"><path d="M5.657 2.758 1.415 7 5.657 11.243l-1.414 1.414L0 7l4.243-4.243 1.414 1.001zM10.343 2.758l1.414-1.001L16 7l-4.243 4.657-1.414-1.414L14.585 7l-4.242-4.242z"/></svg>Raw</button>
-
-
+          <button class="btn btn-ghost btn-xs" onclick="copyCode()">
+            <svg width="11" height="11" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>Copy
+          </button>
+          <button class="btn btn-ghost btn-xs" onclick="openRaw()">
+            <svg width="11" height="11" viewBox="0 0 16 16" fill="currentColor"><path d="M5.657 2.758 1.415 7 5.657 11.243l-1.414 1.414L0 7l4.243-4.243 1.414 1.001zM10.343 2.758l1.414-1.001L16 7l-4.243 4.657-1.414-1.414L14.585 7l-4.242-4.242z"/></svg>Raw
+          </button>
         </div>
       </div>
       <div class="cscroll"><pre><code id="d-code" class="hljs"></code></pre></div>
     </div>
-
     <div class="sharebox">
-      <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor" style="color:var(--accentl);flex-shrink:0"><path d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5zm-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z"/></svg>
+      <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor" style="color:var(--al);flex-shrink:0"><path d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5zm-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z"/></svg>
       <span class="shareurl" id="shareUrl"></span>
       <button class="btn btn-ghost btn-xs" onclick="copyShareLink()">Copy</button>
     </div>
