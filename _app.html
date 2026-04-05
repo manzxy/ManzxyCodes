@@ -94,20 +94,27 @@
 (function(){
   var fill = document.getElementById('splashBarFill');
   var pct = 0;
+  var done = false;
   var iv = setInterval(function(){
-    pct = Math.min(pct + (pct < 70 ? 2.5 : pct < 90 ? 0.8 : 0.2), 99);
+    pct = Math.min(pct + (pct < 60 ? 3 : pct < 85 ? 1.2 : 0.3), 96);
     if(fill) fill.style.width = pct + '%';
   }, 40);
-  window._splashInterval = iv;
-  window._splashDone = function(){
+
+  function hideSplash(){
+    if(done) return;
+    done = true;
     clearInterval(iv);
     if(fill) fill.style.width = '100%';
     setTimeout(function(){
       var s = document.getElementById('splash');
-      if(s) s.classList.add('out');
-      setTimeout(function(){ if(s) s.remove(); }, 500);
-    }, 280);
-  };
+      if(s){ s.classList.add('out'); setTimeout(function(){ if(s&&s.parentNode) s.remove(); }, 480); }
+    }, 250);
+  }
+
+  window._splashDone = hideSplash;
+
+  // Hard fallback: dismiss after 6s no matter what
+  setTimeout(hideSplash, 6000);
 })();
 </script>
 <div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
