@@ -207,7 +207,7 @@
 
   <div class="docs-url">
     <svg viewBox="0 0 16 16" fill="currentColor" style="width:14px;height:14px;opacity:.5"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm7.5-6.923c-.67.204-1.335.82-1.887 1.855-.143.268-.276.56-.395.872.705.157 1.472.257 2.282.287V1.077zM4.249 3.539c.142-.384.304-.744.481-1.078a6.7 6.7 0 0 1 .597-.933A7.01 7.01 0 0 0 3.051 3.05c.362.184.763.349 1.198.49zM3.509 7.5c.036-1.07.188-2.087.418-3.007.01-.037.02-.074.034-.11a13.569 13.569 0 0 1-1.574-.65 7.48 7.48 0 0 0-.577 3.767h1.7zm1.4-2.741a12.344 12.344 0 0 0-.4 2.741H7.5V5.091c-.91-.03-1.783-.145-2.591-.332zM8.5 5.09V7.5h2.99a12.342 12.342 0 0 0-.399-2.741c-.808.187-1.681.301-2.591.332zM4.51 8.5c.035.987.176 1.914.399 2.741A13.612 13.612 0 0 1 7.5 10.91V8.5H4.51zm3.99 0v2.409c.91.03 1.783.145 2.591.332.223-.827.364-1.754.4-2.741H8.5zm-3.282 3.696c.12.312.252.604.395.872.552 1.035 1.218 1.65 1.887 1.855V11.91c-.81.03-1.577.13-2.282.287zm.11.384c-.185.552-.328 1.12-.398 1.675a7.01 7.01 0 0 0 .5.12 7.01 7.01 0 0 0-.102-1.795zm4.254-.384c-.706-.157-1.473-.257-2.282-.287v2.013c.67-.204 1.335-.82 1.887-1.855.143-.268.276-.56.395-.872z"/></svg>
-    Base URL: <strong style="color:var(--al)">https://manzxy-codes.vercel.app/api</strong>
+    Base URL: <strong style="color:var(--al)"><span id="info-base-url">loading...</span></strong>
   </div>
 
   <div class="tabs">
@@ -537,6 +537,28 @@ print(f<span class="cs">"JS snippets: {len(js)}"</span>)
   </div>
 </footer>
 
+
+<script>
+(function(){
+  var base = window.location.origin;
+  // Update base URL display
+  var el = document.getElementById('info-base-url');
+  if(el) el.textContent = base + '/api';
+  // Update all code examples
+  document.querySelectorAll('pre.ce-code, pre.resp-code').forEach(function(pre){
+    pre.innerHTML = pre.innerHTML
+      .replace(/https:\/\/manzxy-codes\.vercel\.app/g, base)
+      .replace(/https:\/\/manzxy\.biz\.id/g, base);
+  });
+  // Update copy button onclick handlers
+  document.querySelectorAll('.copy-tiny[onclick]').forEach(function(btn){
+    var oc = btn.getAttribute('onclick') || '';
+    oc = oc.replace(/https:\/\/manzxy-codes\.vercel\.app/g, base)
+            .replace(/https:\/\/manzxy\.biz\.id/g, base);
+    btn.setAttribute('onclick', oc);
+  });
+})();
+</script>
 <script src="/info.js" defer></script>
 </body>
 </html>

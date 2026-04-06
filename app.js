@@ -22,6 +22,32 @@ function decodeId(hash){
   return rows.find(function(r){return encodeId(r.id)===hash;})||null;
 }
 
+// ── SLUG — buat URL cantik dari title
+function makeSlug(title,id){
+  var slug=(title||'snippet')
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g,'')
+    .trim()
+    .replace(/\s+/g,'-')
+    .replace(/-+/g,'-')
+    .slice(0,50)
+    .replace(/-$/g,'');
+  if(!slug) slug='snippet';
+  return slug+'-'+encodeId(id);
+}
+
+// Parse slug dari URL path — ambil hash 8 char terakhir setelah '-'
+function parseSlug(slugOrHash){
+  if(!slugOrHash) return null;
+  // Format baru: "judul-snippet-a3f8c1d2" → ambil 8 char terakhir
+  var parts=slugOrHash.split('-');
+  var last=parts[parts.length-1];
+  if(last&&/^[0-9a-f]{8}$/i.test(last)) return last.toLowerCase();
+  // Format lama: langsung hash 8 char
+  if(/^[0-9a-f]{8}$/i.test(slugOrHash)) return slugOrHash.toLowerCase();
+  return null;
+}
+
 const ICONS={
   ok:'<path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 1.06-1.06L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0z"/>',
   fail:'<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.553.553 0 0 1-1.1 0L7.1 4.995z"/>',
@@ -93,12 +119,22 @@ function setBtn(id,loading){
 
   await load();
 
-  // BUG FIX: check URL param AFTER load so rows is populated
-  var sid=new URLSearchParams(location.search).get('id');
-  if(sid){
-    // BUG FIX: decodeId returns null if not found, was crashing on .id access
-    var found=decodeId(sid);
-    if(!found) found=rows.find(function(r){return String(r.id)===sid;})||null;
+  // Support both /app/judul-snippet-a3f8c1d2 (path slug) and /app?id=a3f8c1d2 (old query)
+  var urlHash = null;
+  var pathParts = location.pathname.split('/');
+  var pathSlug = pathParts.length >= 3 ? pathParts[2] : null;
+  if(pathSlug) urlHash = parseSlug(pathSlug);
+  if(!urlHash){
+    var qid = new URLSearchParams(location.search).get('id');
+    if(qid) urlHash = parseSlug(qid);
+  }
+  if(urlHash){
+    var found = decodeId(urlHash);
+    if(!found){
+      // Hash not in current page — fallback to numeric if it's actually numeric
+      var qidRaw = new URLSearchParams(location.search).get('id');
+      if(qidRaw) found = rows.find(function(r){return String(r.id)===qidRaw;})||null;
+    }
     if(found) openDetail(found.id);
   }
 })();
@@ -322,7 +358,10 @@ async function openDetail(id){
     }
   }
 
-  set('shareUrl',window.location.origin+'/app?id='+encodeId(nid));
+  var slug = makeSlug(s.title, nid);
+  // Share URL pakai domain yang sedang dibuka (tidak hardcode)
+  set('shareUrl', window.location.origin + '/app/' + slug);
+
   var date=s.created_at?fmtDate(s.created_at):'';
   html('dinfo',
     '<b>'+esc(s.author||'anon')+'</b>'
@@ -342,8 +381,7 @@ async function openDetail(id){
        +'<button class="btn btn-danger btn-sm" onclick="closeOv(\'ov-detail\');openDelM('+nid+')">Hapus</button>'));
 
   openOv('ov-detail');
-  // BUG FIX: use replaceState with encoded ID, not raw numeric
-  history.replaceState(null,'','/app?id='+encodeId(nid));
+  history.replaceState(null, '', '/app/' + slug);
 }
 
 // ── LIKE
@@ -465,12 +503,12 @@ function openEditM(id){
   if(!s.code){
     var ce=$(  'e-code');
     if(ce) ce.placeholder='Memuat kode…';
-    apiFetch('/api/snippet/'+encodeId(nid),'GET',null,10000).then(function(r){
+    apiFetch('/api/snippet/'+encodeId(nid)+'?_t='+Date.now(),'GET',null,10000).then(function(r){
       return r.ok?r.json():null;
     }).then(function(full){
       if(full&&full.code){s.code=full.code;sv('e-code',full.code);}
-      var ce2=$(  'e-code');if(ce2) ce2.placeholder='';
-    }).catch(function(){});
+      var ce2=$(  'e-code');if(ce2) ce2.placeholder='// paste kode di sini…';
+    }).catch(function(){var ce3=$(  'e-code');if(ce3)ce3.placeholder='Gagal memuat kode';});
   }
   openOv('ov-edit');
 }
