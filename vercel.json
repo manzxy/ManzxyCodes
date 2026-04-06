@@ -8,6 +8,10 @@
   },
   "rewrites": [
     {
+      "source": "/raw/:id",
+      "destination": "/api/raw/:id"
+    },
+    {
       "source": "/app",
       "destination": "/_app.html"
     },

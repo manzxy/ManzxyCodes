@@ -428,19 +428,38 @@ async function toggleLike(id){
   }
 }
 
-// ── COPY & RAW
+// ── COPY, RAW & DOWNLOAD
 function copyCode(){
   if(!curSnip||!curSnip.code){toast('Kode belum dimuat','fail');return;}
-  navigator.clipboard.writeText(curSnip.code).then(function(){toast('Copied!','ok');}).catch(function(){toast('Gagal copy','fail');});
+  navigator.clipboard.writeText(curSnip.code)
+    .then(function(){toast('Copied!','ok');})
+    .catch(function(){toast('Gagal copy','fail');});
 }
 function copyShareLink(){
   var su=$(  'shareUrl');
   if(!su){toast('Gagal','fail');return;}
-  navigator.clipboard.writeText(su.textContent).then(function(){toast('Link copied!','info');}).catch(function(){toast('Gagal copy','fail');});
+  navigator.clipboard.writeText(su.textContent)
+    .then(function(){toast('Link copied!','info');})
+    .catch(function(){toast('Gagal copy','fail');});
 }
 function openRaw(){
   if(!curSnip) return;
-  window.open('/api/snippet/'+encodeId(Number(curSnip.id))+'/raw','_blank','noopener');
+  // Short URL: /raw/:hash
+  var url='/raw/'+encodeId(Number(curSnip.id));
+  window.open(url,'_blank','noopener');
+}
+function downloadCode(){
+  if(!curSnip) return;
+  // Force download via ?dl=1
+  var url='/raw/'+encodeId(Number(curSnip.id))+'?dl=1';
+  var a=document.createElement('a');
+  a.href=url;
+  a.download=''; // filename comes from Content-Disposition header
+  a.rel='noopener';
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(function(){document.body.removeChild(a);},500);
+  toast('Mengunduh...','info');
 }
 
 // ── UPLOAD SNIPPET
