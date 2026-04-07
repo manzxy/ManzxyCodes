@@ -148,6 +148,20 @@
   <div class="sec-tag">Contact</div>
   <h2 class="sec-title">Hubungi Owner</h2>
   <p class="sec-sub">Bug report, kolaborasi, atau sekedar nanya — Manzxy available di beberapa kanal.</p>
+  <div class="owner-card">
+    <img
+      src="https://raw.githubusercontent.com/uploader762/dat1/main/uploads/6941ac-1775493553900.jpg"
+      alt="Manzxy"
+      class="owner-avatar"
+      loading="lazy"
+      onerror="this.style.display='none'"
+    />
+    <div class="owner-info">
+      <div class="owner-name">Manzxy</div>
+      <div class="owner-role">Developer · ManzxyCodes</div>
+      <div class="owner-bio">Bikin tools simpel buat developer Indonesia. Semua open, gratis, no BS.</div>
+    </div>
+  </div>
   <div class="contacts">
     <div class="cc cc-wa">
       <div class="cc-head">
@@ -253,14 +267,14 @@
 
     <details class="doc-card">
       <summary>
-        <div class="sum-l"><span class="dm dm-get">GET</span><span class="doc-ep">/api/snippet/:id/raw</span></div>
+        <div class="sum-l"><span class="dm dm-get">GET</span><span class="doc-ep">/raw/:hash</span></div>
         <span class="sum-short">Raw code as text/plain</span>
         <span class="sum-arr">▼</span>
       </summary>
       <div class="doc-body">
-        <div class="ibox ib-tip"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/></svg>Response berupa teks murni (Content-Type: text/plain). Cocok untuk <code>curl | sh</code> atau preview browser.</div>
-        <div class="ce"><div class="ce-bar"><span class="ce-lang">curl</span><button class="copy-tiny" onclick="cpEx(this,'curl https://manzxy-codes.vercel.app/api/snippet/a3f8c1d2/raw')">copy</button></div>
-        <pre class="ce-code"><span class="cp">curl</span> https://manzxy-codes.vercel.app/api/snippet/<span class="cm">a3f8c1d2</span>/raw</pre></div>
+        <div class="ibox ib-tip"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/></svg>Raw code sebagai text/plain. URL pendek: <code>/raw/:hash</code>. Tambah <code>?dl=1</code> untuk download file.</div>
+        <div class="ce"><div class="ce-bar"><span class="ce-lang">curl</span><button class="copy-tiny" onclick="cpEx(this,'curl https://manzxy-codes.vercel.app/raw/a3f8c1d2')">copy</button></div>
+        <pre class="ce-code"><span class="cp">curl</span> https://manzxy-codes.vercel.app/raw/<span class="cm">a3f8c1d2</span></pre></div>
       </div>
     </details>
 
@@ -541,21 +555,22 @@ print(f<span class="cs">"JS snippets: {len(js)}"</span>)
 <script>
 (function(){
   var base = window.location.origin;
-  // Update base URL display
+  // Base URL display
   var el = document.getElementById('info-base-url');
   if(el) el.textContent = base + '/api';
-  // Update all code examples
+  // Replace all hardcoded URLs in pre/code examples
   document.querySelectorAll('pre.ce-code, pre.resp-code').forEach(function(pre){
     pre.innerHTML = pre.innerHTML
       .replace(/https:\/\/manzxy-codes\.vercel\.app/g, base)
-      .replace(/https:\/\/manzxy\.biz\.id/g, base);
+      .replace(/https:\/\/(?:www\.)?manzxy\.biz\.id/g, base);
   });
-  // Update copy button onclick handlers
-  document.querySelectorAll('.copy-tiny[onclick]').forEach(function(btn){
-    var oc = btn.getAttribute('onclick') || '';
+  // Replace in copy button onclick text
+  document.querySelectorAll('[onclick]').forEach(function(el){
+    var oc = el.getAttribute('onclick') || '';
+    if(oc.indexOf('manzxy') === -1) return;
     oc = oc.replace(/https:\/\/manzxy-codes\.vercel\.app/g, base)
-            .replace(/https:\/\/manzxy\.biz\.id/g, base);
-    btn.setAttribute('onclick', oc);
+           .replace(/https:\/\/(?:www\.)?manzxy\.biz\.id/g, base);
+    el.setAttribute('onclick', oc);
   });
 })();
 </script>
