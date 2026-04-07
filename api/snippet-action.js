@@ -1,17 +1,11 @@
 // api/snippet-action.js
-// PUT    /api/snippet-action → edit snippet (key atau admin cookie)
-// DELETE /api/snippet-action → hapus snippet (key atau admin cookie)
+// PUT    /api/snippet-action  →  edit snippet (key atau admin cookie)
+// DELETE /api/snippet-action  →  hapus snippet (key atau admin cookie)
 
-import { createClient } from '@supabase/supabase-js';
-import { jwtVerify }    from 'jose';
-
-const svc = () => createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
-
-function parseBody(req) {
-  if (!req.body) return {};
-  if (typeof req.body === 'string') { try { return JSON.parse(req.body); } catch { return {}; } }
-  return req.body || {};
-}
+import { jwtVerify }           from 'jose';
+import { svc }                 from '../src/lib/db.js';
+import { parseBody, setCORS,
+         handleOptions }       from '../src/lib/apiHelpers.js';
 
 async function hashKey(raw) {
   const salt = process.env.KEY_SALT || 'manzxycodes_default_salt';
@@ -19,63 +13,92 @@ async function hashKey(raw) {
   return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
-async function isAdmin(req) {
+async function checkAdmin(req) {
+  const JWT = process.env.JWT_SECRET;
+  if (!JWT) return false;
   try {
-    const match = (req.headers.cookie || '').match(/mzx_token=([^;]+)/);
-    if (!match) return false;
-    await jwtVerify(match[1], new TextEncoder().encode(process.env.JWT_SECRET));
+    const m = (req.headers.cookie || '').match(/mzx_token=([^;]+)/);
+    if (!m) return false;
+    await jwtVerify(m[1], new TextEncoder().encode(JWT));
     return true;
   } catch { return false; }
 }
 
+// Rate limit for edit/delete (in-memory per cold start)
+const actionRL = new Map();
+setInterval(() => {
+  const now = Date.now();
+  for (const [k, v] of actionRL) if (now > v) actionRL.delete(k);
+}, 5 * 60_000);
+
 export default async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'PUT,DELETE,OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  if (req.method === 'OPTIONS') return res.status(200).end();
-  if (!['PUT','DELETE'].includes(req.method)) return res.status(405).json({ error: 'Method not allowed' });
+  setCORS(res, 'PUT,DELETE,OPTIONS');
+  if (handleOptions(req, res)) return;
+  if (!['PUT', 'DELETE'].includes(req.method))
+    return res.status(405).json({ error: 'Method not allowed' });
 
-  const body             = parseBody(req);
-  const { id, snippetKey, title, language, description, tags, code } = body;
+  const body = parseBody(req);
+  const { id: rawId, snippetKey, title, language, description, tags, code } = body;
 
-  if (!id) return res.status(400).json({ error: 'id diperlukan' });
+  // Validate id
+  const id = parseInt(rawId, 10);
+  if (!Number.isFinite(id) || id <= 0)
+    return res.status(400).json({ error: 'id tidak valid' });
 
-  const admin = await isAdmin(req);
-  const db    = svc();
+  const admin = await checkAdmin(req);
 
-  // Kalau bukan admin → wajib cek key
   if (!admin) {
-    if (!snippetKey) return res.status(403).json({ error: 'Snippet key diperlukan' });
-    const { data, error } = await db.from('snippets').select('snippet_key_hash').eq('id', id).single();
+    if (!snippetKey || typeof snippetKey !== 'string' || snippetKey.trim().length < 3)
+      return res.status(403).json({ error: 'Snippet key diperlukan' });
+
+    // Rate limit: 10 attempts per 5 min per IP+id combo
+    const ip  = (req.headers['x-forwarded-for'] || '').split(',')[0].trim() || 'unknown';
+    const rlk = `${ip}:${id}`;
+    const now = Date.now();
+    if (actionRL.has(rlk)) {
+      const until = actionRL.get(rlk);
+      if (now < until)
+        return res.status(429).json({ error: 'Terlalu banyak percobaan. Tunggu 5 menit.' });
+    }
+
+    const { data, error } = await svc
+      .from('snippets')
+      .select('snippet_key_hash')
+      .eq('id', id)
+      .single();
+
     if (error || !data) return res.status(404).json({ error: 'Snippet tidak ditemukan' });
-    if (await hashKey(snippetKey) !== data.snippet_key_hash) {
-      await new Promise(r => setTimeout(r, 150 + Math.random() * 200));
-      return res.status(403).json({ error: 'Key salah!' });
+
+    const inputHash = await hashKey(snippetKey.trim());
+    if (inputHash !== data.snippet_key_hash) {
+      // Set rate limit on repeated wrong key
+      actionRL.set(rlk, now + 5 * 60_000);
+      await new Promise(r => setTimeout(r, 150 + Math.random() * 200)); // anti brute-force delay
+      return res.status(403).json({ error: 'Key salah' });
     }
   }
 
-  // PUT — edit
   if (req.method === 'PUT') {
-    const tagsArr = Array.isArray(tags)
-      ? tags.map(t => String(t).trim()).filter(Boolean)
-      : String(tags || '').split(',').map(t => t.trim()).filter(Boolean);
-
+    // Build update object — only include defined non-empty fields
     const upd = {};
-    if (title       !== undefined) upd.title       = title;
-    if (language    !== undefined) upd.language    = language;
-    if (description !== undefined) upd.description = description;
-    if (tags        !== undefined) upd.tags        = tagsArr;
-    if (code        !== undefined) upd.code        = code;
-
+    if (title       != null) upd.title       = String(title).trim().slice(0, 120);
+    if (language    != null) upd.language    = String(language).trim();
+    if (description != null) upd.description = String(description).trim().slice(0, 500);
+    if (code        != null) upd.code        = String(code).slice(0, 50000);
+    if (tags        != null) {
+      upd.tags = (Array.isArray(tags) ? tags : String(tags).split(','))
+        .map(t => String(t).trim()).filter(Boolean).slice(0, 5);
+    }
     if (!Object.keys(upd).length) return res.status(400).json({ error: 'Tidak ada perubahan' });
+    if (upd.title && upd.title.length < 3) return res.status(400).json({ error: 'Judul terlalu pendek' });
 
-    const { error } = await db.from('snippets').update(upd).eq('id', id);
-    if (error) { console.error('[PUT]', error.message); return res.status(500).json({ error: error.message }); }
+    const { error } = await svc.from('snippets').update(upd).eq('id', id);
+    if (error) { console.error('[snippet-action PUT]', error.message); return res.status(500).json({ error: 'Gagal update' }); }
     return res.status(200).json({ ok: true });
   }
 
   // DELETE
-  const { error } = await db.from('snippets').delete().eq('id', id);
-  if (error) { console.error('[DELETE]', error.message); return res.status(500).json({ error: error.message }); }
+  const { error } = await svc.from('snippets').delete().eq('id', id);
+  if (error) { console.error('[snippet-action DELETE]', error.message); return res.status(500).json({ error: 'Gagal hapus' }); }
   return res.status(200).json({ ok: true });
 }

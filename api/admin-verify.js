@@ -2,12 +2,11 @@
 // GET /api/admin-verify → { admin: true|false }
 
 import { jwtVerify } from 'jose';
+import { setCORS, handleOptions } from '../src/lib/apiHelpers.js';
 
 export default async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  if (req.method === 'OPTIONS') return res.status(200).end();
+  setCORS(res, 'GET,OPTIONS');
+  if (handleOptions(req, res)) return;
 
   const JWT_SEC = process.env.JWT_SECRET;
   if (!JWT_SEC) return res.status(200).json({ admin: false });
