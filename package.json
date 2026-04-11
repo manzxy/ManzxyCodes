@@ -1,7 +1,7 @@
 {
   "name": "manzxycodes",
   "version": "1.0.0",
-  "description": "ManzxyCodes \u2014 Platform snippet code by Manzxy",
+  "description": "ManzxyCodes Platform snippet code by Manzxy",
   "private": true,
   "type": "module",
   "main": "manzxy.js",
