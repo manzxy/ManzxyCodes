@@ -353,7 +353,7 @@ async function openDetail(id){
       ce.textContent='Loading kode…';
       ce.className='hljs';
       // BUG FIX: use new hashed endpoint instead of old ?id= endpoint
-      apiFetch('/api/snippet/'+encodeId(nid),'GET',null,10000).then(function(r){
+      apiFetch('/api/code?id='+encodeId(nid)+'&type=detail','GET',null,10000).then(function(r){
         return r.ok?r.json():null;
       }).then(function(full){
         if(!full||!full.code){ce.textContent='Kode tidak tersedia.';return;}
@@ -459,7 +459,7 @@ function copyShareLink(){
 }
 function openRaw(){
   if(!curSnip) return;
-  window.open('/raw/'+encodeId(Number(curSnip.id)),'_blank','noopener');
+  window.open('/api/code?id='+encodeId(Number(curSnip.id))+'&type=raw','_blank','noopener');
 }
 function downloadCode(){
   if(!curSnip){toast('Buka snippet dulu','fail');return;}
@@ -477,7 +477,7 @@ function downloadCode(){
     setTimeout(function(){URL.revokeObjectURL(url);if(a.parentNode)a.parentNode.removeChild(a);},1500);
     toast('Mengunduh '+fname+'.'+ext,'info');
   }catch(e){
-    window.open('/raw/'+encodeId(Number(curSnip.id))+'?dl=1','_blank','noopener');
+    window.open('/api/code?id='+encodeId(Number(curSnip.id))+'&type=raw&dl=1','_blank','noopener');
     toast('Membuka di tab baru...','info');
   }
 }
@@ -542,7 +542,7 @@ function openEditM(id){
   if(!s.code){
     var ce=$(  'e-code');
     if(ce) ce.placeholder='Memuat kode…';
-    apiFetch('/api/snippet/'+encodeId(nid)+'?_t='+Date.now(),'GET',null,10000).then(function(r){
+    apiFetch('/api/code?id='+encodeId(nid)+'&type=detail&_t='+Date.now(),'GET',null,10000).then(function(r){
       return r.ok?r.json():null;
     }).then(function(full){
       if(full&&full.code){s.code=full.code;sv('e-code',full.code);}
