@@ -433,33 +433,46 @@ function copyCode(){
   if(!curSnip||!curSnip.code){toast('Kode belum dimuat','fail');return;}
   navigator.clipboard.writeText(curSnip.code)
     .then(function(){toast('Copied!','ok');})
-    .catch(function(){toast('Gagal copy','fail');});
+    .catch(function(){
+      // Fallback execCommand for older mobile browsers
+      var ta=document.createElement('textarea');
+      ta.value=curSnip.code;ta.style.cssText='position:fixed;opacity:0;top:0;left:0';
+      document.body.appendChild(ta);ta.focus();ta.select();
+      try{document.execCommand('copy');toast('Copied!','ok');}
+      catch(e){toast('Gagal copy','fail');}
+      document.body.removeChild(ta);
+    });
 }
 function copyShareLink(){
   var su=$(  'shareUrl');
-  if(!su){toast('Gagal','fail');return;}
+  if(!su||!su.textContent){toast('Gagal','fail');return;}
   navigator.clipboard.writeText(su.textContent)
     .then(function(){toast('Link copied!','info');})
     .catch(function(){toast('Gagal copy','fail');});
 }
 function openRaw(){
   if(!curSnip) return;
-  // Short URL: /raw/:hash
-  var url='/raw/'+encodeId(Number(curSnip.id));
-  window.open(url,'_blank','noopener');
+  window.open('/raw/'+encodeId(Number(curSnip.id)),'_blank','noopener');
 }
 function downloadCode(){
-  if(!curSnip) return;
-  // Force download via ?dl=1
-  var url='/raw/'+encodeId(Number(curSnip.id))+'?dl=1';
-  var a=document.createElement('a');
-  a.href=url;
-  a.download=''; // filename comes from Content-Disposition header
-  a.rel='noopener';
-  document.body.appendChild(a);
-  a.click();
-  setTimeout(function(){document.body.removeChild(a);},500);
-  toast('Mengunduh...','info');
+  if(!curSnip){toast('Buka snippet dulu','fail');return;}
+  if(!curSnip.code){toast('Kode belum dimuat','fail');return;}
+  // Blob download works on all mobile browsers regardless of CORS
+  try{
+    var ext=LANG_EXT[curSnip.language]||'txt';
+    var fname=(curSnip.title||'snippet').toLowerCase()
+      .replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,50)||'snippet';
+    var blob=new Blob([curSnip.code],{type:'text/plain;charset=utf-8'});
+    var url=URL.createObjectURL(blob);
+    var a=document.createElement('a');
+    a.href=url;a.download=fname+'.'+ext;a.style.display='none';
+    document.body.appendChild(a);a.click();
+    setTimeout(function(){URL.revokeObjectURL(url);if(a.parentNode)a.parentNode.removeChild(a);},1500);
+    toast('Mengunduh '+fname+'.'+ext,'info');
+  }catch(e){
+    window.open('/raw/'+encodeId(Number(curSnip.id))+'?dl=1','_blank','noopener');
+    toast('Membuka di tab baru...','info');
+  }
 }
 
 // ── UPLOAD SNIPPET

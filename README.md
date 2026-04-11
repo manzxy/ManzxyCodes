@@ -1,8 +1,8 @@
 # ManzxyCodes
 
-Platform snippet code open untuk developer Indonesia. Simpan, share, dan temukan kode siap pakai — gratis selamanya.
+Platform snippet code open untuk developer Indonesia. Simpan, share, temukan kode siap pakai — gratis selamanya.
 
-**Live:** https://manzxy-codes.vercel.app
+**Live:** https://manzxy-codes.vercel.app · https://manzxy.biz.id
 
 ---
 
@@ -10,218 +10,166 @@ Platform snippet code open untuk developer Indonesia. Simpan, share, dan temukan
 
 | Layer | Tech |
 |-------|------|
-| Frontend | Vanilla HTML/CSS/JS (no framework) |
-| Backend | Vercel Serverless Functions (Node.js ESM) |
-| Database | Supabase (PostgreSQL) |
-| Auth | JWT HttpOnly cookie (jose) |
-| Highlighting | highlight.js (tokyo-night-dark) |
+| Frontend | Vanilla HTML/CSS/JS |
+| Backend | Vercel Serverless (Node.js 18+ ESM) |
+| Database | Supabase (PostgreSQL + RLS) |
+| Auth | JWT HttpOnly cookie (`jose`) |
+| Highlighting | highlight.js `tokyo-night-dark` |
 | Fonts | Inter + JetBrains Mono |
 
 ---
 
-## Struktur File
+## Struktur Project
 
 ```
 ManzxyCodes/
-├── _app.html          # Main app page (/app)
-├── _info.html         # Landing/info page (/)
-├── app.css            # App styles
-├── app.js             # App logic (fetch, render, modal, search)
-├── info.css           # Landing styles
-├── info.js            # Landing logic (stats, tabs, smooth scroll)
-├── vercel.json        # Routing config
-├── schema.sql         # Supabase schema + RPC functions
+│
+├── api/                        ← Vercel Serverless endpoints
+│   ├── snippets.js             GET list / POST like+view
+│   ├── snippet-create.js       POST upload snippet baru
+│   ├── snippet-action.js       PUT edit / DELETE hapus
+│   ├── snippet/[id].js         GET detail + code field
+│   ├── raw/[id].js             GET /raw/:hash raw text / download
+│   ├── admin-login.js          POST → set JWT cookie
+│   ├── admin-logout.js         POST → clear cookie
+│   └── admin-verify.js         GET → check JWT
+│
+├── src/lib/                    ← Shared libs (diimport semua api/)
+│   ├── db.js                   Supabase singleton (pub + svc)
+│   ├── hashId.js               encodeId / hashToNumeric / parseId
+│   ├── langMeta.js             file extension + safe filename
+│   └── apiHelpers.js           setCORS / handleOptions / parseBody / getIP
+│
+├── _app.html                   App UI (/app)
+├── app.js                      Logic: fetch, render, modal, search
+├── app.css                     App styles
+│
+├── _info.html                  Landing + API docs (/)
+├── info.js                     Landing: stats, tabs, scroll
+├── info.css                    Landing styles
+│
+├── vercel.json                 Routing rewrites + headers
 ├── package.json
-└── api/
-    ├── snippets.js          # GET list / POST like+view
-    ├── snippet-create.js    # POST upload snippet baru
-    ├── snippet-action.js    # PUT edit / DELETE hapus
-    ├── snippet-get.js       # GET single snippet (deprecated, pakai [id].js)
-    ├── admin-login.js       # POST login admin → set JWT cookie
-    ├── admin-logout.js      # POST logout → clear cookie
-    ├── admin-verify.js      # GET cek JWT cookie valid
-    └── snippet/
-        ├── [id].js          # GET /api/snippet/:hash → detail + code
-        └── [id]/
-            └── raw.js       # GET /api/snippet/:hash/raw → plain text
+├── schema.sql                  Supabase schema + RPC functions
+└── manzxy.js / nginx.conf      VPS setup (opsional)
 ```
 
 ---
 
-## Env Variables
+## Setup
 
-Buat file `.env.local` (local) atau set di Vercel Dashboard:
+### Env Variables
 
 ```env
-# Supabase
 SUPABASE_URL=https://xxxx.supabase.co
 SUPABASE_ANON_KEY=eyJ...
 SUPABASE_SERVICE_ROLE_KEY=eyJ...
-
-# Auth
-JWT_SECRET=random-string-min-32-chars
-KEY_SALT=random-salt-for-snippet-keys
-
-# Admin
+JWT_SECRET=random-min-32-chars
+KEY_SALT=salt-untuk-snippet-key
 ADMIN_USERNAME=manzxy
-ADMIN_PASSWORD_HASH=sha256-hex-of-password+salt
-PASSWORD_SALT=random-salt-for-admin-password
+ADMIN_PASSWORD_HASH=sha256-hex
+PASSWORD_SALT=salt-untuk-admin-pass
 ```
 
-### Generate ADMIN_PASSWORD_HASH
-
-```js
-// node -e "..."
-const salt = 'isi_PASSWORD_SALT_kamu';
-const pass = 'password_kamu';
-const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pass + salt));
-console.log(Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join(''));
+**Generate ADMIN_PASSWORD_HASH:**
+```bash
+node -e "
+const p='password_kamu', s='isi_PASSWORD_SALT';
+crypto.subtle.digest('SHA-256',new TextEncoder().encode(p+s))
+  .then(b=>console.log([...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')));
+"
 ```
 
----
+### Database (Supabase)
 
-## Setup Supabase
+Jalankan `schema.sql` di SQL Editor. Sudah include:
+- Tabel `snippets` + RLS (public read, service-role write)
+- RPC: `increment_views`, `increment_likes`, `decrement_likes` (atomic)
+- Index performa
 
-Jalankan `schema.sql` di **Supabase Dashboard → SQL Editor**:
-
-```sql
--- Tabel sudah include:
--- snippets table + RLS
--- increment_views / increment_likes / decrement_likes (atomic RPC)
--- Index untuk performa query
-```
-
----
-
-## Deploy ke Vercel
+### Deploy Vercel
 
 ```bash
-npm i -g vercel
-vercel --prod
+npm i -g vercel && vercel --prod
 ```
 
-Atau push ke GitHub lalu connect ke Vercel Dashboard.
+### Local Dev
+
+```bash
+npm install && npx vercel dev
+```
 
 ---
 
 ## API Reference
 
-Base URL: `https://manzxy-codes.vercel.app/api`
+Base URL otomatis mengikuti domain yang dibuka (lihat `_info.html` script).
 
-### GET /api/snippets
-List semua snippet (tanpa field `code`). Cache 15s server-side.
-
-```bash
-curl https://manzxy-codes.vercel.app/api/snippets
-```
-
-### POST /api/snippets
-Like/unlike/view counter.
-
-```json
-{ "action": "like", "id": 1 }
-// action: "like" | "unlike" | "view"
-```
-
-Rate limit: view = 1x per 10 menit per IP per snippet. Like = 1x per 5 menit.
-
-### GET /api/snippet/:hash
-Detail snippet termasuk field `code`. `:hash` = 8-char hex encoded ID.
-
-```bash
-curl https://manzxy-codes.vercel.app/api/snippet/a3f8c1d2
-```
-
-### GET /api/snippet/:hash/raw
-Raw code sebagai `text/plain`. Cocok untuk `curl | sh`.
-
-```bash
-curl https://manzxy-codes.vercel.app/api/snippet/a3f8c1d2/raw
-```
-
-### POST /api/snippet-create
-Upload snippet baru.
-
-```json
-{
-  "author": "manzxy",
-  "title": "Fetch Retry",
-  "description": "Auto-retry dengan exponential backoff",
-  "language": "JavaScript",
-  "tags": "fetch, async, retry",
-  "code": "async function fetchRetry...",
-  "snippetKey": "mykey"
-}
-```
-
-`snippetKey` (3–7 char) = password snippet untuk edit/hapus. **Simpan baik-baik, tidak bisa dipulihkan.**
-
-Rate limit: 3 upload per 10 menit per IP.
-
-### PUT /api/snippet-action
-Edit snippet. Butuh `snippetKey` atau admin cookie.
-
-### DELETE /api/snippet-action
-Hapus snippet. Butuh `snippetKey` atau admin cookie.
+| Method | Endpoint | Deskripsi |
+|--------|----------|-----------|
+| GET | `/api/snippets` | List semua snippet (no code, cache 15s) |
+| GET | `/api/snippet/:hash` | Detail + code field |
+| GET | `/raw/:hash` | Raw code sebagai `text/plain` |
+| GET | `/raw/:hash?dl=1` | Download file |
+| POST | `/api/snippets` | Like/unlike/view (`{ action, id }`) |
+| POST | `/api/snippet-create` | Upload snippet baru |
+| PUT | `/api/snippet-action` | Edit snippet (butuh key/admin) |
+| DELETE | `/api/snippet-action` | Hapus snippet (butuh key/admin) |
+| POST | `/api/admin-login` | Login admin |
+| GET | `/api/admin-verify` | Cek JWT |
+| POST | `/api/admin-logout` | Logout |
 
 ---
 
-## Bug Fixes (Changelog)
+## Bug Fixes (Semua Versi)
 
-### v2.3 (current)
-- **FIXED:** Splash screen stuck — tambah hard timeout 6 detik + `done` guard
-- **FIXED:** `app.js` tidak di-include di `_app.html` (loading muter terus)
-- **FIXED:** `localStorage` crash di private mode/storage full — wrapped try/catch
-- **FIXED:** `decodeId()` return null-safe (tidak crash saat snippet tidak ditemukan)
-- **FIXED:** ID type coercion bug — `r.id` bisa string atau number dari DB
-- **FIXED:** `render()` dipanggil sebelum `rows` populated di URL param case
-- **FIXED:** `like` view counter race condition — pakai atomic RPC Supabase
-- **FIXED:** Rate limiting view/like tidak ada di API — tambah in-memory cooldown
-- **FIXED:** Escape key menutup semua modal sekaligus — sekarang hanya topmost
-- **FIXED:** `copyCode()` tidak handle kode belum dimuat
-- **FIXED:** Edit modal buka dengan kode kosong kalau snippet belum pernah dibuka
-- **FIXED:** `openRaw()` pakai `noopener` untuk keamanan
-- **FIXED:** `esc()` function tidak escape double-quote — XSS vector di attribute
-- **FIXED:** Cache key diubah ke `mzx_v2` untuk hindari stale data dari versi lama
-- **FIXED:** `updateCounts()` crash untuk `C++`, `C#`, `F#` — ID mapping khusus
-- **FIXED:** `LANG_EXT` diperluas (Rust, C, C++, Java, dll)
-- **FIXED:** `LANG_HL` tambah Bash, XML, TOML mapping
-- **FIXED:** Double-page bug di `_app.html` (dari versi lama)
-- **FIXED:** Double language section di drawer (dari versi lama)
-- **FIXED:** `openRaw()` pakai blob URL — sekarang buka endpoint `/raw` asli
+### v2.5 — Current
+
+| # | Severity | Bug | Fix |
+|---|----------|-----|-----|
+| 1 | 🔴 | Download gagal — `a.download` + `Content-Disposition` tidak work cross-origin di mobile | Ganti ke **Blob URL** client-side (`URL.createObjectURL`) |
+| 2 | 🔴 | `view` action di `snippets.js` return `{ ok: true }` tapi frontend expect `{ views: n }` | Return `{ views: n }` setelah increment |
+| 3 | 🔴 | Logo masih teks "Mz" — seharusnya pakai foto asli | Ganti semua `<div class="logo-mark">` dengan `<img>` + onerror fallback |
+| 4 | 🟠 | `copyCode()` gagal di mobile browser lama (no Clipboard API) | Tambah fallback `document.execCommand('copy')` |
+| 5 | 🟠 | `apiHelpers.js` — OPTIONS return 200 bukan 204 (standar salah) | Fix ke `res.status(204).end()` |
+| 6 | 🟠 | `apiHelpers.js` — `Authorization` tidak di-whitelist CORS header | Tambah ke `Access-Control-Allow-Headers` |
+| 7 | 🟠 | `langMeta.js` — banyak bahasa missing ext (Sass, Zig, Vue, dll) | Lengkapi semua ext map |
+| 8 | 🟠 | `langMeta.js` — `LANG_EXT[lang]` return `undefined` bukan default | Fix ke `?? 'txt'` (nullish coalescing) |
+| 9 | 🟡 | `db.js` — tidak ada warning kalau env vars missing | Tambah `console.error` kalau env kosong |
+| 10 | 🟡 | `info.js` — `cpEx` tidak ada fallback untuk browser tanpa Clipboard API | Tambah execCommand fallback |
+| 11 | 🟡 | `info.js` — IntersectionObserver `threshold: 0.3` terlalu agresif di mobile | Tambah `rootMargin` agar lebih akurat |
+| 12 | 🟡 | `copyShareLink()` — tidak check `su.textContent` sebelum clipboard write | Tambah null guard |
+| 13 | 🟡 | `downloadCode()` — tidak check `curSnip.code` sebelum blob creation | Tambah early return + toast |
+| 14 | 🟢 | `snippet/[id].js` — cache tidak di-set `at` field, X-Cache selalu HIT | Cache sudah menyimpan `data` langsung (bukan objek dengan `at`) |
+| 15 | 🟢 | `raw/[id].js` — response tidak include `X-Content-Type-Options` | Tambah header security |
+
+### v2.4
+- Download fix (partial — masih pakai server Content-Disposition)
+- Logo gambar ditambahkan
+
+### v2.3
+- Splash stuck — fallback timeout 6s
+- `app.js` tidak di-include (loading muter terus)
+- localStorage crash private mode
+- Atomic RPC untuk like/view
+- Escape menutup semua modal sekaligus
+- `updateCounts()` crash untuk C++, C#, F#
 
 ### v2.2
-- Tambah splash loading screen dengan progress bar + fallback timeout
-- Redesign UI: Inter font, dark theme konsisten
+- URL dari `?id=` ke `/app/title-slug`
+- Raw URL dari `/api/snippet/:hash/raw` ke `/raw/:hash`
+- Refactor shared libs ke `src/lib/`
 
 ### v2.1
-- Tambah `/api/snippet/:hash/raw` endpoint
-- Fix drawer duplicate lang section
-- Responsive layout perbaikan
+- `[id].js` — `parseInt(hash)` = NaN → 400 error
+- Responsive breakpoint
 
 ### v2.0
-- Full redesign CSS/HTML
-- Pixel art theme → clean dark theme
+- Full redesign
 - Fix double page bug
 
 ---
 
-## Local Development
+## Lisensi
 
-```bash
-# Install deps
-npm install
-
-# Run dengan Vercel CLI (baca env dari .env.local)
-npx vercel dev
-```
-
-Akses di `http://localhost:3000`.
-
----
-
-## License
-
-MIT — bebas pakai, modifikasi, deploy sendiri. Credit appreciated.
-
-**by Manzxy** · [Telegram](https://t.me/manzxy)
+MIT · **by [Manzxy](https://t.me/manzxy)**
