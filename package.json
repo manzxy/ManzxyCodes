@@ -5,7 +5,7 @@
   "private": true,
   "type": "module",
   "main": "manzxy.js",
-  "engines": { "node": "24.x" },
+  "engines": { "node": ">=18" },
   "scripts": {
     "start":    "node manzxy.js",
     "dev":      "node --watch manzxy.js",
