@@ -3,7 +3,7 @@
 // :id = 8-char hex hash OR numeric
 
 import { pub }               from '../src/lib/db.js';
-import { parseId, encodeId } from '../src/lib/hashId.js';
+import { parseId }           from '../src/lib/hashId.js';
 import { setCORS, handleOptions } from '../src/lib/apiHelpers.js';
 
 const cache = new Map();
@@ -25,7 +25,7 @@ export default async function handler(req, res) {
   if (cached) {
     res.setHeader('X-Cache', 'HIT');
     res.setHeader('Cache-Control', 'public, max-age=60');
-    return res.status(200).json(cached);
+    return res.status(200).json(cached.data);
   }
 
   const { data, error } = await pub
@@ -36,7 +36,7 @@ export default async function handler(req, res) {
 
   if (error || !data) return res.status(404).json({ error: 'Snippet tidak ditemukan' });
 
-  cache.set(key, data);
+  cache.set(key, { data, at: Date.now() });
   res.setHeader('X-Cache', 'MISS');
   res.setHeader('Cache-Control', 'public, max-age=60');
   return res.status(200).json(data);
