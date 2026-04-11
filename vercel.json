@@ -1,17 +1,13 @@
 {
   "version": 2,
   "functions": {
-    "api/**/*.js": {
+    "api/*.js": {
       "runtime": "nodejs24.x",
       "memory": 128,
       "maxDuration": 10
     }
   },
   "rewrites": [
-    {
-      "source": "/raw/:id",
-      "destination": "/api/raw/:id"
-    },
     {
       "source": "/app",
       "destination": "/_app.html"
@@ -116,4 +112,4 @@
       ]
     }
   ]
-}
+        }
