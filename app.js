@@ -1,4 +1,11 @@
 'use strict';
+// ── LOGO FALLBACK (safe onerror handler — avoids HTML injection via attribute)
+function logoFallback(el){
+  var d=document.createElement('div');
+  d.className='logo-mark';
+  d.textContent='Mz';
+  if(el.parentNode) el.parentNode.replaceChild(d,el);
+}
 // ── CONSTANTS
 const LANG_TAG={"JavaScript":"tag-js","TypeScript":"tag-ts","HTML":"tag-htm","CSS":"tag-css","PHP":"tag-php","Sass":"tag-sass","Python":"tag-py","Go":"tag-go","Java":"tag-jv","Kotlin":"tag-kt","Ruby":"tag-rb","Rust":"tag-rs","C#":"tag-cs","Scala":"tag-sc","Elixir":"tag-ex","Clojure":"tag-clj","Perl":"tag-pl","Erlang":"tag-erl","OCaml":"tag-ml","C":"tag-c","C++":"tag-cpp","Swift":"tag-sw","Dart":"tag-drt","Zig":"tag-zig","Nim":"tag-nim","Assembly":"tag-asm","Shell":"tag-sh","Bash":"tag-sh","PowerShell":"tag-ps","Lua":"tag-lua","Groovy":"tag-grv","SQL":"tag-sql","R":"tag-r","GraphQL":"tag-gql","Julia":"tag-jl","JSON":"tag-json","YAML":"tag-yml","TOML":"tag-toml","XML":"tag-xml","Markdown":"tag-md","Dockerfile":"tag-doc","Solidity":"tag-sol","Haskell":"tag-hs","F#":"tag-fs","Terraform":"tag-tf","Nginx":"tag-ngx","Prisma":"tag-prm","Proto":"tag-pb","Crystal":"tag-cr","V":"tag-v"};
 const LANG_COLOR={"JavaScript":"#f7df1e","TypeScript":"#3178c6","HTML":"#e44d26","CSS":"#1572b6","Sass":"#cc6699","PHP":"#8892be","Vue":"#42b883","React":"#61dafb","Svelte":"#ff3e00","Python":"#3572a5","Go":"#00add8","Java":"#b07219","Kotlin":"#a97bff","Ruby":"#cc342d","Rust":"#dea584","C#":"#178600","Scala":"#c22d40","Elixir":"#6e4a7e","Clojure":"#db5855","Erlang":"#b83998","OCaml":"#3be133","Perl":"#0298c3","Groovy":"#4298b8","C":"#555555","C++":"#f34b7d","Swift":"#f05138","Dart":"#00b4ab","Zig":"#ec915c","Nim":"#ffc200","Assembly":"#6e4c13","Crystal":"#000100","V":"#5d87bf","Shell":"#89e051","Bash":"#4eaa25","PowerShell":"#5391fe","Lua":"#000080","SQL":"#e38c00","R":"#198ce7","GraphQL":"#e10098","Julia":"#a270ba","MATLAB":"#e16737","JSON":"#cbcb41","YAML":"#cb171e","TOML":"#9c4121","XML":"#0060ac","Markdown":"#083fa1","Dockerfile":"#384d54","Terraform":"#7b42bc","Nginx":"#009639","Kubernetes":"#326ce5","Solidity":"#aa6746","Haskell":"#5d4f85","F#":"#b845fc","Prisma":"#0c344b","Proto":"#3f3f3f"};

@@ -7,6 +7,19 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>ManzxyCodes</title>
 <meta name="description" content="Platform snippet code untuk developer Indonesia. By Manzxy."/>
+<!-- Open Graph -->
+<meta property="og:type" content="website"/>
+<meta property="og:site_name" content="ManzxyCodes"/>
+<meta property="og:title" content="ManzxyCodes — Code Archive Platform"/>
+<meta property="og:description" content="Platform snippet code untuk developer Indonesia. By Manzxy."/>
+<meta property="og:image" content="https://raw.githubusercontent.com/uploader762/dat1/main/uploads/6941ac-1775493553900.jpg"/>
+<meta property="og:image:width" content="512"/>
+<meta property="og:image:height" content="512"/>
+<meta property="og:url" content="https://manzxy.biz.id/app"/>
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="ManzxyCodes"/>
+<meta name="twitter:image" content="https://raw.githubusercontent.com/uploader762/dat1/main/uploads/6941ac-1775493553900.jpg"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com"/>
@@ -122,7 +135,7 @@
 <div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
 <nav class="drawer" id="drawer">
   <div class="drawer-top">
-    <div class="drawer-logo"><img src="https://raw.githubusercontent.com/uploader762/dat1/main/uploads/6941ac-1775493553900.jpg" alt="Mz" class="logo-mark logo-img" onerror="this.outerHTML='<div class="logo-mark">Mz</div>'" />ManzxyCodes</div>
+    <div class="drawer-logo"><img src="https://raw.githubusercontent.com/uploader762/dat1/main/uploads/6941ac-1775493553900.jpg" alt="Mz" class="logo-mark logo-img" onerror="logoFallback(this)" />ManzxyCodes</div>
     <button class="drawer-close" onclick="closeDrawer()">✕</button>
   </div>
   <div class="drawer-body">
@@ -168,7 +181,7 @@
 
 <header class="topbar">
   <button class="menu-btn" onclick="openDrawer()"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M1 2.5A.5.5 0 0 1 1.5 2h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 2.5zm0 5A.5.5 0 0 1 1.5 7h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 7zm0 5a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13a.5.5 0 0 1-.5-.5z"/></svg></button>
-  <a href="/app" class="logo"><img src="https://raw.githubusercontent.com/uploader762/dat1/main/uploads/6941ac-1775493553900.jpg" alt="Mz" class="logo-mark logo-img" onerror="this.outerHTML='<div class="logo-mark">Mz</div>'" />ManzxyCodes<span class="logo-ver">v2.1</span></a>
+  <a href="/app" class="logo"><img src="https://raw.githubusercontent.com/uploader762/dat1/main/uploads/6941ac-1775493553900.jpg" alt="Mz" class="logo-mark logo-img" onerror="logoFallback(this)" />ManzxyCodes<span class="logo-ver">v2.1</span></a>
   <div class="tsearch">
     <svg class="si" viewBox="0 0 16 16" fill="currentColor"><path d="M10.68 11.74a6 6 0 0 1-7.922-8.982 6 6 0 0 1 8.982 7.922l3.04 3.04a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215ZM11.5 7a4.499 4.499 0 1 0-8.997 0A4.499 4.499 0 0 0 11.5 7Z"/></svg>
     <input id="searchInp" type="text" placeholder="Cari snippet, author, tag…" oninput="doSearch(this.value)" autocomplete="off"/>

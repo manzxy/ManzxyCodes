@@ -1,4 +1,11 @@
 'use strict';
+// ── LOGO FALLBACK
+function logoFallback(el){
+  var d=document.createElement('div');
+  d.className='logo-mark';
+  d.textContent='Mz';
+  if(el.parentNode) el.parentNode.replaceChild(d,el);
+}
 
 // ── SMOOTH SCROLL
 function smoothTo(hash) {
