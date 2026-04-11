@@ -11,7 +11,7 @@ Platform snippet code open untuk developer Indonesia. Simpan, share, temukan kod
 | Layer | Tech |
 |-------|------|
 | Frontend | Vanilla HTML/CSS/JS |
-| Backend | Vercel Serverless (Node.js 18+ ESM) |
+| Backend | Vercel Serverless (Node.js 24+ ESM) |
 | Database | Supabase (PostgreSQL + RLS) |
 | Auth | JWT HttpOnly cookie (`jose`) |
 | Highlighting | highlight.js `tokyo-night-dark` |
@@ -123,10 +123,14 @@ Base URL otomatis mengikuti domain yang dibuka (lihat `_info.html` script).
 
 ## Bug Fixes (Semua Versi)
 
-### v2.5 — Current
+### v2.6 — Current
 
 | # | Severity | Bug | Fix |
 |---|----------|-----|-----|
+| 0 | 🔵 | Node runtime masih 18, Vercel belum pakai Node 24 | Update engine >=24 + vercel.json nodejs24.x |
+| 0 | 🔵 | Duplicate id="newBtnDesk" (topbar + page header) | Rename topbar → newBtnTopbar |
+| 0 | 🔵 | Favicon tidak ada | Tambah link rel=icon + apple-touch-icon |
+| 0 | 🔵 | Version label masih v2 | Update ke v2.1 |
 | 1 | 🔴 | Download gagal — `a.download` + `Content-Disposition` tidak work cross-origin di mobile | Ganti ke **Blob URL** client-side (`URL.createObjectURL`) |
 | 2 | 🔴 | `view` action di `snippets.js` return `{ ok: true }` tapi frontend expect `{ views: n }` | Return `{ views: n }` setelah increment |
 | 3 | 🔴 | Logo masih teks "Mz" — seharusnya pakai foto asli | Ganti semua `<div class="logo-mark">` dengan `<img>` + onerror fallback |

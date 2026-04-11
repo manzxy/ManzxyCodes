@@ -149,7 +149,7 @@ function showSkeleton(){
 }
 
 // ── CACHE
-var CACHE_KEY='mzx_v2';
+var CACHE_KEY='mzx_v21';
 var CACHE_TTL=30000;
 function getCached(){
   try{
