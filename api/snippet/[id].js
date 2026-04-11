@@ -1,10 +1,10 @@
-// api/snippet-[id].js
+// api/snippet/[id].js
 // GET /api/snippet/:id — snippet detail + code field
 // :id = 8-char hex hash OR numeric
 
-import { pub }               from '../src/lib/db.js';
-import { parseId }           from '../src/lib/hashId.js';
-import { setCORS, handleOptions } from '../src/lib/apiHelpers.js';
+import { pub }               from '../../src/lib/db.js';
+import { parseId }           from '../../src/lib/hashId.js';
+import { setCORS, handleOptions } from '../../src/lib/apiHelpers.js';
 
 const cache = new Map();
 setInterval(() => {
