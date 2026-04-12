@@ -1,12 +1,5 @@
 {
   "version": 2,
-  "functions": {
-    "api/*.js": {
-      "runtime": "nodejs20.x",
-      "memory": 128,
-      "maxDuration": 10
-    }
-  },
   "rewrites": [
     {
       "source": "/app",
@@ -55,7 +48,7 @@
         },
         {
           "key": "Access-Control-Allow-Headers",
-          "value": "Content-Type"
+          "value": "Content-Type, Authorization"
         }
       ]
     },
