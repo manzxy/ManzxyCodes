@@ -80,14 +80,18 @@ function fmtDate(d){
   if(!d) return '';
   try{
     var dt=new Date(d),diff=Date.now()-dt.getTime();
-    if(isNaN(diff)) return '';
-    if(diff<60000) return 'baru saja';
-    if(diff<3600000) return Math.floor(diff/60000)+' mnt lalu';
-    if(diff<86400000) return Math.floor(diff/3600000)+' jam lalu';
-    if(diff<604800000) return Math.floor(diff/86400000)+' hari lalu';
+    if(isNaN(diff)||diff<0) return '';
+    if(diff<60000)      return 'baru saja';
+    if(diff<3600000)    return Math.floor(diff/60000)+' mnt lalu';
+    if(diff<86400000)   return Math.floor(diff/3600000)+' jam lalu';
+    if(diff<604800000)  return Math.floor(diff/86400000)+' hari lalu';
+    if(diff<2592000000) return Math.floor(diff/604800000)+' minggu lalu';
     var mo=Math.floor(diff/2592000000);
     if(mo<12) return mo+' bln lalu';
-    return Math.floor(mo/12)+' thn lalu';
+    var yr=Math.floor(mo/12);
+    var remMo=mo%12;
+    if(remMo>0) return yr+' thn '+remMo+' bln lalu';
+    return yr+' thn lalu';
   }catch(e){return '';}
 }
 
