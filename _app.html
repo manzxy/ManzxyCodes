@@ -252,6 +252,12 @@
         </button>
       </div>
     </div>
+    <div class="sort-bar">
+      <button class="sort-btn on" data-sort="newest" onclick="setSort('newest')">Terbaru</button>
+      <button class="sort-btn" data-sort="popular" onclick="setSort('popular')">♥ Terpopuler</button>
+      <button class="sort-btn" data-sort="views" onclick="setSort('views')">👁 Terbanyak</button>
+      <button class="sort-btn" data-sort="oldest" onclick="setSort('oldest')">Terlama</button>
+    </div>
     <div class="list" id="list">
       <div class="empty-state"><div class="spin"></div><h3>Loading…</h3><p>Mengambil data dari API</p></div>
     </div>
