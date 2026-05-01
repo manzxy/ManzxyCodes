@@ -249,6 +249,58 @@ function setSort(s){
 // ── PAGINATION
 var PAGE_SIZE=10, curPage=1, filteredList=[];
 
+function goToPage(p){
+  var totalPages=Math.ceil(filteredList.length/PAGE_SIZE);
+  if(p<1||p>totalPages) return;
+  curPage=p;
+  renderCurrentPage();
+  var le=$('list');if(le) le.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function renderPagination(total,page){
+  var totalPages=Math.ceil(total/PAGE_SIZE);
+  if(totalPages<=1) return '';
+  var start=(page-1)*PAGE_SIZE+1;
+  var end=Math.min(page*PAGE_SIZE,total);
+  var h='<div class="pagination-wrap">';
+  h+='<div class="pg-info">'+start+'–'+end+' dari '+total+' snippet</div>';
+  h+='<div class="pg-btns">';
+  // Prev
+  h+='<button class="pg-btn'+(page===1?' pg-disabled':'')+'" onclick="goToPage('+(page-1)+')" '+(page===1?'disabled':'')+'>‹</button>';
+  // Pages
+  var pages=[];
+  var w=2;
+  for(var i=1;i<=totalPages;i++){
+    if(i===1||i===totalPages||Math.abs(i-page)<=w) pages.push(i);
+    else if(pages[pages.length-1]!=='...') pages.push('...');
+  }
+  for(var j=0;j<pages.length;j++){
+    var pg=pages[j];
+    if(pg==='...'){
+      h+='<span class="pg-ellipsis">…</span>';
+    } else {
+      h+='<button class="pg-btn'+(pg===page?' pg-active':'')+'" onclick="goToPage('+pg+')">'+pg+'</button>';
+    }
+  }
+  // Next
+  h+='<button class="pg-btn'+(page===totalPages?' pg-disabled':'')+'" onclick="goToPage('+(page+1)+')" '+(page===totalPages?'disabled':'')+'>›</button>';
+  h+='</div></div>';
+  return h;
+}
+
+function renderCurrentPage(){
+  var le=$('list');
+  if(!le) return;
+  var total=filteredList.length;
+  var totalPages=Math.ceil(total/PAGE_SIZE);
+  if(curPage>totalPages) curPage=totalPages||1;
+  var start=(curPage-1)*PAGE_SIZE;
+  var slice=filteredList.slice(start,start+PAGE_SIZE);
+  var h=slice.map(makeRowHTML).join('');
+  h+=renderPagination(total,curPage);
+  le.innerHTML=h;
+}
+
 // ── RENDER
 function render(){
   curPage=1;
@@ -265,6 +317,7 @@ function render(){
   }
   list=sortList(list);
   filteredList=list;
+  curPage=1;
   var lbl=curLang==='all'?'Explore.':curLang+'.';
   set('pageTitle',curQ?'"'+curQ+'"':lbl);
   set('pageSub',curQ
@@ -281,7 +334,7 @@ function render(){
       '</div>';
     return;
   }
-  renderPage(list,1,true);
+  renderCurrentPage();
 }
 
 function makeRowHTML(s){
@@ -312,38 +365,6 @@ function makeRowHTML(s){
     +'</div>'
     +'</div>';
 }
-
-function renderPage(list,page,reset){
-  var le=$('list');
-  if(!le) return;
-  var end=page*PAGE_SIZE;
-  var slice=list.slice(0,end);
-  var total=list.length;
-  var h=slice.map(makeRowHTML).join('');
-  var remaining=total-end;
-  if(remaining>0){
-    h+='<div class="load-more-wrap" id="loadMoreWrap">'
-      +'<div class="load-more-info">Menampilkan '+end+' dari '+total+' snippet</div>'
-      +'<button class="load-more-btn" onclick="loadMore()">Lihat '+remaining+' lainnya</button>'
-      +'</div>';
-  } else if(total>PAGE_SIZE){
-    h+='<div class="load-more-wrap"><div class="load-more-info">Semua '+total+' snippet ditampilkan ✓</div></div>';
-  }
-  if(reset){
-    le.innerHTML=h;
-  } else {
-    var old=le.querySelector('#loadMoreWrap');
-    if(old) old.remove();
-    var tmp=document.createElement('div');
-    tmp.innerHTML=h;
-    tmp.querySelectorAll('.srow').forEach(function(row){le.appendChild(row);});
-    var nw=tmp.querySelector('#loadMoreWrap,.load-more-wrap');
-    if(nw) le.appendChild(nw);
-  }
-  curPage=page;
-}
-
-function loadMore(){renderPage(filteredList,curPage+1,false);}
 
 // ── DETAIL
 async function openDetail(id){
