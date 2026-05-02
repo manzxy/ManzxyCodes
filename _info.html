@@ -25,8 +25,8 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"ManzxyCodes","url":"https://manzxy.biz.id","description":"Platform snippet code open untuk developer Indonesia.","image":"https://raw.githubusercontent.com/uploader762/dat1/main/uploads/6941ac-1775493553900.jpg","author":{"@type":"Person","name":"Manzxy"}}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'"/>
-<noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/></noscript>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'"/>
+<noscript><link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/></noscript>
 <link rel="stylesheet" href="/info.css"/>
 </head>
 <body>
@@ -46,21 +46,21 @@
   </div>
 </div>
 <style>
-#splash{position:fixed;inset:0;z-index:9999;background:#060608;display:flex;align-items:center;justify-content:center;transition:opacity .45s ease,visibility .45s ease}
+#splash{position:fixed;inset:0;z-index:9999;background:#e0e5ec;display:flex;align-items:center;justify-content:center;transition:opacity .45s ease,visibility .45s ease}
 #splash.out{opacity:0;visibility:hidden}
 .splash-inner{display:flex;flex-direction:column;align-items:center}
 .splash-logo{position:relative;width:110px;height:110px;display:flex;align-items:center;justify-content:center;margin-bottom:28px}
-.splash-logo-mark{width:72px;height:72px;border-radius:20px;background:linear-gradient(135deg,#7c6dfa,#f06292);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;color:#fff;font-family:'JetBrains Mono','Inter',monospace;animation:splashPulse 2s ease-in-out infinite;position:relative;z-index:2;object-fit:cover;overflow:hidden}
-@keyframes splashPulse{0%,100%{box-shadow:0 0 0 0 rgba(124,109,250,.35),0 8px 32px rgba(124,109,250,.2)}50%{box-shadow:0 0 0 16px rgba(124,109,250,0),0 12px 48px rgba(124,109,250,.3)}}
-.splash-ring{position:absolute;border-radius:50%;border:1px solid rgba(124,109,250,.18);animation:splashRing 3s ease-in-out infinite}
+.splash-logo-mark{width:72px;height:72px;border-radius:20px;background:#e0e5ec;box-shadow:6px 6px 14px #b8bec9,-6px -6px 14px #ffffff;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;color:#6c7ee1;font-family:'Nunito','JetBrains Mono',monospace;animation:splashPulse 2s ease-in-out infinite;position:relative;z-index:2;object-fit:cover;overflow:hidden}
+@keyframes splashPulse{0%,100%{box-shadow:6px 6px 14px #b8bec9,-6px -6px 14px #ffffff}50%{box-shadow:10px 10px 22px #a8b0bc,-8px -8px 18px #ffffff}}
+.splash-ring{position:absolute;border-radius:50%;border:1.5px solid rgba(108,126,225,.2);animation:splashRing 3s ease-in-out infinite}
 .splash-ring-1{width:92px;height:92px;animation-delay:0s}
-.splash-ring-2{width:108px;height:108px;animation-delay:.4s;border-color:rgba(240,98,146,.12)}
-.splash-ring-3{width:124px;height:124px;animation-delay:.8s;border-color:rgba(124,109,250,.07)}
+.splash-ring-2{width:108px;height:108px;animation-delay:.4s;border-color:rgba(224,98,146,.15)}
+.splash-ring-3{width:124px;height:124px;animation-delay:.8s;border-color:rgba(108,126,225,.08)}
 @keyframes splashRing{0%,100%{transform:scale(1);opacity:.6}50%{transform:scale(1.04);opacity:1}}
-.splash-name{font-family:'Inter',system-ui,sans-serif;font-size:22px;font-weight:700;letter-spacing:-.5px;color:#eeeef2;margin-bottom:7px}
-.splash-sub{font-family:'JetBrains Mono',monospace;font-size:12px;color:#3a3c52;letter-spacing:.08em;margin-bottom:40px}
-.splash-bar{width:120px;height:2px;background:#111116;border-radius:99px;overflow:hidden}
-.splash-bar-fill{height:100%;width:0%;background:linear-gradient(90deg,#7c6dfa,#f06292);border-radius:99px;transition:width .1s linear}
+.splash-name{font-family:'Nunito','Inter',system-ui,sans-serif;font-size:22px;font-weight:800;letter-spacing:-.5px;color:#3d4a5c;margin-bottom:7px}
+.splash-sub{font-family:'JetBrains Mono',monospace;font-size:12px;color:#9aa3b0;letter-spacing:.08em;margin-bottom:40px}
+.splash-bar{width:120px;height:3px;background:#e0e5ec;box-shadow:inset 2px 2px 5px #b8bec9,inset -2px -2px 5px #ffffff;border-radius:99px;overflow:hidden}
+.splash-bar-fill{height:100%;width:0%;background:linear-gradient(90deg,#6c7ee1,#8b9af0);border-radius:99px;transition:width .1s linear}
 </style>
 <script>
 (function(){

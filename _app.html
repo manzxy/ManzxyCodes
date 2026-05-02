@@ -23,8 +23,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'"/>
-<noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/></noscript>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'"/>
+<noscript><link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/></noscript>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css" media="print" onload="this.media='all'"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" defer></script>
 <link rel="stylesheet" href="/app.css"/>
@@ -49,7 +49,7 @@
 <style>
 #splash{
   position:fixed;inset:0;z-index:9999;
-  background:#08090c;
+  background:#e0e5ec;
   display:flex;align-items:center;justify-content:center;
   flex-direction:column;
   transition:opacity .45s ease, visibility .45s ease;
@@ -63,44 +63,47 @@
 }
 .splash-logo-mark{
   width:72px;height:72px;border-radius:20px;
-  background:linear-gradient(135deg,#7c6dfa,#f06292);
+  background:#e0e5ec;
+  box-shadow:6px 6px 14px #b8bec9,-6px -6px 14px #ffffff;
   display:flex;align-items:center;justify-content:center;
-  font-size:22px;font-weight:800;color:#fff;
+  font-size:22px;font-weight:800;color:#6c7ee1;
   font-family:'JetBrains Mono','Inter',monospace;
-  box-shadow:0 0 0 0 rgba(124,109,250,.4);
   animation:splashPulse 2s ease-in-out infinite;
   position:relative;z-index:2;
 }
 @keyframes splashPulse{
-  0%,100%{box-shadow:0 0 0 0 rgba(124,109,250,.35),0 8px 32px rgba(124,109,250,.25)}
-  50%{box-shadow:0 0 0 16px rgba(124,109,250,0),0 12px 48px rgba(124,109,250,.35)}
+  0%,100%{box-shadow:6px 6px 14px #b8bec9,-6px -6px 14px #ffffff}
+  50%{box-shadow:10px 10px 22px #a8b0bc,-8px -8px 18px #ffffff}
 }
 .splash-ring{
-  position:absolute;border-radius:50%;border:1px solid rgba(124,109,250,.18);
+  position:absolute;border-radius:50%;
+  border:1.5px solid rgba(108,126,225,.2);
   animation:splashRing 3s ease-in-out infinite;
 }
 .splash-ring-1{width:92px;height:92px;animation-delay:0s}
-.splash-ring-2{width:108px;height:108px;animation-delay:.4s;border-color:rgba(240,98,146,.12)}
-.splash-ring-3{width:124px;height:124px;animation-delay:.8s;border-color:rgba(124,109,250,.07)}
+.splash-ring-2{width:110px;height:110px;animation-delay:.4s;border-color:rgba(224,98,146,.15)}
+.splash-ring-3{width:128px;height:128px;animation-delay:.8s;border-color:rgba(108,126,225,.08)}
 @keyframes splashRing{
-  0%,100%{transform:scale(1);opacity:.6}
+  0%,100%{transform:scale(1);opacity:.5}
   50%{transform:scale(1.04);opacity:1}
 }
 .splash-name{
-  font-family:'Inter',system-ui,sans-serif;
-  font-size:22px;font-weight:700;letter-spacing:-.5px;
-  color:#eeeef2;margin-bottom:7px;
+  font-family:'Nunito','Inter',system-ui,sans-serif;
+  font-size:22px;font-weight:800;letter-spacing:-.5px;
+  color:#3d4a5c;margin-bottom:7px;
 }
 .splash-sub{
   font-family:'JetBrains Mono',monospace;
-  font-size:12px;color:#3a3c52;letter-spacing:.08em;
+  font-size:12px;color:#9aa3b0;letter-spacing:.08em;
   margin-bottom:40px;
 }
 .splash-bar{
-  width:120px;height:2px;background:#1a1b24;border-radius:99px;overflow:hidden;
+  width:120px;height:3px;background:#e0e5ec;
+  box-shadow:inset 2px 2px 5px #b8bec9,inset -2px -2px 5px #ffffff;
+  border-radius:99px;overflow:hidden;
 }
 .splash-bar-fill{
-  height:100%;width:0%;background:linear-gradient(90deg,#7c6dfa,#f06292);
+  height:100%;width:0%;background:linear-gradient(90deg,#6c7ee1,#8b9af0);
   border-radius:99px;transition:width .1s linear;
 }
 </style>
