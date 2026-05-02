@@ -732,3 +732,77 @@ function toast(msg,type){
   clearTimeout(toastTm);
   toastTm=setTimeout(function(){if(t)t.classList.remove('show');},3200);
 }
+
+// ── THEME SYSTEM
+(function(){
+  var THEMES=['light','dark','black'];
+  var ICONS_TH={light:'☀️',dark:'🌙',black:'⬛'};
+  var LABELS={light:'Light',dark:'Dark',black:'Black'};
+
+  function getSaved(){
+    try{ return localStorage.getItem('mzx_theme')||'light'; }catch(e){return 'light';}
+  }
+  function setSaved(t){
+    try{ localStorage.setItem('mzx_theme',t); }catch(e){}
+  }
+  function apply(t){
+    document.documentElement.setAttribute('data-theme', t==='light'?'':t);
+    setSaved(t);
+    // update active class on opts
+    document.querySelectorAll('.theme-opt').forEach(function(el){
+      el.classList.toggle('active', el.dataset.theme===t);
+    });
+    // update icon
+    var btn=document.getElementById('themeBtnIcon');
+    if(btn) btn.textContent=ICONS_TH[t]||'🌙';
+  }
+
+  function buildPicker(container){
+    container.innerHTML='';
+    var btn=document.createElement('button');
+    btn.className='theme-btn';
+    btn.id='themeBtnIcon';
+    btn.title='Ganti tema';
+    btn.setAttribute('aria-label','Pilih tema');
+    var saved=getSaved();
+    btn.textContent=ICONS_TH[saved]||'☀️';
+    container.appendChild(btn);
+
+    var dd=document.createElement('div');
+    dd.className='theme-dropdown';
+    THEMES.forEach(function(t){
+      var opt=document.createElement('button');
+      opt.className='theme-opt'+(saved===t?' active':'');
+      opt.dataset.theme=t;
+      var dot=document.createElement('span');
+      dot.className='theme-dot td-'+t;
+      opt.appendChild(dot);
+      opt.appendChild(document.createTextNode(LABELS[t]));
+      opt.addEventListener('click',function(e){
+        e.stopPropagation();
+        apply(t);
+        container.classList.remove('open');
+      });
+      dd.appendChild(opt);
+    });
+    container.appendChild(dd);
+
+    btn.addEventListener('click',function(e){
+      e.stopPropagation();
+      container.classList.toggle('open');
+    });
+    document.addEventListener('click',function(){
+      container.classList.remove('open');
+    });
+  }
+
+  // Init on DOM ready
+  function init(){
+    apply(getSaved());
+    var el=document.getElementById('themePicker');
+    if(el) buildPicker(el);
+  }
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',init);
+  } else { init(); }
+})();

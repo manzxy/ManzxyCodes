@@ -15,7 +15,21 @@ Platform snippet code open untuk developer Indonesia. Simpan, share, temukan kod
 | Database | Supabase (PostgreSQL + RLS) |
 | Auth | JWT HttpOnly cookie (`jose`) |
 | Highlighting | highlight.js `tokyo-night-dark` |
-| Fonts | Inter + JetBrains Mono |
+| Fonts | Nunito + JetBrains Mono |
+
+---
+
+## Tema (Light / Dark / Black)
+
+ManzxyCodes mendukung 3 tema visual yang bisa dipilih via tombol di topbar:
+
+| Tema | Deskripsi |
+|------|-----------|
+| ☀️ **Light** | Neumorphism putih/abu — default, cocok siang hari |
+| 🌙 **Dark** | Neumorphism biru-gelap — ramah mata malam |
+| ⬛ **Black** | Neumorphism hitam pekat — mode AMOLED/true black |
+
+Pilihan disimpan di `localStorage` (`mzx_theme`), persisten antar sesi. Diimplementasikan via CSS `[data-theme]` attribute pada `<html>` — tanpa refresh, tanpa flash.
 
 ---
 
@@ -40,13 +54,13 @@ ManzxyCodes/
 │   ├── langMeta.js             file extension + safe filename
 │   └── apiHelpers.js           setCORS / handleOptions / parseBody / getIP
 │
-├── _app.html                   App UI (/app)
-├── app.js                      Logic: fetch, render, modal, search
-├── app.css                     App styles
+├── _app.html                   App UI (/app) — dengan #themePicker
+├── app.js                      Logic + theme system
+├── app.css                     Styles (3 tema: light / dark / black)
 │
-├── _info.html                  Landing + API docs (/)
-├── info.js                     Landing: stats, tabs, scroll
-├── info.css                    Landing styles
+├── _info.html                  Landing + API docs (/) — dengan #themePicker
+├── info.js                     Landing stats, tabs + theme system
+├── info.css                    Landing styles (3 tema)
 │
 ├── vercel.json                 Routing rewrites + headers
 ├── package.json
@@ -121,56 +135,44 @@ Base URL otomatis mengikuti domain yang dibuka (lihat `_info.html` script).
 
 ---
 
-## Bug Fixes (Semua Versi)
+## Changelog
 
-### v2.6 — Current
+### v2.7 — Current
+
+| # | Severity | Perubahan |
+|---|----------|-----------|
+| 0 | ✨ | **3 tema baru**: Light (putih), Dark (navy), Black (AMOLED) — persistent via localStorage |
+| 1 | ✨ | Theme picker dropdown di topbar (`#themePicker`) — kedua halaman app + info |
+| 2 | ✨ | CSS `[data-theme]` attribute system — transisi mulus tanpa flash |
+| 3 | 🎨 | Perbaikan warna shadows lebih konsisten di semua elemen |
+| 4 | 🎨 | Tag bahasa (`tag-js`, `tag-ts`, dll) warna disesuaikan tiap tema |
+| 5 | 🎨 | `--code-bg` variable terpisah untuk code block background |
+
+### v2.6
 
 | # | Severity | Bug | Fix |
 |---|----------|-----|-----|
 | 0 | 🔵 | Node runtime masih 18, Vercel belum pakai Node 24 | Update engine >=24 + vercel.json nodejs24.x |
 | 0 | 🔵 | Duplicate id="newBtnDesk" (topbar + page header) | Rename topbar → newBtnTopbar |
 | 0 | 🔵 | Favicon tidak ada | Tambah link rel=icon + apple-touch-icon |
-| 0 | 🔵 | Version label masih v2 | Update ke v2.1 |
-| 1 | 🔴 | Download gagal — `a.download` + `Content-Disposition` tidak work cross-origin di mobile | Ganti ke **Blob URL** client-side (`URL.createObjectURL`) |
-| 2 | 🔴 | `view` action di `snippets.js` return `{ ok: true }` tapi frontend expect `{ views: n }` | Return `{ views: n }` setelah increment |
-| 3 | 🔴 | Logo masih teks "Mz" — seharusnya pakai foto asli | Ganti semua `<div class="logo-mark">` dengan `<img>` + onerror fallback |
-| 4 | 🟠 | `copyCode()` gagal di mobile browser lama (no Clipboard API) | Tambah fallback `document.execCommand('copy')` |
-| 5 | 🟠 | `apiHelpers.js` — OPTIONS return 200 bukan 204 (standar salah) | Fix ke `res.status(204).end()` |
-| 6 | 🟠 | `apiHelpers.js` — `Authorization` tidak di-whitelist CORS header | Tambah ke `Access-Control-Allow-Headers` |
-| 7 | 🟠 | `langMeta.js` — banyak bahasa missing ext (Sass, Zig, Vue, dll) | Lengkapi semua ext map |
-| 8 | 🟠 | `langMeta.js` — `LANG_EXT[lang]` return `undefined` bukan default | Fix ke `?? 'txt'` (nullish coalescing) |
-| 9 | 🟡 | `db.js` — tidak ada warning kalau env vars missing | Tambah `console.error` kalau env kosong |
-| 10 | 🟡 | `info.js` — `cpEx` tidak ada fallback untuk browser tanpa Clipboard API | Tambah execCommand fallback |
-| 11 | 🟡 | `info.js` — IntersectionObserver `threshold: 0.3` terlalu agresif di mobile | Tambah `rootMargin` agar lebih akurat |
-| 12 | 🟡 | `copyShareLink()` — tidak check `su.textContent` sebelum clipboard write | Tambah null guard |
-| 13 | 🟡 | `downloadCode()` — tidak check `curSnip.code` sebelum blob creation | Tambah early return + toast |
-| 14 | 🟢 | `snippet/[id].js` — cache tidak di-set `at` field, X-Cache selalu HIT | Cache sudah menyimpan `data` langsung (bukan objek dengan `at`) |
-| 15 | 🟢 | `raw/[id].js` — response tidak include `X-Content-Type-Options` | Tambah header security |
-
-### v2.4
-- Download fix (partial — masih pakai server Content-Disposition)
-- Logo gambar ditambahkan
+| 1 | 🔴 | Download gagal cross-origin di mobile | Ganti ke Blob URL client-side |
+| 2 | 🔴 | `view` action return `{ ok: true }` bukan `{ views: n }` | Fix return value |
+| 3 | 🔴 | Logo masih teks "Mz" | Ganti dengan `<img>` + onerror fallback |
+| 4 | 🟠 | `copyCode()` gagal di mobile browser lama | Tambah fallback `execCommand('copy')` |
+| 5 | 🟠 | OPTIONS return 200 bukan 204 | Fix ke `res.status(204).end()` |
+| 6 | 🟠 | `Authorization` tidak di-whitelist CORS header | Tambah ke Allow-Headers |
+| 7 | 🟠 | Banyak bahasa missing ext di `langMeta.js` | Lengkapi semua ext map |
 
 ### v2.3
 - Splash stuck — fallback timeout 6s
-- `app.js` tidak di-include (loading muter terus)
 - localStorage crash private mode
 - Atomic RPC untuk like/view
 - Escape menutup semua modal sekaligus
-- `updateCounts()` crash untuk C++, C#, F#
 
 ### v2.2
 - URL dari `?id=` ke `/app/title-slug`
 - Raw URL dari `/api/snippet/:hash/raw` ke `/raw/:hash`
 - Refactor shared libs ke `src/lib/`
-
-### v2.1
-- `[id].js` — `parseInt(hash)` = NaN → 400 error
-- Responsive breakpoint
-
-### v2.0
-- Full redesign
-- Fix double page bug
 
 ---
 
