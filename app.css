@@ -1,6 +1,7 @@
 /* ManzxyCodes App — Neumorphism Light Theme */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
+  color-scheme: light;
   --bg:#e0e5ec;
   --bg1:#dde3ea;
   --bg2:#d6dce5;
@@ -204,17 +205,26 @@ textarea.inp{font-family:var(--mono);font-size:13px;resize:vertical;min-height:1
 .d-title{font-size:21px;font-weight:800;letter-spacing:-.5px;margin:10px 0 7px;line-height:1.25;color:var(--text)}
 .d-desc{font-size:13px;color:var(--text2);margin-bottom:12px;line-height:1.75;font-weight:500}
 .d-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
-.cblock{background:var(--bg);box-shadow:var(--shadow-in);border-radius:14px;border:none;overflow:hidden}
-.cbar{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;box-shadow:0 2px 6px #c0c8d4}
+.cblock{
+  background:var(--bg);
+  box-shadow:var(--shadow-in);
+  border-radius:14px;border:none;overflow:hidden;
+}
+.cbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:9px 14px;
+  background:var(--bg);
+  box-shadow:0 2px 6px #c0c8d4;
+}
 .cfname{font-family:var(--mono);font-size:11px;color:var(--text3);font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:200px}
 .cacts{display:flex;gap:5px;flex-shrink:0}
 .cscroll{overflow-x:auto;max-height:calc(100vh - 330px);min-height:200px;-webkit-overflow-scrolling:touch}
 .cscroll pre{margin:0!important;border-radius:0!important}
 .cscroll pre code.hljs{
   font-family:var(--mono)!important;font-size:12.5px!important;
-  line-height:1.75!important;padding:14px!important;
-  /* neumorphism override — must match --bg exactly */
-  background:#e0e5ec!important;
+  line-height:1.75!important;padding:16px 14px!important;
+  /* lock to neumorphism — blocks browser force-dark */
+  background:#dde3ea!important;
   color:#3d4a5c!important;
 }
 /* atom-one-light token color overrides for neumorphism palette */

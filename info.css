@@ -1,6 +1,7 @@
 /* ManzxyCodes Info — Neumorphism Light Theme */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
+  color-scheme: light;
   --bg:#e0e5ec;--bg1:#dde3ea;--bg2:#d6dce5;--bg3:#cdd4de;
   --shadow-out:6px 6px 14px #b8bec9,-6px -6px 14px #ffffff;
   --shadow-in:inset 4px 4px 10px #b8bec9,inset -4px -4px 10px #ffffff;
@@ -130,14 +131,14 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
 .pd{font-size:12px;color:var(--text2);font-weight:500}
 /* CODE EXAMPLES */
 .ce{background:var(--bg);box-shadow:var(--shadow-in);border-radius:12px;overflow:hidden}
-.ce-bar{display:flex;align-items:center;justify-content:space-between;padding:7px 12px;box-shadow:0 2px 5px #c0c8d4}
+.ce-bar{display:flex;align-items:center;justify-content:space-between;padding:7px 12px;box-shadow:0 2px 5px #c0c8d4;background:var(--bg)}
 .ce-lang{font-family:var(--mono);font-size:10px;color:var(--text3);font-weight:700}
 .copy-tiny{font-size:10px;font-weight:700;padding:3px 10px;border-radius:7px;background:var(--bg);box-shadow:var(--shadow-sm);border:none;color:var(--text2);cursor:pointer;font-family:var(--sans);transition:all .15s}
 .copy-tiny:hover{box-shadow:var(--shadow-sm-in);color:var(--accent)}
 .ce-code{
   font-family:var(--mono);font-size:12.5px;padding:14px 16px;
   color:var(--text);line-height:1.75;white-space:pre;overflow-x:auto;display:block;
-  background:#e0e5ec;
+  background:#dde3ea;
 }
 /* syntax token colors — neumorphism light palette */
 .cp{color:#5060c8;font-weight:800}    /* keyword / purple */
@@ -149,12 +150,12 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
 .ct{color:#4fc3f7}                     /* type / blue */
 /* RESPONSE */
 .resp{background:var(--bg);box-shadow:var(--shadow-in);border-radius:12px;overflow:hidden}
-.resp-bar{display:flex;align-items:center;gap:7px;padding:7px 12px;box-shadow:0 2px 5px #c0c8d4;font-size:11px;font-weight:700;color:var(--green);font-family:var(--mono)}
+.resp-bar{display:flex;align-items:center;gap:7px;padding:7px 12px;box-shadow:0 2px 5px #c0c8d4;font-size:11px;font-weight:700;color:var(--green);font-family:var(--mono);background:var(--bg)}
 .resp-dot{width:7px;height:7px;border-radius:50%;background:var(--green)}
 .resp-code{
   font-family:var(--mono);font-size:12px;padding:12px 16px;
   color:var(--text);line-height:1.7;white-space:pre;overflow-x:auto;display:block;
-  background:#e0e5ec;
+  background:#dde3ea;
 }
 .rk{color:#6c7ee1;font-weight:700}   /* JSON key / accent */
 .rs{color:#2e7d52}                    /* string value / green */
