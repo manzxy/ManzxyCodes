@@ -220,25 +220,32 @@ textarea.inp{font-family:var(--mono);font-size:13px;resize:vertical;min-height:1
 .cacts{display:flex;gap:5px;flex-shrink:0}
 .cscroll{overflow-x:auto;max-height:calc(100vh - 330px);min-height:200px;-webkit-overflow-scrolling:touch}
 .cscroll pre{margin:0!important;border-radius:0!important}
-.cscroll pre code.hljs{
-  font-family:var(--mono)!important;font-size:12.5px!important;
-  line-height:1.75!important;padding:16px 14px!important;
-  /* lock to neumorphism — blocks browser force-dark */
-  background:#dde3ea!important;
-  color:#3d4a5c!important;
+
+/* ── HLJS custom theme — neumorphism light (no external CSS needed) */
+.hljs{
+  display:block;overflow-x:auto;
+  padding:16px 14px;
+  background:#dde3ea;
+  color:#3d4a5c;
+  font-family:var(--mono);font-size:12.5px;line-height:1.75;
 }
-/* atom-one-light token color overrides for neumorphism palette */
-.cscroll .hljs-keyword,.cscroll .hljs-selector-tag,.cscroll .hljs-built_in,.cscroll .hljs-name,.cscroll .hljs-tag{color:#5060c8!important;font-weight:700!important}
-.cscroll .hljs-attr,.cscroll .hljs-attribute{color:#6c7ee1!important}
-.cscroll .hljs-string,.cscroll .hljs-addition,.cscroll .hljs-selector-attr,.cscroll .hljs-selector-pseudo{color:#2e7d52!important}
-.cscroll .hljs-number,.cscroll .hljs-literal,.cscroll .hljs-variable,.cscroll .hljs-template-variable{color:#c8900a!important}
-.cscroll .hljs-comment,.cscroll .hljs-quote,.cscroll .hljs-meta{color:#9aa3b0!important;font-style:italic!important}
-.cscroll .hljs-title,.cscroll .hljs-section,.cscroll .hljs-title.class_{color:#e06292!important;font-weight:700!important}
-.cscroll .hljs-type,.cscroll .hljs-class .hljs-title{color:#4fc3f7!important}
-.cscroll .hljs-function .hljs-title,.cscroll .hljs-title.function_{color:#e06292!important}
-.cscroll .hljs-deletion,.cscroll .hljs-regexp{color:#e05252!important}
-.cscroll .hljs-emphasis{font-style:italic!important}
-.cscroll .hljs-strong{font-weight:700!important}
+.hljs-comment,.hljs-quote{color:#9aa3b0;font-style:italic}
+.hljs-keyword,.hljs-selector-tag,.hljs-addition{color:#5060c8;font-weight:700}
+.hljs-number,.hljs-string,.hljs-meta .hljs-meta-string,.hljs-literal,.hljs-doctag,.hljs-regexp{color:#2e7d52}
+.hljs-title,.hljs-section,.hljs-name,.hljs-selector-id,.hljs-selector-class{color:#e06292;font-weight:700}
+.hljs-attribute,.hljs-attr,.hljs-variable,.hljs-template-variable,.hljs-class .hljs-title,.hljs-type{color:#6c7ee1}
+.hljs-symbol,.hljs-bullet,.hljs-subst,.hljs-meta,.hljs-meta .hljs-keyword,.hljs-selector-attr,.hljs-selector-pseudo,.hljs-link{color:#c8900a}
+.hljs-built_in,.hljs-deletion{color:#e05252}
+.hljs-function .hljs-keyword{color:#5060c8;font-weight:700}
+.hljs-params{color:#3d4a5c}
+.hljs-formula{font-style:italic}
+.hljs-string{color:#2e7d52}
+.hljs-number{color:#c8900a}
+.hljs-emphasis{font-style:italic}
+.hljs-strong{font-weight:700}
+
+/* size override for modal context */
+.cscroll .hljs{font-size:12.5px!important;line-height:1.75!important;padding:16px 14px!important;background:#dde3ea!important;color:#3d4a5c!important}
 .sharebox{background:var(--bg);box-shadow:var(--shadow-sm-in);border-radius:12px;padding:10px 14px;display:flex;align-items:center;gap:10px;margin-top:12px}
 .shareurl{flex:1;font-family:var(--mono);font-size:11px;color:var(--accent);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600}
 .dfoot{display:flex;align-items:center;justify-content:space-between;margin-top:14px;flex-wrap:wrap;gap:8px}

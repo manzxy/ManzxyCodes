@@ -141,13 +141,13 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
   background:#dde3ea;
 }
 /* syntax token colors — neumorphism light palette */
-.cp{color:#5060c8;font-weight:800}    /* keyword / purple */
-.ck{color:#6c7ee1;font-weight:700}    /* builtin / accent */
-.cs{color:#2e7d52}                     /* string / green */
-.cm{color:#e06292}                     /* function / pink */
-.cc2{color:#9aa3b0;font-style:italic} /* comment / muted */
-.cn{color:#c8900a;font-weight:700}    /* number / amber */
-.ct{color:#4fc3f7}                     /* type / blue */
+.cp{color:#e06292;font-weight:700}   /* function name / pink */
+.ck{color:#5060c8;font-weight:700}   /* keyword: const async if throw / dark indigo */
+.cs{color:#2e7d52}                    /* string / green */
+.cm{color:#e06292}                    /* identifier / pink */
+.cc2{color:#9aa3b0;font-style:italic}/* comment / muted */
+.cn{color:#c8900a;font-weight:700}   /* number / amber */
+.ct{color:#4fc3f7}                    /* type / blue */
 /* RESPONSE */
 .resp{background:var(--bg);box-shadow:var(--shadow-in);border-radius:12px;overflow:hidden}
 .resp-bar{display:flex;align-items:center;gap:7px;padding:7px 12px;box-shadow:0 2px 5px #c0c8d4;font-size:11px;font-weight:700;color:var(--green);font-family:var(--mono);background:var(--bg)}
