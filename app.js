@@ -201,7 +201,11 @@ async function load(retries){
   for(var i=0;i<=retries;i++){
     try{
       var r=await apiFetch('/api/snippets','GET',null,10000);
-      if(!r.ok) throw new Error('HTTP '+r.status);
+      if(!r.ok){
+        var errBody={};
+        try{errBody=await r.json();}catch(_){}
+        throw new Error(errBody.error||('HTTP '+r.status));
+      }
       var d=await r.json();
       if(!Array.isArray(d)) throw new Error('Response bukan array');
       rows=d;
