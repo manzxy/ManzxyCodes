@@ -5,7 +5,7 @@
 <link rel="icon" type="image/jpeg" href="https://raw.githubusercontent.com/uploader762/dat1/main/uploads/6941ac-1775493553900.jpg"/>
 <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/uploader762/dat1/main/uploads/6941ac-1775493553900.jpg"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<meta name="color-scheme" content="light"/>
+<meta name="color-scheme" content="dark"/>
 <title>ManzxyCodes</title>
 <meta name="description" content="Platform snippet code untuk developer Indonesia. By Manzxy."/>
 <!-- Open Graph -->
@@ -24,10 +24,54 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'"/>
-<noscript><link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/></noscript>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'"/>
+<noscript><link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet"/></noscript>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" defer></script>
 <link rel="stylesheet" href="/app.css"/>
+
+<style id="pw-lock-css">
+/* PW TOGGLE BUTTON */
+.btn-pw-toggle{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:5px 13px;font-size:9px;font-weight:700;
+  cursor:pointer;border:2px solid var(--border2);
+  background:transparent;color:var(--text3);
+  font-family:var(--mono);letter-spacing:.08em;text-transform:uppercase;
+  transition:all .15s;
+  clip-path:polygon(0 0,calc(100% - 4px) 0,100% 4px,100% 100%,0 100%);
+}
+.btn-pw-toggle:hover{border-color:var(--yellow);color:var(--yellow);background:rgba(255,215,0,.08)}
+.btn-pw-toggle.active{border-color:var(--yellow);color:var(--yellow);background:rgba(255,215,0,.08)}
+/* LOCKED CODE BLOCK */
+.code-locked-wrap{
+  display:flex;align-items:center;justify-content:center;
+  min-height:220px;padding:32px 20px;
+  background:repeating-linear-gradient(
+    45deg,
+    rgba(255,215,0,.015),
+    rgba(255,215,0,.015) 8px,
+    transparent 8px,
+    transparent 20px
+  );
+}
+.code-locked{
+  display:flex;flex-direction:column;align-items:center;
+  gap:10px;max-width:340px;width:100%;text-align:center;
+}
+.lock-icon{color:var(--yellow);opacity:.8;animation:lockPulse 2.5s ease-in-out infinite}
+@keyframes lockPulse{0%,100%{opacity:.6;transform:scale(.95)}50%{opacity:1;transform:scale(1.05)}}
+.lock-title{
+  font-family:var(--head);font-size:13px;font-weight:900;
+  color:var(--yellow);letter-spacing:.14em;text-transform:uppercase;
+  text-shadow:0 0 14px rgba(255,215,0,.3);
+}
+.lock-sub{font-size:10px;color:var(--text2);font-family:var(--mono)}
+.lock-form{display:flex;gap:6px;width:100%;align-items:stretch}
+.lock-form .lock-inp{flex:1;min-width:0}
+.lock-form .btn{flex-shrink:0;align-self:stretch}
+/* PW BADGE in snippet row */
+.pw-badge{font-size:11px;line-height:1;opacity:.85}
+</style>
 </head>
 <body>
 
@@ -49,62 +93,67 @@
 <style>
 #splash{
   position:fixed;inset:0;z-index:9999;
-  background:#e0e5ec;
+  background:#050a0f;
   display:flex;align-items:center;justify-content:center;
   flex-direction:column;
   transition:opacity .45s ease, visibility .45s ease;
+  background-image:linear-gradient(rgba(0,245,255,.012) 1px,transparent 1px),linear-gradient(90deg,rgba(0,245,255,.012) 1px,transparent 1px);
+  background-size:44px 44px;
 }
 #splash.out{opacity:0;visibility:hidden}
 .splash-inner{display:flex;flex-direction:column;align-items:center;gap:0}
 .splash-logo{
-  position:relative;width:110px;height:110px;
+  position:relative;width:96px;height:96px;
   display:flex;align-items:center;justify-content:center;
-  margin-bottom:28px;
+  margin-bottom:22px;
 }
 .splash-logo-mark{
-  width:72px;height:72px;border-radius:20px;
-  background:#e0e5ec;
-  box-shadow:6px 6px 14px #b8bec9,-6px -6px 14px #ffffff;
+  width:60px;height:60px;
+  border:3px solid #00f5ff;
+  background:#050a0f;
   display:flex;align-items:center;justify-content:center;
-  font-size:22px;font-weight:800;color:#6c7ee1;
-  font-family:'JetBrains Mono','Inter',monospace;
+  font-size:16px;font-weight:900;color:#00f5ff;
+  font-family:'Orbitron','IBM Plex Mono',monospace;
   animation:splashPulse 2s ease-in-out infinite;
   position:relative;z-index:2;
+  clip-path:polygon(0 0,calc(100% - 9px) 0,100% 9px,100% 100%,0 100%);
+  box-shadow:0 0 18px rgba(0,245,255,.35),0 0 50px rgba(0,245,255,.1);
 }
 @keyframes splashPulse{
-  0%,100%{box-shadow:6px 6px 14px #b8bec9,-6px -6px 14px #ffffff}
-  50%{box-shadow:10px 10px 22px #a8b0bc,-8px -8px 18px #ffffff}
+  0%,100%{box-shadow:0 0 18px rgba(0,245,255,.35),0 0 50px rgba(0,245,255,.1)}
+  50%{box-shadow:0 0 40px rgba(0,245,255,.7),0 0 80px rgba(0,245,255,.2)}
 }
 .splash-ring{
-  position:absolute;border-radius:50%;
-  border:1.5px solid rgba(108,126,225,.2);
+  position:absolute;
+  border:1px solid;
   animation:splashRing 3s ease-in-out infinite;
 }
-.splash-ring-1{width:92px;height:92px;animation-delay:0s}
-.splash-ring-2{width:110px;height:110px;animation-delay:.4s;border-color:rgba(224,98,146,.15)}
-.splash-ring-3{width:128px;height:128px;animation-delay:.8s;border-color:rgba(108,126,225,.08)}
+.splash-ring-1{width:80px;height:80px;border-color:rgba(0,245,255,.25);animation-delay:0s}
+.splash-ring-2{width:92px;height:92px;animation-delay:.4s;border-color:rgba(255,0,128,.15)}
+.splash-ring-3{width:104px;height:104px;animation-delay:.8s;border-color:rgba(0,245,255,.07)}
 @keyframes splashRing{
   0%,100%{transform:scale(1);opacity:.5}
   50%{transform:scale(1.04);opacity:1}
 }
 .splash-name{
-  font-family:'Nunito','Inter',system-ui,sans-serif;
-  font-size:22px;font-weight:800;letter-spacing:-.5px;
-  color:#3d4a5c;margin-bottom:7px;
+  font-family:'Orbitron','IBM Plex Mono',monospace;
+  font-size:16px;font-weight:900;letter-spacing:.14em;
+  color:#00f5ff;margin-bottom:5px;
+  text-shadow:0 0 18px rgba(0,245,255,.35),0 0 50px rgba(0,245,255,.1);
+  text-transform:uppercase;
 }
 .splash-sub{
-  font-family:'JetBrains Mono',monospace;
-  font-size:12px;color:#9aa3b0;letter-spacing:.08em;
-  margin-bottom:40px;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:9px;color:#3d5a72;letter-spacing:.14em;
+  margin-bottom:32px;text-transform:uppercase;
 }
 .splash-bar{
-  width:120px;height:3px;background:#e0e5ec;
-  box-shadow:inset 2px 2px 5px #b8bec9,inset -2px -2px 5px #ffffff;
-  border-radius:99px;overflow:hidden;
+  width:110px;height:2px;background:#1a3040;
+  overflow:hidden;border-left:2px solid #00f5ff;
 }
 .splash-bar-fill{
-  height:100%;width:0%;background:linear-gradient(90deg,#6c7ee1,#8b9af0);
-  border-radius:99px;transition:width .1s linear;
+  height:100%;width:0%;background:linear-gradient(90deg,#00f5ff,#ff0080);
+  transition:width .1s linear;box-shadow:0 0 6px #00f5ff;
 }
 </style>
 
@@ -315,6 +364,19 @@
       <label>Snippet Key (3–7 karakter)</label>
       <div class="kwarn"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/></svg>Simpan key ini! Butuh untuk edit/hapus — tidak bisa dipulihkan.</div>
       <input class="inp" id="n-key" placeholder="contoh: abc12" maxlength="7" autocomplete="off"/><div class="errmsg" id="er-snippetKey"></div>
+    </div>
+    <!-- Optional Password -->
+    <div class="fg pw-toggle-wrap">
+      <button type="button" class="btn-pw-toggle" id="btnTogglePw" onclick="togglePwField()">+ ADD PASSWORD</button>
+      <div id="pwFieldWrap" style="display:none;margin-top:10px">
+        <label>Password (opsional)</label>
+        <div style="position:relative">
+          <input class="inp" type="password" id="n-pw" placeholder="Min 3 karakter — biarkan kosong = tanpa password" maxlength="72" autocomplete="new-password"/>
+          <button type="button" onclick="var i=document.getElementById('n-pw');i.type=i.type==='text'?'password':'text'" style="position:absolute;right:9px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--text3);padding:4px;font-size:10px;font-family:var(--mono)">👁</button>
+        </div>
+        <div class="errmsg" id="er-snippetPassword"></div>
+        <div style="font-size:9px;color:var(--text3);margin-top:4px;font-family:var(--mono)">⚠ Simpan password ini! Tidak bisa dipulihkan. User harus input pw untuk lihat kode.</div>
+      </div>
     </div>
     <!-- honeypot: hidden from humans, bots will fill this -->
     <div style="display:none" aria-hidden="true"><input tabindex="-1" autocomplete="off" id="n-hp" name="_hp" type="text"/></div>
