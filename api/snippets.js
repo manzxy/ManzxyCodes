@@ -20,17 +20,29 @@ export default async function handler(req, res) {
   setCORS(res, 'GET,POST,OPTIONS');
   if (handleOptions(req, res)) return;
 
+  // ── Env guard — catch missing Vercel env vars early with a clear message
+  if (!process.env.SUPABASE_URL || !process.env.SUPABASE_ANON_KEY) {
+    console.error('[snippets] SUPABASE_URL or SUPABASE_ANON_KEY not set in environment');
+    return res.status(503).json({ error: 'Server belum dikonfigurasi — env vars Supabase kosong' });
+  }
+
   // ── GET: return list (exclude code + password_hash for security)
   if (req.method === 'GET') {
-    const { data, error } = await pub
-      .from('snippets')
-      .select('id,created_at,author,title,description,language,tags,likes,views,password_hash')
-      .order('created_at', { ascending: false })
-      .limit(500);
+    let data, error;
+    try {
+      ({ data, error } = await pub
+        .from('snippets')
+        .select('id,created_at,author,title,description,language,tags,likes,views,password_hash')
+        .order('created_at', { ascending: false })
+        .limit(500));
+    } catch (e) {
+      console.error('[snippets GET] exception:', e.message);
+      return res.status(500).json({ error: 'Database error: ' + e.message });
+    }
 
     if (error) {
       console.error('[snippets GET]', error.message);
-      return res.status(500).json({ error: 'Gagal mengambil data' });
+      return res.status(500).json({ error: 'Gagal mengambil data: ' + error.message });
     }
 
     // Return has_password flag instead of actual hash
