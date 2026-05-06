@@ -137,7 +137,22 @@ Base URL otomatis mengikuti domain yang dibuka (lihat `_info.html` script).
 
 ## Changelog
 
-### v2.7 — Current
+### v3.0 — Cyberpunk Rewrite (Current)
+
+| # | Severity | Perubahan |
+|---|----------|-----------|
+| 0 | ✨ | **Cyberpunk redesign** — dark background, cyan + pink accent, monospace headings |
+| 1 | ✨ | **VPS support** — `manzxy.js` Express server + `nginx.conf` + `ecosystem.config.cjs` |
+| 2 | ✨ | Server-side snippet cache (10s TTL) — kurangi Supabase calls drastis |
+| 3 | ✨ | Rate limiter per-IP + global + IP blacklist otomatis |
+| 4 | ✨ | Anti-spam: honeypot field, entropy check, content pattern filter |
+| 5 | ✨ | Admin login via `/app` dengan JWT session (HttpOnly cookie) |
+| 6 | 🐛 | **Fix: `SUPABASE_ANON_KEY` corrupt** — suffix `.XXXXXXXX` dihapus, koneksi DB normal |
+| 7 | 🐛 | **Fix: CSS class mismatch** — `.db-status.connected` / `.error` sekarang match JS |
+| 8 | 🎨 | **Fix: lamp dot annoying** — dot berhenti animasi setelah DB terhubung (solid glow) |
+| 9 | 🎨 | scanline overlay di landing dipertahankan tapi lebih subtle (opacity 0.03) |
+
+### v2.7
 
 | # | Severity | Perubahan |
 |---|----------|-----------|

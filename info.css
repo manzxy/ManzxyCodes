@@ -99,10 +99,12 @@ body::before{
   border:1px solid var(--border2);margin-bottom:24px;background:var(--panel);
   text-transform:uppercase;letter-spacing:.08em;
 }
-.db-status.online{color:var(--green);border-color:var(--green);background:var(--green3)}
-.db-status.offline{color:var(--red);border-color:var(--red);background:var(--red3)}
+.db-status.online,.db-status.connected{color:var(--green);border-color:var(--green);background:var(--green3)}
+.db-status.offline,.db-status.error{color:var(--red);border-color:var(--red);background:var(--red3)}
 .db-status.loading{color:var(--text3)}
-.db-dot{width:7px;height:7px;background:currentColor;animation:dbPulse 2s ease-in-out infinite}
+.db-dot{width:7px;height:7px;background:currentColor;border-radius:50%}
+.db-status.loading .db-dot,.db-status.error .db-dot{animation:dbPulse 2s ease-in-out infinite}
+.db-status.connected .db-dot,.db-status.online .db-dot{opacity:1;box-shadow:0 0 6px currentColor}
 @keyframes dbPulse{0%,100%{opacity:.4;transform:scale(.8)}50%{opacity:1;transform:scale(1.2);box-shadow:0 0 8px currentColor}}
 /* CTA */
 .hero-cta{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:48px}
