@@ -1,6 +1,7 @@
 // api/snippet-create.js
 // POST /api/snippet-create  →  upload snippet baru
 // Anti-spam: honeypot, rate limit IP, entropy check, duplicate title
+// Password: opsional — jika diisi, code hanya bisa dilihat setelah verifikasi
 
 import { svc }                from '../src/lib/db.js';
 import { parseBody, getIP,
@@ -19,9 +20,16 @@ async function hashKey(raw) {
   return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
+async function hashPassword(raw) {
+  // separate salt for password so it can't be confused with snippet key
+  const salt = process.env.PW_SALT || process.env.KEY_SALT || 'manzxycodes_pw_salt';
+  const buf  = await crypto.subtle.digest('SHA-256', new TextEncoder().encode('snip_pw:' + raw + salt));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
 function isHighEntropy(str) {
   if (!str || str.length < 4) return false;
-  const s   = str.toLowerCase().replace(/\s+/g, '');
+  const s     = str.toLowerCase().replace(/\s+/g, '');
   const ratio = new Set(s).size / s.length;
   const mixed = /[A-Z]/.test(str) && /[a-z]/.test(str) && /[0-9]/.test(str);
   return ratio > 0.75 && mixed && s.length <= 16;
@@ -30,30 +38,37 @@ function isHighEntropy(str) {
 function strip(s) { return String(s || '').replace(/<[^>]*>/g, '').trim(); }
 
 function validate(b) {
-  const e = {};
+  const e      = {};
   const author = strip(b.author);
   const title  = strip(b.title);
   const desc   = strip(b.description);
   const code   = String(b.code || '').trim();
   const key    = String(b.snippetKey || '').trim();
+  const pw     = String(b.snippetPassword || '').trim();
 
-  if (!author)          e.author      = 'Wajib diisi';
-  else if (author.length > 50)  e.author = 'Maks 50 karakter';
+  if (!author)                   e.author      = 'Wajib diisi';
+  else if (author.length > 50)   e.author      = 'Maks 50 karakter';
 
-  if (!title)           e.title       = 'Wajib diisi';
-  else if (title.length < 3)    e.title  = 'Judul terlalu pendek';
-  else if (title.length > 120)  e.title  = 'Maks 120 karakter';
+  if (!title)                    e.title       = 'Wajib diisi';
+  else if (title.length < 3)     e.title       = 'Judul terlalu pendek';
+  else if (title.length > 120)   e.title       = 'Maks 120 karakter';
 
-  if (!desc)            e.description = 'Wajib diisi';
-  else if (desc.length < 5)     e.description = 'Terlalu pendek';
-  else if (desc.length > 500)   e.description = 'Maks 500 karakter';
+  if (!desc)                     e.description = 'Wajib diisi';
+  else if (desc.length < 5)      e.description = 'Terlalu pendek';
+  else if (desc.length > 500)    e.description = 'Maks 500 karakter';
 
-  if (!code)            e.code        = 'Wajib diisi';
-  else if (code.length < 10)    e.code = 'Kode terlalu pendek';
-  else if (code.length > 50000) e.code = 'Kode terlalu panjang (maks 50.000 char)';
+  if (!code)                     e.code        = 'Wajib diisi';
+  else if (code.length < 10)     e.code        = 'Kode terlalu pendek';
+  else if (code.length > 50000)  e.code        = 'Kode terlalu panjang (maks 50.000 char)';
 
   if (!key || key.length < 3 || key.length > 7)
     e.snippetKey = 'Key harus 3–7 karakter';
+
+  // Password: optional, but if provided min 3 chars
+  if (pw && pw.length < 3)
+    e.snippetPassword = 'Password minimal 3 karakter';
+  if (pw && pw.length > 72)
+    e.snippetPassword = 'Password terlalu panjang';
 
   return e;
 }
@@ -98,6 +113,7 @@ export default async function handler(req, res) {
   const author = strip(body.author).slice(0, 50);
   const title  = strip(body.title).slice(0, 120);
   const desc   = strip(body.description).slice(0, 500);
+  const pw     = String(body.snippetPassword || '').trim();
 
   // 4. Anti-spam content checks
   if (isHighEntropy(title))  return res.status(400).json({ errors: { title:  'Judul tidak valid (terlihat seperti string acak)' } });
@@ -113,7 +129,10 @@ export default async function handler(req, res) {
   const tagsArr = (Array.isArray(tags) ? tags : String(tags || '').split(','))
     .map(t => strip(String(t)).slice(0, 30)).filter(Boolean).slice(0, 5);
 
-  // 7. Insert
+  // 7. Hash password (null if not provided)
+  const passwordHash = pw ? await hashPassword(pw) : null;
+
+  // 8. Insert
   const { error } = await svc.from('snippets').insert([{
     author,
     title,
@@ -122,6 +141,7 @@ export default async function handler(req, res) {
     tags:             tagsArr,
     code:             String(code).slice(0, 50000),
     snippet_key_hash: await hashKey(String(snippetKey).trim()),
+    password_hash:    passwordHash,
     likes: 0,
     views: 0,
   }]);
