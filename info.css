@@ -19,10 +19,10 @@
   --glow-green:0 0 18px rgba(0,255,136,.35);
   --r:0px;
 }
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;overflow-x:hidden}
 body{
   background:var(--bg);color:var(--text);font-family:var(--mono);
-  min-height:100vh;font-size:13px;line-height:1.65;overflow-x:hidden;
+  min-height:100vh;font-size:13px;line-height:1.65;overscroll-behavior-y:none;
   -webkit-font-smoothing:antialiased;
   background-image:linear-gradient(rgba(0,245,255,.012) 1px,transparent 1px),linear-gradient(90deg,rgba(0,245,255,.012) 1px,transparent 1px);
   background-size:44px 44px;

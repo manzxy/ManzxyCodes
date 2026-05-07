@@ -39,11 +39,12 @@
   --glow-green:0 0 18px rgba(0,255,136,.35);
   --th:54px;--sb:216px;--r:0px;
 }
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;overflow-x:hidden}
 body{
   background:var(--bg);color:var(--text);
   font-family:var(--mono);min-height:100vh;font-size:13px;
-  line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased;
+  line-height:1.6;-webkit-font-smoothing:antialiased;
+  overscroll-behavior-y:none;
   background-image:
     linear-gradient(rgba(0,245,255,.012) 1px,transparent 1px),
     linear-gradient(90deg,rgba(0,245,255,.012) 1px,transparent 1px);
@@ -228,6 +229,7 @@ body::before{
   max-width:1180px;margin:0 auto;
   display:grid;grid-template-columns:var(--sb) 1fr;
   min-height:calc(100vh - var(--th));
+  align-items:start;
 }
 .sidebar-left{
   padding:10px 0;position:sticky;top:var(--th);
@@ -264,7 +266,7 @@ body::before{
 .sl-stat-row:last-child{border-bottom:none}
 .sl-stat-row .k{color:var(--text3);font-weight:600}
 .sl-stat-row .v{font-weight:700;color:var(--cyan);font-size:11px}
-.main-content{min-width:0;padding:18px 16px 40px;contain:layout}
+.main-content{min-width:0;padding:18px 16px 40px}
 .page-header{margin-bottom:14px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .page-hd-l{flex:1;min-width:0}
 .page-title{

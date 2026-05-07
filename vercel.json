@@ -1,107 +1,56 @@
 {
   "version": 2,
-  "rewrites": [
-    {
-      "source": "/app",
-      "destination": "/_app.html"
-    },
-    {
-      "source": "/app/(.*)",
-      "destination": "/_app.html"
-    },
-    {
-      "source": "/info",
-      "destination": "/_info.html"
-    },
-    {
-      "source": "/info/(.*)",
-      "destination": "/_info.html"
-    },
-    {
-      "source": "/",
-      "destination": "/_info.html"
+  "functions": {
+    "api/*.js": {
+      "runtime": "nodejs20.x"
     }
+  },
+  "rewrites": [
+    { "source": "/app",       "destination": "/_app.html" },
+    { "source": "/app/(.*)", "destination": "/_app.html" },
+    { "source": "/info",      "destination": "/_info.html" },
+    { "source": "/info/(.*)", "destination": "/_info.html" },
+    { "source": "/",          "destination": "/_info.html" }
   ],
   "redirects": [
-    {
-      "source": "/index.html",
-      "destination": "/app",
-      "permanent": true
-    },
-    {
-      "source": "/info.html",
-      "destination": "/info",
-      "permanent": true
-    }
+    { "source": "/index.html", "destination": "/app",  "permanent": true },
+    { "source": "/info.html",  "destination": "/info", "permanent": true }
   ],
   "headers": [
     {
       "source": "/api/(.*)",
       "headers": [
-        {
-          "key": "Access-Control-Allow-Origin",
-          "value": "*"
-        },
-        {
-          "key": "Access-Control-Allow-Methods",
-          "value": "GET,POST,PUT,DELETE,OPTIONS"
-        },
-        {
-          "key": "Access-Control-Allow-Headers",
-          "value": "Content-Type, Authorization"
-        }
+        { "key": "Access-Control-Allow-Origin",  "value": "*" },
+        { "key": "Access-Control-Allow-Methods", "value": "GET,POST,PUT,DELETE,OPTIONS" },
+        { "key": "Access-Control-Allow-Headers", "value": "Content-Type, Authorization" }
       ]
     },
     {
       "source": "/app.css",
       "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=3600"
-        },
-        {
-          "key": "Content-Type",
-          "value": "text/css; charset=utf-8"
-        }
+        { "key": "Cache-Control", "value": "public, max-age=3600" },
+        { "key": "Content-Type",  "value": "text/css; charset=utf-8" }
       ]
     },
     {
       "source": "/app.js",
       "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=3600"
-        },
-        {
-          "key": "Content-Type",
-          "value": "application/javascript; charset=utf-8"
-        }
+        { "key": "Cache-Control", "value": "public, max-age=3600" },
+        { "key": "Content-Type",  "value": "application/javascript; charset=utf-8" }
       ]
     },
     {
       "source": "/info.css",
       "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=3600"
-        },
-        {
-          "key": "Content-Type",
-          "value": "text/css; charset=utf-8"
-        }
+        { "key": "Cache-Control", "value": "public, max-age=3600" },
+        { "key": "Content-Type",  "value": "text/css; charset=utf-8" }
       ]
     },
     {
       "source": "/info.js",
       "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=3600"
-        },
-        {
-          "key": "Content-Type",
-          "value": "application/javascript; charset=utf-8"
-        }
+        { "key": "Cache-Control", "value": "public, max-age=3600" },
+        { "key": "Content-Type",  "value": "application/javascript; charset=utf-8" }
       ]
     }
   ]
